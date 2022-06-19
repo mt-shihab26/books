@@ -1,5 +1,5 @@
 # Computer-Programming-2nd-Part
-কম্পিউটার প্রোগ্রামিং ২য় খণ্ড (Tamim-Shahriar-Subeen) Book's Code
+কম্পিউটার প্রোগ্রামিং ২য় খণ্ড (Tamim-Shahriar-Subeen) Book's Code Collection
 
 # Notes
 
