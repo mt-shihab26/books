@@ -1,5 +1,5 @@
-# Computer-Programming-1st-Part_Tamim-Shahriar-Subeen
-কম্পিউটার প্রোগ্রামিং-প্রথম খণ্ড (তামিম শাহরিয়ার সুবিন) বইয়ের কোড
+# Computer-Programming-1st-Part
+কম্পিউটার প্রোগ্রামিং-প্রথম খণ্ড (Tamim-Shahriar-Subeen) Book's Code Collection
 
 বইয়ের লিংক: http://dimik.pub/book/351
 
