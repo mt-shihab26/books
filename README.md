@@ -1,4 +1,4 @@
-# কম্পিউটার প্রোগ্রামিং ৩য় খণ্ড : ডেটা স্ট্রাকচার ও অ্যালগরিদম পরিচিতি (তামিম শাহরিয়ার সুবিন)
+# Computer-Programming-3th-Part-Introduction-to-DSA
 
 কম্পিউটার প্রোগ্রামিং ৩য় খণ্ড : ডেটা স্ট্রাকচার ও অ্যালগরিদম (Tamim-Shahriar-Subeen) Book's Code Collection
 
