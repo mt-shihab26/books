@@ -8,7 +8,7 @@
   - `register`
   - `static`
 - `auto` use for making Automatic variable. Automatic variables are simply local variable, which are auto by default.
-- The `static` modifier may also be used on global variables. When it is, it causes the global variable to be known to and accessible by only the functions in the smae file in which it is declared. Not only is a function not declared in the same file in which it is declared.
+- The `static` modifier may also be used on global variables. When it is, it causes the global variable to be known to and accessible by only the functions in the same file in which it is declared. Not only is a function not declared in the same file in which it is declared.
 - Storage classes table
   | Storage Class | Keyword | Default | Storage | Scope | Life |
   | ------------- | ---------- | -------- | -------- | -------------------------------------------- | ------------------------------------------------------- |
@@ -34,3 +34,11 @@
 ## 11.4 - Understand typedef
 
 - Keep two points firmly in mind: First, a typedef does not cause the original name to be deactivated. second, you can use several typedef statements to create many different.
+
+## 11.5 - Use C's Bitwise operators
+
+- & : bitwise AND
+- | : bitwise OR
+- ^ : bitwise XOR ( exclusive OR)
+- ~ : 1's complement (unary operator)
+- Work with `character` and `integer` types. They can't used in `floating point` types
