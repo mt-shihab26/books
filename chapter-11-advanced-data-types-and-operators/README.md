@@ -42,3 +42,4 @@
 - ^ : bitwise XOR ( exclusive OR)
 - ~ : 1's complement (unary operator)
 - Work with `character` and `integer` types. They can't used in `floating point` types
+- high-order bit
