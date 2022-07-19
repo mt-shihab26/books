@@ -43,3 +43,21 @@
 - ~ : 1's complement (unary operator)
 - Work with `character` and `integer` types. They can't used in `floating point` types
 - high-order bit
+
+## 11.6 - Master the Shift Operators
+
+- a right shift is equivalent to dividing a number by 2.
+- a left shift is equivalent to multiplying a number by 2.
+
+## 11.7 - Understand the ? (question) Operator
+
+- The reason for the ? operator is that a C compiler can produce more efficient code using it instead of hte equivalent if/else statement
+
+## 11.8 - Do More with assignment operator
+
+- multiple assignment statement
+
+## 11.9 - understand the comma operator
+
+- do this and this and this
+- the right most expression in comma operator
