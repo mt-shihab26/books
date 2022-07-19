@@ -61,3 +61,22 @@
 
 - do this and this and this
 - the right most expression in comma operator
+
+## 11.10 - know the precedence summary
+
+```c
+() [] -> .
+! ~ + - ++ --
+* / %
++ -
+<< >>
+< <= > >=
+== !=
+&
+^
+|
+&&
+||
+?:
+= += -= /= etc
+```
