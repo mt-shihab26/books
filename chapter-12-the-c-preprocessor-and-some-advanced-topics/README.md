@@ -36,3 +36,9 @@
 ## 12.5 - use the #and ##operators
 
 - The # operator turns the argument of a function-like macro into a quoted string.
+
+## 12.6-understand-function-pointers
+
+- Function-pointer array are typically used when writing systems software, such as compilers, assemblers and interpreters.
+- qsort() prototype: `void qsort(void *array, size_t number, size_t size, int(*comp)(const void *a, cont void *b)`
+- `size_t` is defined by the C compiler and is loosely the same as unsigned
