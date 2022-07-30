@@ -24,5 +24,17 @@ int main(void)
         printf("%d ", a[i]);
     printf("\n");
 
+    int num;
+    printf("Enter a number: ");
+    scanf("%d", &num);
+
+    int *item = (int *)bsearch(&num, a, 100, sizeof(int), cmp);
+    if (item == NULL)
+    {
+        printf("not found");
+        return 0;
+    }
+    printf("Item found at %ld\n", item - a);
+
     return 0;
 }

@@ -4,11 +4,12 @@ int sum(int a, int b) { return a + b; }
 int sub(int a, int b) { return a - b; }
 int mul(int a, int b) { return a * b; }
 int div(int a, int b) { return b == 0 ? 0 : a / b; }
+int mod(int a, int b) { return a % b; }
 
 int main(void)
 {
     int i, j, result, op, result2;
-    int (*func[4])(int, int) = {sum, sub, mul, div};
+    int (*func[5])(int, int) = {sum, sub, mul, div, mod};
     // func[0] = sum;
     // func[1] = sub;
     // func[2] = mul;
@@ -16,12 +17,12 @@ int main(void)
 
     printf("Enter two number: ");
     scanf("%d %d", &i, &j);
-    printf("1: add\n2: Subtract\n3: Multiply\n4: Divide\n");
+    printf("1: add\n2: Subtract\n3: Multiply\n4: Divide\n5: Modulus\n");
     do
     {
         printf("Enter number of operation: ");
         scanf("%d", &op);
-    } while (op < 1 || op > 4);
+    } while (op < 1 || op > 5);
 
     result = (*func[op - 1])(i, j);
     /* or */
