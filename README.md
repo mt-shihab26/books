@@ -87,3 +87,4 @@
     -   invoking servlet destroy() method
 -   Servlet lifer cycle controlled by servlet container, we as programmer put our code in this method
 -   JavaServer Pages (jsp)
+-   Data Transfer Object (DTO)
