@@ -12,6 +12,6 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        res.sendRedirect("/convert");
+        req.getRequestDispatcher("/WEB-INF/home.jsp").forward(req, res);
     }
 }

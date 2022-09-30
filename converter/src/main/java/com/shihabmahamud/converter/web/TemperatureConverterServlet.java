@@ -15,8 +15,8 @@ public class TemperatureConverterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/convert.jsp")
-            .forward(req, res);
+        req.getRequestDispatcher("/WEB-INF/temperature-convert.jsp")
+                .forward(req, res);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TemperatureConverterServlet extends HttpServlet {
         req.setAttribute("tempInFahrenheit", tempInFahrenheit);
         req.setAttribute("tempInCelsius", tempInCelsius);
 
-        req.getRequestDispatcher("/WEB-INF/result.jsp")
+        req.getRequestDispatcher("/WEB-INF/temperature-result.jsp")
                 .forward(req, res);
     }
 }

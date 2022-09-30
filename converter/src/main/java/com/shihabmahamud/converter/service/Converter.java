@@ -9,5 +9,9 @@ public class Converter {
          * */
         return (celsius * 9 / 5) + 32;
     }
+
+    public static Double meterToKilometer(Double meter) {
+        return meter / 1000;
+    }
 }
 
