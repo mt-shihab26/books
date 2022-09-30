@@ -22,8 +22,9 @@ public class HomeServlet extends HttpServlet {
         var allProducts = productService.findAllProductSortedByName();
 
         req.setAttribute("products", allProducts);
+        req.setAttribute("age", 17);
 
-        req.getRequestDispatcher("/WEB-INF/home.jsp")
+        req.getRequestDispatcher("/WEB-INF/home-jstl.jsp")
                 .forward(req, res);
     }
 

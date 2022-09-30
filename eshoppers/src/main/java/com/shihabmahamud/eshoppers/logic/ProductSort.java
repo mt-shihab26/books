@@ -19,29 +19,26 @@ public class ProductSort {
     private static void mergeSort(ProductDTO[] products, int start, int end) {
        if (start == end)
            return;
-       int mid = start + (end - start) / 2;
+       var mid = start + (end - start) / 2;
 
        mergeSort(products, start, mid);
        mergeSort(products, mid+1, end);
 
-       int len = end - start + 1;
-       ProductDTO[] merged = new ProductDTO[len];
+       var len = end - start + 1;
+       var merged = new ProductDTO[len];
 
-       int first_half = start, second_half = mid+1;
+       var first_half = start;
+       var second_half = mid+1;
 
-       for (int i = 0; i < len; i++) {
-           if (first_half > mid) {
+       for (var i = 0; i < len; i++) {
+           if (first_half > mid)
                merged[i] = products[second_half++];
-           }
-           else if (second_half > end) {
+           else if (second_half > end)
                merged[i] = products[first_half++];
-           }
-           else if (compare(products[first_half].getName(), products[second_half].getName())) {
+           else if (compare(products[first_half].getName(), products[second_half].getName()))
                 merged[i] = products[first_half++];
-           }
-           else {
+           else
                 merged[i] = products[second_half++];
-           }
        }
 
        for (int i = 0, j = start; i < len; i++, j++) {
@@ -49,7 +46,7 @@ public class ProductSort {
        }
     }
     public static List<ProductDTO> byName(List<ProductDTO> products) {
-        ProductDTO[] productArr = products.toArray(new ProductDTO[0]);
+        var productArr = products.toArray(new ProductDTO[0]);
         mergeSort(productArr, 0, products.size()-1);
         return Arrays.asList(productArr);
     }

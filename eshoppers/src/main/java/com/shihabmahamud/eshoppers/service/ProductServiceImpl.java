@@ -21,6 +21,7 @@ public class ProductServiceImpl implements ProductService{
 //                .stream()
 //                .sorted(Comparator.comparing(ProductDTO::getName))
 //                .collect(Collectors.toList());
+//        return ProductSort.byName(productRepository.findAllProduct());
         return ProductSort.byName(productRepository.findAllProduct());
     }
 }
