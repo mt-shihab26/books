@@ -19,6 +19,9 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
+        if (true) {
+            throw new RuntimeException();
+        }
         var allProducts = productService.findAllProductSortedByName();
 
         req.setAttribute("products", allProducts);
