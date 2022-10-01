@@ -6,8 +6,14 @@
 
 - Tomcat
 - Servlet
-- JSP
-- Testing: Unit
+- Templating:
+  -  Writing template with 'jsp'
+  -  Write JSP with 'jstl'
+- Testing:
+  -  Unit Testing with 'junit'
+  -  Mocking with 'mockito'
+- Logging:
+  -  Logging stuff with 'logback'
 
 ## Links
 
@@ -18,7 +24,7 @@
 -   সংক্ষেপে ওয়েব হলো, পৃথিবীর বিভিন্ন অংশে ছড়িয়ে ছিটিয়ে থাকা অসংখ্য কম্পিউটারের ওয়েব সার্ভারে সংরক্ষিত ডকুমেন্টের সংগ্রহ যাদের নির্দিষ্ট ঠিকানা রয়েছে
 -   ওয়েব সার্ভার ও ওয়েব ক্লায়েন্ট। সার্ভার এর সঙ্গে যোগাযোগ করে আমরা যে ডকুমেন্ট পড়তে চাই সেই ডকুমেন্টই ক্লায়েন্টের মেশিন বিশেষ অ্যাপ্লিকেশন (ওয়েব ব্রাউজার) প্রদর্শন করে
 -   HTTP Request format has three section: Start line, Headers and Body. Start Line has three section: Method URL, HTTP Version and Headers is key-value pair data.
--   HTTP Response format has three section as well: Start Line, Header and Body. In Start Line we have two section: HTTP Version and HTTP Response Code. Header is also key-value pair data. Body is the actual content, normally it is text data but it can be binary data.
+-   HTTP Response format has three section as well: Start Line, Header and Body. In Start Line we have two sections: HTTP Version and HTTP Response Code. Header is also key-value pair data. Body is the actual content, normally it is text data, but it can be binary data.
 -   URI and URL. URL has four section: Protocol, Hostname, Port and Path.
 -   TCP/IP model has 4 layer: Application Layer, Transport Layer, Internet Layer and Link Layer.
 -   Application Layer communicate with Transport Layer with defied port. Like 80 in HTTP Protocol. HTTP is Application Layer Protocol.
@@ -97,3 +103,6 @@
 -   Data Transfer Object (DTO)
 -   Standard Tag Library (JSTL)
 -   Webjar: webjars.org
+-   In logback, we will work with 3 class: Logger, Appender and Layout
+-   Logging levels: TRACE < DEBUG < INFO < WARN < ERROR
+- 

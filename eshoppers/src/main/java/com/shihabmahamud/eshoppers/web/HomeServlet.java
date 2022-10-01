@@ -3,6 +3,8 @@ package com.shihabmahamud.eshoppers.web;
 import com.shihabmahamud.eshoppers.repository.DummyProductRepositoryImpl;
 import com.shihabmahamud.eshoppers.service.ProductService;
 import com.shihabmahamud.eshoppers.service.ProductServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,14 +17,15 @@ import java.io.IOException;
 public class HomeServlet extends HttpServlet {
     private final ProductService productService =
             new ProductServiceImpl(new DummyProductRepositoryImpl());
+    private final static Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        if (true) {
-            throw new RuntimeException();
-        }
+        LOGGER.info("Serving home page");
+
         var allProducts = productService.findAllProductSortedByName();
+        LOGGER.info("Total product found {}", allProducts.size());
 
         req.setAttribute("products", allProducts);
         req.setAttribute("age", 17);

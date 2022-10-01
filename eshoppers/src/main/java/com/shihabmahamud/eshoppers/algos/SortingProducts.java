@@ -1,11 +1,14 @@
-package com.shihabmahamud.eshoppers.logic;
+package com.shihabmahamud.eshoppers.algos;
 
 import com.shihabmahamud.eshoppers.dto.ProductDTO;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class ProductSort {
+public class SortingProducts {
     private static boolean compare(String a, String b) {
         int len = Math.min(a.length(), b.length());
         for (int i = 0; i < len; i++) {
@@ -45,9 +48,30 @@ public class ProductSort {
            products[j] = merged[i];
        }
     }
-    public static List<ProductDTO> byName(List<ProductDTO> products) {
+    public static List<ProductDTO> byName(List<ProductDTO> products, Boolean isAsc) {
         var productArr = products.toArray(new ProductDTO[0]);
         mergeSort(productArr, 0, products.size()-1);
-        return Arrays.asList(productArr);
+
+        var sortedProducts = Arrays.asList(productArr);
+        if (!isAsc) Collections.reverse(sortedProducts);
+        return sortedProducts;
+    }
+
+    public static List<ProductDTO> byPrice(List<ProductDTO> products, Boolean isAsc) {
+        var sortedProducts = products
+                .stream()
+                .sorted(Comparator.comparing(ProductDTO::getPrice))
+                .collect(Collectors.toList());
+        if (!isAsc) Collections.reverse(sortedProducts);
+        return sortedProducts;
+    }
+
+    public static List<ProductDTO> byDescription(List<ProductDTO> products, Boolean isAsc) {
+        var sortedProducts = products
+                .stream()
+                .sorted(Comparator.comparing(ProductDTO::getDescription))
+                .collect(Collectors.toList());
+        if (!isAsc) Collections.reverse(sortedProducts);
+        return sortedProducts;
     }
 }

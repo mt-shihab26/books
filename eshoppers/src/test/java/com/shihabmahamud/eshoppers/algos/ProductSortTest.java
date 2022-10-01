@@ -1,4 +1,4 @@
-package com.shihabmahamud.eshoppers.logic;
+package com.shihabmahamud.eshoppers.algos;
 
 import com.shihabmahamud.eshoppers.dto.ProductDTO;
 import org.junit.Assert;
@@ -22,8 +22,8 @@ public class ProductSortTest {
 
     @Test
     public void testByName() {
-        var sorted = ProductSort.byName(
-                List.of(HEADPHONE, APPLE_I_PED));
+        var sorted = SortingProducts.byName(
+                List.of(HEADPHONE, APPLE_I_PED), true);
         Assert.assertEquals(APPLE_I_PED.getName(), sorted.get(0).getName());
         Assert.assertEquals(HEADPHONE.getName(), sorted.get(1).getName());
     }
