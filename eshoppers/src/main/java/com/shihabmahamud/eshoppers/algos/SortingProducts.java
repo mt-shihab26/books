@@ -1,7 +1,8 @@
 package com.shihabmahamud.eshoppers.algos;
 
-import com.shihabmahamud.eshoppers.dto.ProductDTO;
+import dto.ProductDTO;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -70,6 +71,15 @@ public class SortingProducts {
         var sortedProducts = products
                 .stream()
                 .sorted(Comparator.comparing(ProductDTO::getDescription))
+                .collect(Collectors.toList());
+        if (!isAsc) Collections.reverse(sortedProducts);
+        return sortedProducts;
+    }
+
+    public static List<ProductDTO> byRating(List<ProductDTO> products, Boolean isAsc) {
+        var sortedProducts = products
+                .stream()
+                .sorted(Comparator.comparing(ProductDTO::getRating))
                 .collect(Collectors.toList());
         if (!isAsc) Collections.reverse(sortedProducts);
         return sortedProducts;

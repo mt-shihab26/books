@@ -1,7 +1,7 @@
 package com.shihabmahamud.eshoppers.service;
 
 import com.shihabmahamud.eshoppers.algos.SortingProducts;
-import com.shihabmahamud.eshoppers.dto.ProductDTO;
+import dto.ProductDTO;
 import com.shihabmahamud.eshoppers.repository.ProductRepository;
 
 import java.util.List;
@@ -15,6 +15,6 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductDTO> findAllProductSortedByName() {
-        return SortingProducts.byName(productRepository.findAllProduct(), true);
+        return SortingProducts.byRating(productRepository.findAllProduct(), false);
     }
 }

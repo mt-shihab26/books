@@ -100,9 +100,11 @@
     -   invoking servlet destroy() method
 -   Servlet lifer cycle controlled by servlet container, we as programmer put our code in this method
 -   JavaServer Pages (jsp)
+
+## Chapter 03
+
 -   Data Transfer Object (DTO)
 -   Standard Tag Library (JSTL)
 -   Webjar: webjars.org
 -   In logback, we will work with 3 class: Logger, Appender and Layout
 -   Logging levels: TRACE < DEBUG < INFO < WARN < ERROR
-- 
