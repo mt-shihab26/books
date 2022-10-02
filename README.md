@@ -108,3 +108,17 @@
 -   Webjar: webjars.org
 -   In logback, we will work with 3 class: Logger, Appender and Layout
 -   Logging levels: TRACE < DEBUG < INFO < WARN < ERROR
+-   Appender:
+    -    ConsoleAppender
+    -    FileAppender
+    -    RollingFileAppender
+    -    SMTPAppender
+    -    DBAppender
+-   Appender info: https://logback.qos.ch/manual/appenders.html
+-   Making logs location
+    ```shell
+    cd /tmp
+    mkdir logs
+    chmod -R 755 logs
+    touch application.log
+    ```

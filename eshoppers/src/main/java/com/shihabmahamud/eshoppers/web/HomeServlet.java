@@ -22,6 +22,7 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
+
         LOGGER.info("Serving home page");
 
         var allProducts = productService.findAllProductSortedByName();
