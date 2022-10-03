@@ -1,4 +1,4 @@
-package service
+package com.shihabmahamud.eshoppers.service
 
 import org.slf4j.LoggerFactory
 import java.io.IOException

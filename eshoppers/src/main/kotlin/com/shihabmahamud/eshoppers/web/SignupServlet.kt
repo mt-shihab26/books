@@ -1,12 +1,13 @@
-package web
+package com.shihabmahamud.eshoppers.web
 
-import algos.Validations
-import dto.UserDTO
+import com.shihabmahamud.eshoppers.util.Validations
+import com.shihabmahamud.eshoppers.dto.UserDTO
 
 import com.shihabmahamud.eshoppers.domain.User
 import com.shihabmahamud.eshoppers.repository.UserRepositoryImpl
 import com.shihabmahamud.eshoppers.service.UserService
 import com.shihabmahamud.eshoppers.service.UserServiceImpl
+import com.shihabmahamud.eshoppers.util.ValidationUtil
 
 import org.slf4j.LoggerFactory
 
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import javax.validation.Validation
 
 @WebServlet("/signup")
 class SignupServlet : HttpServlet() {
@@ -31,7 +33,9 @@ class SignupServlet : HttpServlet() {
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
         val userDTO = copyParametersTo(req)
 
-        if (!isValid(userDTO)) {
+        val errors = ValidationUtil.getInstance().validate(userDTO)
+        if (errors.isNotEmpty()) {
+            req.setAttribute("errors", errors)
             LOGGER.info("User sent invalid data: {}", userDTO.toString())
             req.getRequestDispatcher("/WEB-INF/signup.jsp")
                 .forward(req, resp)
@@ -54,7 +58,36 @@ class SignupServlet : HttpServlet() {
         )
     }
 
+    private fun validate(userDTO: UserDTO): Map<String, String> {
+        val violations = Validation
+            .buildDefaultValidatorFactory()
+            .validator
+            .validate(userDTO)
+        val errors = HashMap<String, String>()
+
+        for (violation in violations) {
+            val path = violation.propertyPath.toString()
+            if (errors.containsKey(path)) {
+                val errorMsg = errors[path]
+                errors[path] = errorMsg + "<br/>" + violation.message
+            }
+            else {
+                errors[path] = violation.message
+            }
+        }
+        return errors
+    }
+
     private fun isValid(userDTO: UserDTO): Boolean {
+        val violations = Validation
+            .buildDefaultValidatorFactory()
+            .validator
+            .validate(userDTO)
+        println(violations)
+        return violations.size == 0
+    }
+
+    private fun isValidOwn(userDTO: UserDTO): Boolean {
         val user: User? = userService.findUserByUsername(userDTO.username)
         if (user != null) return false
         if (!Validations.strLen(userDTO.username, 4, 32))

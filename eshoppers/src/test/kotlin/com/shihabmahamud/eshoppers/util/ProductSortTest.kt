@@ -1,6 +1,5 @@
-package algos
+package com.shihabmahamud.eshoppers.util
 
-import com.shihabmahamud.eshoppers.algos.SortingProducts
 import com.shihabmahamud.eshoppers.dto.ProductDTO
 import org.junit.Assert
 import org.junit.Test

@@ -1,4 +1,4 @@
-package service
+package com.shihabmahamud.eshoppers.service
 
 import com.shihabmahamud.eshoppers.dto.ProductDTO
 import com.shihabmahamud.eshoppers.repository.ProductRepository

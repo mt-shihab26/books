@@ -1,6 +1,5 @@
 package com.shihabmahamud.eshoppers.web;
 
-import algos.Calc;
 import com.shihabmahamud.eshoppers.repository.ProductRepositoryImpl;
 import com.shihabmahamud.eshoppers.service.ProductService;
 import com.shihabmahamud.eshoppers.service.ProductServiceImpl;

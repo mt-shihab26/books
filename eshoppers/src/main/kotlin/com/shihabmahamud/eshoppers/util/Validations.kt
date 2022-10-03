@@ -1,4 +1,4 @@
-package algos
+package com.shihabmahamud.eshoppers.util
 
 import java.util.regex.Pattern
 

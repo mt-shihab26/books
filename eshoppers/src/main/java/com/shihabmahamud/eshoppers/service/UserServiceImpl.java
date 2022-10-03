@@ -2,12 +2,9 @@ package com.shihabmahamud.eshoppers.service;
 
 import com.shihabmahamud.eshoppers.domain.User;
 import com.shihabmahamud.eshoppers.repository.UserRepository;
-import com.shihabmahamud.eshoppers.web.HomeServlet;
-import dto.UserDTO;
+import com.shihabmahamud.eshoppers.dto.UserDTO;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;

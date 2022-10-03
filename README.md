@@ -5,15 +5,18 @@
 ## Stuff
 
 - Tomcat
-- Servlet
+- Request Response:
+  - Handling request response with 'Servlet'
 - Templating:
   -  Writing template with 'jsp'
   -  Write JSP with 'jstl'
-- Testing:
+- Automate Testing:
   -  Unit Testing with 'junit'
   -  Mocking with 'mockito'
 - Logging:
   -  Logging stuff with 'logback'
+- Data Validation
+  -  Validating stuff with 'Jakarta Bean Validation'
 
 ## Links
 
@@ -131,3 +134,6 @@
     -    Verify the given data
     -    Sort the username and password
 -   The objects that are saved in the database are called domain
+-   Jakarta Bean Validation library: https://beanvalidation.org
+-   Jakarta Bean Validation annotation called constraint
+-   SingleTon pattern in ValidationUtil class

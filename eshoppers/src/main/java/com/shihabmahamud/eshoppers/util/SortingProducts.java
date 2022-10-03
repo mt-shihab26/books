@@ -1,4 +1,4 @@
-package com.shihabmahamud.eshoppers.algos;
+package com.shihabmahamud.eshoppers.util;
 
 import com.shihabmahamud.eshoppers.dto.ProductDTO;
 
