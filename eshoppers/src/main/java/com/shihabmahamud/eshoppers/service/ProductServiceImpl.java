@@ -1,7 +1,7 @@
 package com.shihabmahamud.eshoppers.service;
 
 import com.shihabmahamud.eshoppers.algos.SortingProducts;
-import dto.ProductDTO;
+import com.shihabmahamud.eshoppers.dto.ProductDTO;
 import com.shihabmahamud.eshoppers.repository.ProductRepository;
 
 import java.util.List;

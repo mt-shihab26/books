@@ -1,6 +1,6 @@
 package com.shihabmahamud.eshoppers.service;
 
-import dto.ProductDTO;
+import com.shihabmahamud.eshoppers.dto.ProductDTO;
 
 import java.util.List;
 

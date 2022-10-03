@@ -1,0 +1,84 @@
+package web
+
+import algos.Validations
+import dto.UserDTO
+
+import com.shihabmahamud.eshoppers.domain.User
+import com.shihabmahamud.eshoppers.repository.UserRepositoryImpl
+import com.shihabmahamud.eshoppers.service.UserService
+import com.shihabmahamud.eshoppers.service.UserServiceImpl
+
+import org.slf4j.LoggerFactory
+
+import java.io.IOException
+import javax.servlet.ServletException
+import javax.servlet.annotation.WebServlet
+import javax.servlet.http.HttpServlet
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
+@WebServlet("/signup")
+class SignupServlet : HttpServlet() {
+    private val userService: UserService = UserServiceImpl(UserRepositoryImpl())
+
+    @Throws(ServletException::class, IOException::class)
+    override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
+        LOGGER.info("serving signup page")
+        req.getRequestDispatcher("/WEB-INF/signup.jsp")
+            .forward(req, resp)
+    }
+
+    override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
+        val userDTO = copyParametersTo(req)
+
+        if (!isValid(userDTO)) {
+            LOGGER.info("User sent invalid data: {}", userDTO.toString())
+            req.getRequestDispatcher("/WEB-INF/signup.jsp")
+                .forward(req, resp)
+            return
+        }
+
+        LOGGER.info("user is valid, creating ne user with: {}", userDTO)
+        userService.saveUser(userDTO)
+        resp.sendRedirect("/home")
+    }
+
+    private fun copyParametersTo(req: HttpServletRequest): UserDTO {
+        return UserDTO(
+            req.getParameter("username"),
+            req.getParameter("email"),
+            req.getParameter("password"),
+            req.getParameter("passwordConfirmed"),
+            req.getParameter("firstname"),
+            req.getParameter("lastname")
+        )
+    }
+
+    private fun isValid(userDTO: UserDTO): Boolean {
+        val user: User? = userService.findUserByUsername(userDTO.username)
+        if (user != null) return false
+        if (!Validations.strLen(userDTO.username, 4, 32))
+            return false
+
+        if (!Validations.strLen(userDTO.firstname, 1, 32))
+            return false
+
+        if (!Validations.strLen(userDTO.lastname, 1, 32))
+            return false
+
+        if (userDTO.password != userDTO.passwordConfirmed)
+            return false
+        if (!Validations.strLen(userDTO.password, 6, 24))
+            return false
+
+        if (!Validations.email(userDTO.email))
+            return false
+
+        return true
+    }
+
+    companion object {
+        private val LOGGER = LoggerFactory
+            .getLogger(SignupServlet::class.java)
+    }
+}

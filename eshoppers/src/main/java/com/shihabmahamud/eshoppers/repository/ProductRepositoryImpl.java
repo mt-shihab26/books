@@ -1,11 +1,11 @@
 package com.shihabmahamud.eshoppers.repository;
 
-import dto.ProductDTO;
+import com.shihabmahamud.eshoppers.dto.ProductDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class DummyProductRepositoryImpl implements ProductRepository{
+public class ProductRepositoryImpl implements ProductRepository{
     @Override
     public List<ProductDTO> findAllProduct() {
         return List.of(

@@ -101,8 +101,12 @@
 -   Servlet lifer cycle controlled by servlet container, we as programmer put our code in this method
 -   JavaServer Pages (jsp)
 
-## Chapter 03
+## Chapter 03: Project Bootstrapping
 
+-   We can divide card work in to three step:
+    -    Show product in web page (Servlet Layer)
+    -    Sorting the product (Service Layer)
+    -    Read product from source (Repository Layer)
 -   Data Transfer Object (DTO)
 -   Standard Tag Library (JSTL)
 -   Webjar: webjars.org
@@ -122,3 +126,8 @@
     chmod -R 755 logs
     touch application.log
     ```
+-   Signup step:
+    -    Separate parameter from request
+    -    Verify the given data
+    -    Sort the username and password
+-   The objects that are saved in the database are called domain

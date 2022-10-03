@@ -1,6 +1,7 @@
 package com.shihabmahamud.eshoppers.web;
 
-import com.shihabmahamud.eshoppers.repository.DummyProductRepositoryImpl;
+import algos.Calc;
+import com.shihabmahamud.eshoppers.repository.ProductRepositoryImpl;
 import com.shihabmahamud.eshoppers.service.ProductService;
 import com.shihabmahamud.eshoppers.service.ProductServiceImpl;
 import org.slf4j.Logger;
@@ -13,10 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
     private final ProductService productService =
-            new ProductServiceImpl(new DummyProductRepositoryImpl());
+            new ProductServiceImpl(new ProductRepositoryImpl());
     private final static Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
 
     @Override

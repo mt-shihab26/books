@@ -1,6 +1,6 @@
 package service
 
-import dto.ProductDTO
+import com.shihabmahamud.eshoppers.dto.ProductDTO
 import com.shihabmahamud.eshoppers.repository.ProductRepository
 import com.shihabmahamud.eshoppers.service.ProductService
 import com.shihabmahamud.eshoppers.service.ProductServiceImpl

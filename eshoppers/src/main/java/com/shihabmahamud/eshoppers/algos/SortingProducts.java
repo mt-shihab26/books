@@ -1,8 +1,7 @@
 package com.shihabmahamud.eshoppers.algos;
 
-import dto.ProductDTO;
+import com.shihabmahamud.eshoppers.dto.ProductDTO;
 
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;

@@ -1,7 +1,7 @@
 package algos
 
 import com.shihabmahamud.eshoppers.algos.SortingProducts
-import dto.ProductDTO
+import com.shihabmahamud.eshoppers.dto.ProductDTO
 import org.junit.Assert
 import org.junit.Test
 import java.math.BigDecimal
