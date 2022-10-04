@@ -1,20 +1,28 @@
-package com.shihabmahamud.eshoppers.dto;
+package com.shihabmahamud.eshoppers.domain;
 
 import java.math.BigDecimal;
 
-public class ProductDTO {
-
+public class Product {
     private Long id;
-    private String name, description;
+    private String name;
+    private String description;
     private BigDecimal price;
     private Double rating;
 
-    public ProductDTO(Long id, String name, String description,
-                      BigDecimal price, Double rating) {
+    public Product(Long id, String name,
+                   String description, BigDecimal price, Double rating) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.rating = rating;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
@@ -48,13 +56,5 @@ public class ProductDTO {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
     }
 }

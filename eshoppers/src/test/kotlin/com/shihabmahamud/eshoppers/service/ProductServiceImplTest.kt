@@ -1,6 +1,6 @@
 package com.shihabmahamud.eshoppers.service
 
-import com.shihabmahamud.eshoppers.dto.ProductDTO
+import com.shihabmahamud.eshoppers.domain.Product
 import com.shihabmahamud.eshoppers.repository.ProductRepository
 import org.junit.Assert
 import org.junit.Before
@@ -28,13 +28,15 @@ class ProductServiceImplTest {
     }
 
     companion object {
-        private val APPLE_I_PED = ProductDTO(
+        private val APPLE_I_PED = Product(
+            1L,
             "Apple iPad",
             "Apple iPad 10.2 32GB",
             BigDecimal.valueOf(369.99),
             4.9
         )
-        val HEADPHONE = ProductDTO(
+        val HEADPHONE = Product(
+            2L,
             "Headphones",
             "Jabra Elite Bluetooth Headphones",
             BigDecimal.valueOf(249.99),

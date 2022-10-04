@@ -1,5 +1,6 @@
 package com.shihabmahamud.eshoppers.util;
 
+import com.shihabmahamud.eshoppers.domain.Product;
 import com.shihabmahamud.eshoppers.dto.ProductDTO;
 
 import java.util.Arrays;
@@ -19,7 +20,7 @@ public class SortingProducts {
         }
         return a.length() < b.length();
     }
-    private static void mergeSort(ProductDTO[] products, int start, int end) {
+    private static void mergeSort(Product[] products, int start, int end) {
        if (start == end)
            return;
        var mid = start + (end - start) / 2;
@@ -28,7 +29,7 @@ public class SortingProducts {
        mergeSort(products, mid+1, end);
 
        var len = end - start + 1;
-       var merged = new ProductDTO[len];
+       var merged = new Product[len];
 
        var first_half = start;
        var second_half = mid+1;
@@ -48,8 +49,8 @@ public class SortingProducts {
            products[j] = merged[i];
        }
     }
-    public static List<ProductDTO> byName(List<ProductDTO> products, Boolean isAsc) {
-        var productArr = products.toArray(new ProductDTO[0]);
+    public static List<Product> byName(List<Product> products, Boolean isAsc) {
+        var productArr = products.toArray(new Product[0]);
         mergeSort(productArr, 0, products.size()-1);
 
         var sortedProducts = Arrays.asList(productArr);
@@ -75,10 +76,10 @@ public class SortingProducts {
         return sortedProducts;
     }
 
-    public static List<ProductDTO> byRating(List<ProductDTO> products, Boolean isAsc) {
+    public static List<Product> byRating(List<Product> products, Boolean isAsc) {
         var sortedProducts = products
                 .stream()
-                .sorted(Comparator.comparing(ProductDTO::getRating))
+                .sorted(Comparator.comparing(Product::getRating))
                 .collect(Collectors.toList());
         if (!isAsc) Collections.reverse(sortedProducts);
         return sortedProducts;
