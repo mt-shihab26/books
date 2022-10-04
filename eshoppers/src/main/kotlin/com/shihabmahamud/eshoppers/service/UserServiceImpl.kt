@@ -35,7 +35,7 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
         val user = userRepository.findOneByUsername(loginDTO.username)
             ?: throw UserNotFoundException("User not found by " + loginDTO.username)
 
-        val encrypted = encryptPassword(loginDTO.password);
+        val encrypted = encryptPassword(loginDTO.password)
 
         if (user.password != encrypted)
             throw UserNotFoundException("Incorrect username password")

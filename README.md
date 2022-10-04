@@ -17,6 +17,9 @@
   -  Logging stuff with 'logback'
 - Data Validation
   -  Validating stuff with 'Jakarta Bean Validation'
+- Authentication
+  -  Authenticate user with HTTP Session
+
 
 ## Links
 
@@ -141,4 +144,4 @@
 -   Jakarta Bean Validation annotation called constraint
 -   SingleTon pattern in ValidationUtil class
 -   HTTP Session
-- 
+-   Custom Expression Language

@@ -3,6 +3,14 @@
 <jsp:include page="includes/navigation.jsp" />
 
 <div class="container">
+    <div class="row">
+        <c:if test="${message != null}">
+            <div class="alert alert-success">
+                ${message}
+            </div>
+        </c:if>
+    </div>
+
     <br />
 
     <h2 class="h2">Login</h2>
