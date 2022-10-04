@@ -28,6 +28,7 @@ class SignupServlet : HttpServlet() {
 
         val errors = ValidationUtil.getInstance().validate(userDTO)
         if (errors.isNotEmpty()) {
+            req.setAttribute("userDto", userDTO)
             req.setAttribute("errors", errors)
             LOGGER.info("User sent invalid data: {}", userDTO.toString())
             req.getRequestDispatcher("/WEB-INF/signup.jsp").forward(req, resp)
@@ -35,6 +36,7 @@ class SignupServlet : HttpServlet() {
         }
 
         if (userService.isNotUniqueUsername(userDTO)) {
+            req.setAttribute("userDto", userDTO)
             LOGGER.info("Username: {} is already exits", userDTO.username)
             errors["username"] = "The username already exits"
             req.setAttribute("errors", errors)

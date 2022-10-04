@@ -3,7 +3,6 @@ package com.shihabmahamud.eshoppers.repository
 import com.shihabmahamud.eshoppers.domain.User
 import com.shihabmahamud.eshoppers.web.HomeServlet
 import org.slf4j.LoggerFactory
-import java.util.Optional
 import java.util.concurrent.CopyOnWriteArraySet
 
 class UserRepositoryImpl : UserRepository {

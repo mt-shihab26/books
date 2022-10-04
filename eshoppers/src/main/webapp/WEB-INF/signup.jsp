@@ -29,6 +29,7 @@
                 required
                 minlength="4"
                 maxlength="32"
+                value="${userDto.username}"
             />
             <c:if test="${errors.username != null}">
                 <small class="text-danger">${errors.username}</small>
@@ -43,6 +44,7 @@
                 id="email"
                 class="form-control"
                 placeholder="you@example.com"
+                value="${userDto.email}"
             />
             <c:if test="${errors.email != null}">
                 <small class="text-danger">${errors.email}</small>
@@ -94,6 +96,7 @@
                 required
                 minlength="1"
                 maxlength="32"
+                value="${userDto.firstname}"
             />
             <c:if test="${errors.firstname != null}">
                 <small class="text-danger">${errors.firstname}</small>
@@ -111,6 +114,7 @@
                 required
                 minlength="1"
                 maxlength="32"
+                value="${userDto.lastname}"
             />
             <c:if test="${errors.lastname != null}">
                 <small class="text-danger">${errors.lastname}</small>

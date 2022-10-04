@@ -3,14 +3,16 @@ package com.shihabmahamud.eshoppers.service
 import com.shihabmahamud.eshoppers.domain.User
 import com.shihabmahamud.eshoppers.dto.UserDTO
 import com.shihabmahamud.eshoppers.repository.UserRepository
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 class UserServiceImpl(private val userRepository: UserRepository) : UserService {
     override fun saveUser(userDTO: UserDTO) {
-        val encryptedPassword = encryptPassword(userDTO!!.password)
         val user = User(
             userDTO.username,
             userDTO.email,
-            encryptedPassword,
+            encryptPassword(userDTO.password),
             userDTO.firstname,
             userDTO.lastname
         )
@@ -27,7 +29,25 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
         return user != null
     }
 
-    private fun encryptPassword(password: String): String {
-        return password
+    private fun encryptPassword(password: String): String? {
+        return try {
+            val digest = MessageDigest.getInstance("SHA-256")
+            val bytes = digest.digest(password.toByteArray(StandardCharsets.UTF_8))
+            bytesToHex(bytes)
+        } catch (e: NoSuchAlgorithmException) {
+            throw RuntimeException("Unable to encrypt password", e)
+        }
+    }
+
+    private fun bytesToHex(hash: ByteArray): String {
+        val hexString = StringBuilder()
+        for (b in hash) {
+            val hex = Integer.toHexString(0xff and b.toInt())
+            if (hex.length == 1) {
+                hexString.append('0')
+            }
+            hexString.append(hex)
+        }
+        return hexString.toString()
     }
 }

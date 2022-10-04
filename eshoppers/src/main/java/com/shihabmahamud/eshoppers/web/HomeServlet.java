@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
     private final ProductService productService =
@@ -35,5 +34,4 @@ public class HomeServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/home-jstl.jsp")
                 .forward(req, res);
     }
-
 }
