@@ -1,17 +1,12 @@
 package com.shihabmahamud.eshoppers.web
 
-import com.shihabmahamud.eshoppers.util.Validations
 import com.shihabmahamud.eshoppers.dto.UserDTO
-
 import com.shihabmahamud.eshoppers.repository.UserRepositoryImpl
 import com.shihabmahamud.eshoppers.service.UserService
 import com.shihabmahamud.eshoppers.service.UserServiceImpl
 import com.shihabmahamud.eshoppers.util.ValidationUtil
-
+import com.shihabmahamud.eshoppers.util.Validations
 import org.slf4j.LoggerFactory
-
-import java.io.IOException
-import javax.servlet.ServletException
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
@@ -22,7 +17,6 @@ import javax.validation.Validation
 class SignupServlet : HttpServlet() {
     private val userService: UserService = UserServiceImpl(UserRepositoryImpl())
 
-    @Throws(ServletException::class, IOException::class)
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         LOGGER.info("serving signup page")
         req.getRequestDispatcher("/WEB-INF/signup.jsp")
@@ -40,7 +34,7 @@ class SignupServlet : HttpServlet() {
             return
         }
 
-        if (userService.isNotUniqueUsername(userDTO) == true) {
+        if (userService.isNotUniqueUsername(userDTO)) {
             LOGGER.info("Username: {} is already exits", userDTO.username)
             errors["username"] = "The username already exits"
             req.setAttribute("errors", errors)
