@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -19,12 +20,10 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public User findOneByUsername(String username) {
-        for (var user : USERS) {
-            if (Objects.equals(user.getUsername(), username)) {
-                return user;
-            }
-        }
-        return null;
+    public Optional<User> findOneByUsername(String username) {
+        return USERS
+                .stream()
+                .filter(user -> Objects.equals(user.getUsername(), username))
+                .findFirst();
     }
 }

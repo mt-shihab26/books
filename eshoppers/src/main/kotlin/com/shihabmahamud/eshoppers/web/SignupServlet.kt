@@ -3,7 +3,6 @@ package com.shihabmahamud.eshoppers.web
 import com.shihabmahamud.eshoppers.util.Validations
 import com.shihabmahamud.eshoppers.dto.UserDTO
 
-import com.shihabmahamud.eshoppers.domain.User
 import com.shihabmahamud.eshoppers.repository.UserRepositoryImpl
 import com.shihabmahamud.eshoppers.service.UserService
 import com.shihabmahamud.eshoppers.service.UserServiceImpl
@@ -37,8 +36,15 @@ class SignupServlet : HttpServlet() {
         if (errors.isNotEmpty()) {
             req.setAttribute("errors", errors)
             LOGGER.info("User sent invalid data: {}", userDTO.toString())
-            req.getRequestDispatcher("/WEB-INF/signup.jsp")
-                .forward(req, resp)
+            req.getRequestDispatcher("/WEB-INF/signup.jsp").forward(req, resp)
+            return
+        }
+
+        if (userService.isNotUniqueUsername(userDTO) == true) {
+            LOGGER.info("Username: {} is already exits", userDTO.username)
+            errors["username"] = "The username already exits"
+            req.setAttribute("errors", errors)
+            req.getRequestDispatcher("/WEB-INF/signup.jsp").forward(req, resp)
             return
         }
 
@@ -88,8 +94,8 @@ class SignupServlet : HttpServlet() {
     }
 
     private fun isValidOwn(userDTO: UserDTO): Boolean {
-        val user: User? = userService.findUserByUsername(userDTO.username)
-        if (user != null) return false
+//        val user: User? = userService.findUserByUsername(userDTO.username)
+//        if (user != null) return false
         if (!Validations.strLen(userDTO.username, 4, 32))
             return false
 

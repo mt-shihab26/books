@@ -3,8 +3,6 @@ package com.shihabmahamud.eshoppers.service;
 import com.shihabmahamud.eshoppers.domain.User;
 import com.shihabmahamud.eshoppers.repository.UserRepository;
 import com.shihabmahamud.eshoppers.dto.UserDTO;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
@@ -26,10 +24,11 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
     }
 
-    @Nullable
     @Override
-    public User findUserByUsername(@NotNull String username) {
-        return userRepository.findOneByUsername(username);
+    public Boolean isNotUniqueUsername(UserDTO userDTO) {
+        return userRepository
+                .findOneByUsername(userDTO.getUsername())
+                .isPresent();
     }
 
     private String encryptPassword(String password) {
