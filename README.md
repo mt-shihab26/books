@@ -129,6 +129,9 @@
     chmod -R 755 logs
     touch application.log
     ```
+
+## Chapter 04: Signup/Login
+
 -   Signup step:
     -    Separate parameter from request
     -    Verify the given data
@@ -137,3 +140,5 @@
 -   Jakarta Bean Validation library: https://beanvalidation.org
 -   Jakarta Bean Validation annotation called constraint
 -   SingleTon pattern in ValidationUtil class
+-   HTTP Session
+- 

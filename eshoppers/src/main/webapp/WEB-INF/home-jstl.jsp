@@ -4,11 +4,15 @@
 
 <div class="container">
     <div class="jumbotron">
+        <c:if test="${sessionScope.user != null}">
+        <h1>Hello <c:out value="${sessionScope.user.firstname}"/></h1>
+        </c:if>
         <h1>Welcome to e-shoppers!</h1>
+
         <img
             src="<c:url value="/img/cart.jpg"/>"
             style="height: 200px"
-            alt=""
+            alt="Cart Image"
         />
     </div>
 

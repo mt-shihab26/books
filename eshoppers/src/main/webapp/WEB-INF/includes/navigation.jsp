@@ -18,6 +18,7 @@
         <li class="nav-item active"><a href="<c:url value="/"/>" class="nav-link">Home</a></li>
         <li class="nav-item"><a href="#" class="nav-link">About</a></li>
         <li class="nav-item"><a href="<c:url value="/signup" />" class="nav-link">Signup</a></li>
+        <li class="nav-item"><a href="<c:url value="/login" />" class="nav-link">Login</a></li>
     </ul>
     </div>
 </div>

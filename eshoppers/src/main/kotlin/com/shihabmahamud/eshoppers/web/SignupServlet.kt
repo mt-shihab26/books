@@ -46,7 +46,7 @@ class SignupServlet : HttpServlet() {
 
         LOGGER.info("user is valid, creating ne user with: {}", userDTO)
         userService.saveUser(userDTO)
-        resp.sendRedirect("/home")
+        resp.sendRedirect("/login")
     }
 
     private fun copyParametersTo(req: HttpServletRequest): UserDTO {
