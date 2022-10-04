@@ -1,13 +1,12 @@
 package com.shihabmahamud.eshoppers.web;
 
-import com.shihabmahamud.eshoppers.domain.User;
 import com.shihabmahamud.eshoppers.dto.LoginDTO;
+import com.shihabmahamud.eshoppers.exceptions.UserNotFoundException;
 import com.shihabmahamud.eshoppers.repository.UserRepositoryImpl;
 import com.shihabmahamud.eshoppers.service.UserService;
 import com.shihabmahamud.eshoppers.service.UserServiceImpl;
 import com.shihabmahamud.eshoppers.util.SecurityContext;
 import com.shihabmahamud.eshoppers.util.ValidationUtil;
-import com.sun.net.httpserver.HttpsExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +15,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/login")

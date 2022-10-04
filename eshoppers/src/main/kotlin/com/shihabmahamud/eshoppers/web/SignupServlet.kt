@@ -90,8 +90,8 @@ class SignupServlet : HttpServlet() {
     }
 
     private fun isValidOwn(userDTO: UserDTO): Boolean {
-//        val user: User? = userService.findUserByUsername(userDTO.username)
-//        if (user != null) return false
+        if (userService.isNotUniqueUsername(userDTO))
+            return false
         if (!Validations.strLen(userDTO.username, 4, 32))
             return false
 

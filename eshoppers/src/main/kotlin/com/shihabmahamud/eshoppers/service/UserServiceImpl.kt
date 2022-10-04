@@ -4,7 +4,7 @@ import com.shihabmahamud.eshoppers.domain.User
 import com.shihabmahamud.eshoppers.dto.LoginDTO
 import com.shihabmahamud.eshoppers.dto.UserDTO
 import com.shihabmahamud.eshoppers.repository.UserRepository
-import com.shihabmahamud.eshoppers.web.UserNotFoundException
+import com.shihabmahamud.eshoppers.exceptions.UserNotFoundException
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
