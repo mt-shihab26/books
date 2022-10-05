@@ -149,3 +149,7 @@
 ## Chapter 05: Making Shopping Cart
 
 - Servlet Filter
+
+## Chapter 06: Checkout and Order placing
+
+- JavaScript fetch api: https://javascript.info/fetch

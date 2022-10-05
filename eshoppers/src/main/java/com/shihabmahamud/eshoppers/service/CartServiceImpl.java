@@ -4,6 +4,7 @@ import com.shihabmahamud.eshoppers.domain.Cart;
 import com.shihabmahamud.eshoppers.domain.CartItem;
 import com.shihabmahamud.eshoppers.domain.Product;
 import com.shihabmahamud.eshoppers.domain.User;
+import com.shihabmahamud.eshoppers.exceptions.CartItemNotFoundException;
 import com.shihabmahamud.eshoppers.repository.CartItemRepository;
 import com.shihabmahamud.eshoppers.repository.CartRepository;
 import com.shihabmahamud.eshoppers.repository.ProductRepository;
@@ -38,19 +39,68 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addProductToCart(String productId, Cart cart) throws ProductNotFoundException {
-        if (productId == null || productId.length() == 0) {
-            throw new IllegalArgumentException("Product id cannot be null");
-        }
-        Long id = parseProductId(productId);
-
-        Product product = productRepository.findById(id);
-        if (product == null) {
-            throw new ProductNotFoundException("Product not found by id: " + id);
+    public void addProductToCart(String productId, Cart cart) {
+        Product product = null;
+        try {
+            product = findProduct(productId);
+        } catch (ProductNotFoundException e) {
+            LOGGER.error(String.valueOf(e));
         }
 
         addProductToCart(product, cart);
 
+        updateCart(cart);
+    }
+
+    @Override
+    public void removeProductToCart(String productId, Cart cart) {
+        try {
+            Product product = findProduct(productId);
+            removeProductToCart(product, cart);
+            updateCart(cart);
+        } catch (Exception | ProductNotFoundException e) {
+            LOGGER.error(String.valueOf(e));
+        }
+    }
+
+    @Override
+    public void removeProductTotallyToCart(String productId, Cart cart) {
+        try {
+            Product product = findProduct(productId);
+            removeProductTotallyToCart(product, cart);
+            updateCart(cart);
+        } catch (ProductNotFoundException | CartItemNotFoundException e) {
+            LOGGER.error(String.valueOf(e));
+        }
+    }
+
+    private void removeProductTotallyToCart(Product product, Cart cart)
+            throws CartItemNotFoundException {
+        var itemOptional = cart.getCartItems()
+                .stream()
+                .filter(cartItem -> cartItem.getProduct().equals(product))
+                .findAny();
+
+        var cartItem = itemOptional
+                .orElseThrow(() -> new CartItemNotFoundException("Cart not found by product: " + product));
+
+            cart.getCartItems().remove(cartItem);
+            cartItemRepository.remove(cartItem);
+    }
+
+    private Product findProduct(String productId) throws ProductNotFoundException {
+        if (productId == null || productId.length() == 0) {
+            throw new IllegalArgumentException("Product id cannot be null");
+        }
+        Long id = parseProductId(productId);
+        Product product = productRepository.findById(id);
+        if (product == null) {
+            throw new ProductNotFoundException("Product not found by id: " + id);
+        }
+        return product;
+    }
+
+    private void updateCart(Cart cart) {
         Integer totalTotalItem = getTotalItem(cart);
         BigDecimal totalPrice = calculateTotalPrice(cart);
 
@@ -58,6 +108,27 @@ public class CartServiceImpl implements CartService {
         cart.setTotalPrice(totalPrice);
 
         cartRepository.update(cart);
+    }
+
+
+    private void removeProductToCart(Product product, Cart cart) throws CartItemNotFoundException {
+        var itemOptional = cart.getCartItems()
+                .stream()
+                .filter(cartItem -> cartItem.getProduct().equals(product))
+                .findAny();
+
+        var cartItem = itemOptional
+                .orElseThrow(() -> new CartItemNotFoundException("Cart not found by product: " + product));
+
+        if (cartItem.getQuantity() > 1) {
+            cartItem.setQuantity(cartItem.getQuantity()-1);
+            cartItem.setPrice(cartItem.getPrice().subtract(product.getPrice()));
+            cartItemRepository.update(cartItem);
+        } else {
+            cart.getCartItems().remove(cartItem);
+            cartItemRepository.remove(cartItem);
+        }
+        
     }
 
     private void addProductToCart(Product product, Cart cart) {

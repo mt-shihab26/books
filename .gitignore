@@ -9,3 +9,6 @@ out
 hs_err_pid*
 bin
 .vscode
+.settings
+.classpath
+.project
