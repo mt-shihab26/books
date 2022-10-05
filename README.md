@@ -145,3 +145,7 @@
 -   SingleTon pattern in ValidationUtil class
 -   HTTP Session
 -   Custom Expression Language
+
+## Chapter 05: Making Shopping Cart
+
+- Servlet Filter

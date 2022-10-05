@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title> All Products </title>
+    <title> All Products - eshoppers </title>
     <link
         rel="stylesheet"
         type="text/css"

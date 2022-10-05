@@ -7,13 +7,13 @@ import java.util.Set;
 public class Cart {
     private Long id;
     private Set<CartItem> cartItems = new HashSet<>();
-    private BigDecimal totalPrime;
+    private BigDecimal totalPrice;
     private Integer totalItem;
     private User user;
 
-    public Cart(Long id, BigDecimal totalPrime, Integer totalItem, User user) {
+    public Cart(Long id, BigDecimal totalPrice, Integer totalItem, User user) {
         this.id = id;
-        this.totalPrime = totalPrime;
+        this.totalPrice = totalPrice;
         this.totalItem = totalItem;
         this.user = user;
     }
@@ -38,12 +38,12 @@ public class Cart {
         this.cartItems = cartItems;
     }
 
-    public BigDecimal getTotalPrime() {
-        return totalPrime;
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setTotalPrime(BigDecimal totalPrime) {
-        this.totalPrime = totalPrime;
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Integer getTotalItem() {

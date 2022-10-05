@@ -18,7 +18,6 @@
     <ul class="navbar-nav ml-auto">
         <li class="nav-item active"><a href="<c:url value="/"/>" class="nav-link">Home</a></li>
         <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="<c:url value="/signup" />" class="nav-link">Signup</a></li>
         <li class="nav-item">
             <c:choose>
                 <c:when test="${sec:isAuthenticated(pageContext.request)}">
@@ -36,6 +35,7 @@
                    </form>
                 </c:when>
                 <c:otherwise>
+                    <li class="nav-item"><a href="<c:url value="/signup" />" class="nav-link">Signup</a></li>
                     <a class="nav-link" href="<c:url value="/login"/>">Log In</a>
                 </c:otherwise>
             </c:choose>
