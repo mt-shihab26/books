@@ -176,6 +176,5 @@
 -   Database URL in jdbc connection
     -   `jdbc:mysql:localhost:3306/`
     -   `jdbc:postgresql:localhost:5432/`
-- Data definition language (DDL)
-- Data Manipulation language (DML)
-- 
+- Data definition language (DDL): We define table schema with that
+- Data Manipulation language (DML): We do CRUD operation with that
