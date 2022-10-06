@@ -1,0 +1,112 @@
+package com.shihabmahamud.jdbchelloworld;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public class Product {
+    private Long id;
+    private Long version;
+    private String name;
+    private String description;
+    private BigDecimal price;
+    private LocalDateTime dateCreated;
+    private LocalDateTime dateLastUpdated;
+
+    public Product() {
+
+    }
+
+    public Product(String name, String description, Long version,
+                   BigDecimal price, LocalDateTime dateCreated,
+                   LocalDateTime dateLastUpdated)
+    {
+        this.version = version;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.dateCreated = dateCreated;
+        this.dateLastUpdated = dateLastUpdated;
+    }
+
+    public Product(Long id, String name, String description, Long version,
+                   BigDecimal price, LocalDateTime dateCreated,
+                   LocalDateTime dateLastUpdated)
+    {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.version = version;
+        this.price = price;
+        this.dateCreated = dateCreated;
+        this.dateLastUpdated = dateLastUpdated;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", version=" + version +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", dateCreated=" + dateCreated +
+                ", dateLastUpdated=" + dateLastUpdated +
+                '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public LocalDateTime getDateLastUpdated() {
+        return dateLastUpdated;
+    }
+
+    public void setDateLastUpdated(LocalDateTime dateLastUpdated) {
+        this.dateLastUpdated = dateLastUpdated;
+    }
+}

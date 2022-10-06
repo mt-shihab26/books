@@ -8,13 +8,12 @@ public class DBConnection {
     private static final String USER = "root";
     private static final String PASSWORD = "2611";
 
-    public Connection tryConnection() throws Exception {
+    public static Connection tryConnection() throws Exception {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
     public static void main(String[] args) throws Exception {
-        var database = new DBConnection();
-        var connection = database.tryConnection();
+        var connection = tryConnection();
         if (connection.isValid(2)) {
             System.out.println("The attempt to Connection was a SUCCESS");
         } else {

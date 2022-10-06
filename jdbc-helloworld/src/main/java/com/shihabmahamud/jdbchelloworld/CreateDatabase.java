@@ -16,9 +16,8 @@ public class CreateDatabase {
     }
 
     public static void main(String[] args) throws Exception {
-        var dbConnection = new DBConnection();
         var createDatabase = new CreateDatabase();
-        var connection = dbConnection.tryConnection();
+        var connection = DBConnection.tryConnection();
         createDatabase.createDatabase(connection, "jdbcHelloworld");
     }
 }
