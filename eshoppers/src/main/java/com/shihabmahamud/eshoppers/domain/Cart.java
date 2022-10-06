@@ -11,6 +11,14 @@ public class Cart {
     private Integer totalItem;
     private User user;
 
+    public Cart() {
+
+    }
+
+    public Cart(User user) {
+        this.user = user;
+    }
+
     public Cart(Long id, BigDecimal totalPrice, Integer totalItem, User user) {
         this.id = id;
         this.totalPrice = totalPrice;
@@ -18,9 +26,8 @@ public class Cart {
         this.user = user;
     }
 
-    public Cart() {
 
-    }
+
 
     public Long getId() {
         return id;

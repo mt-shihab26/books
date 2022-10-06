@@ -1,6 +1,7 @@
 package com.shihabmahamud.eshoppers.web;
 
 import com.shihabmahamud.eshoppers.domain.Cart;
+import com.shihabmahamud.eshoppers.exceptions.CartItemNotFoundException;
 import com.shihabmahamud.eshoppers.exceptions.ProductNotFoundException;
 import com.shihabmahamud.eshoppers.repository.*;
 import com.shihabmahamud.eshoppers.service.Action;
@@ -36,7 +37,7 @@ public class CartServlet extends HttpServlet {
         if (StringUtil.isNotEmpty(action)) {
             try {
                 processCart(productId, action, cart);
-            } catch (ProductNotFoundException e) {
+            } catch (ProductNotFoundException | CartItemNotFoundException e) {
                 LOGGER.error(String.valueOf(e));
             }
 
@@ -53,7 +54,7 @@ public class CartServlet extends HttpServlet {
         resp.sendRedirect("/home");
     }
 
-    private void processCart(String productId, String action, Cart cart) throws ProductNotFoundException {
+    private void processCart(String productId, String action, Cart cart) throws ProductNotFoundException, CartItemNotFoundException {
         switch (Action.valueOf(action.toUpperCase())) {
             case ADD -> {
                 LOGGER.info("Received request to add product with id: {} to cart", productId);

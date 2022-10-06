@@ -2,6 +2,7 @@ package com.shihabmahamud.eshoppers.service;
 
 import com.shihabmahamud.eshoppers.domain.Cart;
 import com.shihabmahamud.eshoppers.domain.User;
+import com.shihabmahamud.eshoppers.exceptions.CartItemNotFoundException;
 import com.shihabmahamud.eshoppers.exceptions.ProductNotFoundException;
 
 public interface CartService {
@@ -9,7 +10,7 @@ public interface CartService {
 
     void addProductToCart(String productId, Cart cart) throws ProductNotFoundException;
 
-    void removeProductToCart(String productId, Cart cart);
+    void removeProductToCart(String productId, Cart cart) throws ProductNotFoundException, CartItemNotFoundException;
 
-    void removeProductTotallyToCart(String productId, Cart cart);
+    void removeProductTotallyToCart(String productId, Cart cart) throws ProductNotFoundException, CartItemNotFoundException;
 }

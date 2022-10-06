@@ -46,10 +46,12 @@ public class ProductRepositoryImpl implements ProductRepository{
 
     @Override
     public Product findById(Long productId) {
-        return findAllProduct()
-                .stream()
-                .filter(product -> product.getId().equals(productId))
-                .findFirst()
-                .orElse(null);
+        var products = findAllProduct();
+        for (Product product : products) {
+            if (product.getId().equals(productId)) {
+                return product;
+            }
+        }
+        return null;
     }
 }
