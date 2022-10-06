@@ -19,6 +19,9 @@
     -   Validating stuff with 'Jakarta Bean Validation'
 -   Authentication
     -   Authenticate user with HTTP Session
+-   Database
+    -   Use 'MySQL' with JDBC
+    -   As Connection Pool use 'HikariCP'
 
 ## Links
 
@@ -178,3 +181,9 @@
     -   `jdbc:postgresql:localhost:5432/`
 - Data definition language (DDL): We define table schema with that
 - Data Manipulation language (DML): We do CRUD operation with that
+- Database Connection Pool
+- Delegator Design Pattern
+- Database Connection Pool Library
+  - Apache Commons DBCP
+  - HikariCP
+  - C3PO
