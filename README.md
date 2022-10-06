@@ -4,22 +4,21 @@
 
 ## Stuff
 
-- Tomcat
-- Request Response:
-  - Handling request response with 'Servlet'
-- Templating:
-  -  Writing template with 'jsp'
-  -  Write JSP with 'jstl'
-- Automate Testing:
-  -  Unit Testing with 'junit'
-  -  Mocking with 'mockito'
-- Logging:
-  -  Logging stuff with 'logback'
-- Data Validation
-  -  Validating stuff with 'Jakarta Bean Validation'
-- Authentication
-  -  Authenticate user with HTTP Session
-
+-   Tomcat
+-   Request Response:
+    -   Handling request response with 'Servlet'
+-   Templating:
+    -   Writing template with 'jsp'
+    -   Write JSP with 'jstl'
+-   Automate Testing:
+    -   Unit Testing with 'junit'
+    -   Mocking with 'mockito'
+-   Logging:
+    -   Logging stuff with 'logback'
+-   Data Validation
+    -   Validating stuff with 'Jakarta Bean Validation'
+-   Authentication
+    -   Authenticate user with HTTP Session
 
 ## Links
 
@@ -110,20 +109,20 @@
 ## Chapter 03: Project Bootstrapping
 
 -   We can divide card work in to three step:
-    -    Show product in web page (Servlet Layer)
-    -    Sorting the product (Service Layer)
-    -    Read product from source (Repository Layer)
+    -   Show product in web page (Servlet Layer)
+    -   Sorting the product (Service Layer)
+    -   Read product from source (Repository Layer)
 -   Data Transfer Object (DTO)
 -   Standard Tag Library (JSTL)
 -   Webjar: webjars.org
 -   In logback, we will work with 3 class: Logger, Appender and Layout
 -   Logging levels: TRACE < DEBUG < INFO < WARN < ERROR
 -   Appender:
-    -    ConsoleAppender
-    -    FileAppender
-    -    RollingFileAppender
-    -    SMTPAppender
-    -    DBAppender
+    -   ConsoleAppender
+    -   FileAppender
+    -   RollingFileAppender
+    -   SMTPAppender
+    -   DBAppender
 -   Appender info: https://logback.qos.ch/manual/appenders.html
 -   Making logs location
     ```shell
@@ -136,9 +135,9 @@
 ## Chapter 04: Signup/Login
 
 -   Signup step:
-    -    Separate parameter from request
-    -    Verify the given data
-    -    Sort the username and password
+    -   Separate parameter from request
+    -   Verify the given data
+    -   Sort the username and password
 -   The objects that are saved in the database are called domain
 -   Jakarta Bean Validation library: https://beanvalidation.org
 -   Jakarta Bean Validation annotation called constraint
@@ -148,8 +147,32 @@
 
 ## Chapter 05: Making Shopping Cart
 
-- Servlet Filter
+-   Servlet Filter
 
 ## Chapter 06: Checkout and Order placing
 
-- JavaScript fetch api: https://javascript.info/fetch
+-   JavaScript fetch api: https://javascript.info/fetch
+
+## Chapter 07: Database & JDBC
+
+-   MySQL Installation in Ubuntu
+    -   `sudo apt update`
+    -   `sudo apt install mysql-server`
+    -   `sudo systemctl start mysql.service`
+    -   `sudo mysql`
+    -   `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '2611';`
+-   Utility Commands
+    -   `SHOW DATABASES;`
+    -   `CREATE DATABASE eshoppers;`
+    -   `USE eshoppers;`
+-   Some GUI MySQL client
+    -   MySQL Workbench
+    -   TablePlus
+    -   Sequel Pro
+    -   DataGrip
+-   Java Database Connectivity (JDBC)
+-   Facade Pattern
+-   JDBC created with Facade design pattern
+-   Database URL in jdbc connection
+    -   `jdbc:mysql:localhost:3306/`
+    -   `jdbc:postgresql:localhost:5432/`
