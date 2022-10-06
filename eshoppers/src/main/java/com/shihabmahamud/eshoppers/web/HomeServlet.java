@@ -1,6 +1,5 @@
 package com.shihabmahamud.eshoppers.web;
 
-import com.shihabmahamud.eshoppers.dto.ProductDTO;
 import com.shihabmahamud.eshoppers.repository.CartItemRepositoryImpl;
 import com.shihabmahamud.eshoppers.repository.CartRepositoryImpl;
 import com.shihabmahamud.eshoppers.repository.ProductRepositoryImpl;
@@ -18,8 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {

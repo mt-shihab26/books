@@ -16,28 +16,20 @@ public class CartRepositoryImpl implements CartRepository{
 
     @Override
     public Cart findByUser(User currentUser) {
-        var cart = getCart(currentUser);
-        if (cart != null) {
-            var orders = orderRepository.findOrderByUser(currentUser);
-            if (isOrderAlreadyPlacedWith(orders, cart)) {
+        Set<Cart> carts = CARTS.get(currentUser);
+        if (carts == null || carts.isEmpty()) return null;
+
+        var cart = (Cart) carts.toArray()[carts.size() - 1];
+
+        var orders = orderRepository.findOrderByUser(currentUser);
+        if (orders == null) return cart;
+
+        for (Order order : orders) {
+            if (order.getCart().equals(cart)) {
                 return null;
-            } else {
-                return cart;
             }
         }
-        return null;
-    }
-
-    private boolean isOrderAlreadyPlacedWith(Set<Order> orders, Cart cart) {
-        return orders.stream().noneMatch(order -> order.getCart().equals(cart));
-    }
-
-    private Cart getCart(User currentUser) {
-        Set<Cart> carts = CARTS.get(currentUser);
-        if (carts != null && !carts.isEmpty()) {
-            return (Cart) carts.toArray()[carts.size() - 1];
-        }
-        return null;
+        return cart;
     }
 
     @Override

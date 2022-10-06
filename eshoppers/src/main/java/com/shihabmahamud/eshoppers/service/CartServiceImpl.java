@@ -35,6 +35,8 @@ public class CartServiceImpl implements CartService {
         if (cart == null) {
             cart = createNewCart(currentUser);
         }
+
+
         return cart;
     }
 
