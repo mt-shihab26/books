@@ -1,6 +1,7 @@
 package com.shihabmahamud.eshoppers.repository;
 
 import com.shihabmahamud.eshoppers.domain.Cart;
+import com.shihabmahamud.eshoppers.domain.Order;
 import com.shihabmahamud.eshoppers.domain.User;
 
 import java.util.Arrays;
@@ -11,9 +12,27 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CartRepositoryImpl implements CartRepository{
     private static final Map<User, Set<Cart>> CARTS = new ConcurrentHashMap<>();
+    private static final OrderRepository orderRepository = new OrderRepositoryImpl();
 
     @Override
     public Cart findByUser(User currentUser) {
+        var cart = getCart(currentUser);
+        if (cart != null) {
+            var orders = orderRepository.findOrderByUser(currentUser);
+            if (isOrderAlreadyPlacedWith(orders, cart)) {
+                return null;
+            } else {
+                return cart;
+            }
+        }
+        return null;
+    }
+
+    private boolean isOrderAlreadyPlacedWith(Set<Order> orders, Cart cart) {
+        return orders.stream().noneMatch(order -> order.getCart().equals(cart));
+    }
+
+    private Cart getCart(User currentUser) {
         Set<Cart> carts = CARTS.get(currentUser);
         if (carts != null && !carts.isEmpty()) {
             return (Cart) carts.toArray()[carts.size() - 1];

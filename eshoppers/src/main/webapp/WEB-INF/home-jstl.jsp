@@ -4,6 +4,14 @@
 <jsp:include page="includes/navigation.jsp" />
 
 <div class="container">
+    <div class="row">
+        <c:if test="${message != null}">
+            <div class="alert alert-success">
+                ${message}
+            </div>
+        </c:if>
+    </div>
+
     <div class="jumbotron">
         <div class="row">
             <div class="col-6">

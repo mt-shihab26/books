@@ -46,6 +46,12 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("cart", cart);
         }
 
+        final String orderSuccess = req.getParameter("orderSuccess");
+        if (Boolean.parseBoolean(orderSuccess)) {
+            req.setAttribute("message", "<strong>Congratulation!</strong>" +
+                    " You're order has been placed successfully");
+        }
+
         req.setAttribute("products", allProducts);
 
         req.getRequestDispatcher("/WEB-INF/home-jstl.jsp")
