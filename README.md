@@ -176,3 +176,6 @@
 -   Database URL in jdbc connection
     -   `jdbc:mysql:localhost:3306/`
     -   `jdbc:postgresql:localhost:5432/`
+- Data definition language (DDL)
+- Data Manipulation language (DML)
+- 
