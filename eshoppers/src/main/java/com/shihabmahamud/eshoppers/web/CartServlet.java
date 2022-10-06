@@ -21,15 +21,16 @@ import java.io.IOException;
 
 @WebServlet("/add-to-cart")
 public class CartServlet extends HttpServlet {
-
     private final CartService cartService = new CartServiceImpl(
             new CartRepositoryImpl(),
             new ProductRepositoryImpl(),
-            new CartItemRepositoryImpl());
+            new CartItemRepositoryImpl()
+    );
     private final static Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         var productId = req.getParameter("productId");
         var action = req.getParameter("action");
         var cart = getCart(req);
@@ -54,7 +55,9 @@ public class CartServlet extends HttpServlet {
         resp.sendRedirect("/home");
     }
 
-    private void processCart(String productId, String action, Cart cart) throws ProductNotFoundException, CartItemNotFoundException {
+    private void processCart(String productId, String action, Cart cart)
+            throws ProductNotFoundException, CartItemNotFoundException
+    {
         switch (Action.valueOf(action.toUpperCase())) {
             case ADD -> {
                 LOGGER.info("Received request to add product with id: {} to cart", productId);

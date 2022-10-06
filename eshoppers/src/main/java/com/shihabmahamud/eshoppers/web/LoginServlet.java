@@ -26,7 +26,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         LOGGER.info("Serving login page");
 
         var logout = req.getParameter("logout");
@@ -38,7 +39,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         var loginDTO = new LoginDTO(
                 req.getParameter("username"),
                 req.getParameter("password")
@@ -69,7 +71,8 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void login(LoginDTO loginDTO, HttpServletRequest req)
-            throws UserNotFoundException {
+            throws UserNotFoundException
+    {
         var user = userService.verifyUser(loginDTO);
 
         SecurityContext.login(req, user);

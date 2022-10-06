@@ -20,13 +20,11 @@ import java.util.List;
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderServlet.class);
-
     private final CartService cartService = new CartServiceImpl(
             new CartRepositoryImpl(),
             new ProductRepositoryImpl(),
             new CartItemRepositoryImpl()
     );
-
     private final OrderService orderService = new OrderServiceImpl(
             new OrderRepositoryImpl(),
             new ShippingAddressRepositoryImpl(),
@@ -35,7 +33,8 @@ public class OrderServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         addCartToUi(req);
         req.setAttribute("countries", getCountries());
         req.getRequestDispatcher("/WEB-INF/order.jsp").forward(req, resp);
@@ -49,13 +48,10 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-    private List<String> getCountries() {
-        return List.of("Bangladesh", "Switzerland", "Japan", "USA", "Canada");
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         LOGGER.info("Handle order request form");
         var shippingAddress = copyParametersTo(req);
 
@@ -77,6 +73,10 @@ public class OrderServlet extends HttpServlet {
             LOGGER.error(String.valueOf(e));
         }
         resp.sendRedirect("/home?orderSuccess=true");
+    }
+
+    private List<String> getCountries() {
+        return List.of("Bangladesh", "Switzerland", "Japan", "USA", "Canada");
     }
 
     private ShippingAddressDTO copyParametersTo(HttpServletRequest req) {

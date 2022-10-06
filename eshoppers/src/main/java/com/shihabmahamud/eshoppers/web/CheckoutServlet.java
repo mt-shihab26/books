@@ -19,7 +19,6 @@ import java.io.IOException;
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutServlet.class);
-
     private final CartService cartService = new CartServiceImpl(
             new CartRepositoryImpl(),
             new ProductRepositoryImpl(),
@@ -28,7 +27,8 @@ public class CheckoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         LOGGER.info("Serving checkout page");
 
         var currentUser = SecurityContext.getCurrentUser(req);
