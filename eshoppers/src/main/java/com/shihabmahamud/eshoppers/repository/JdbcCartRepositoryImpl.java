@@ -10,9 +10,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CartRepositoryImpl implements CartRepository{
+public class JdbcCartRepositoryImpl implements CartRepository{
     private static final Map<User, Set<Cart>> CARTS = new ConcurrentHashMap<>();
     private static final OrderRepository orderRepository = new OrderRepositoryImpl();
+    private static int i = 0;
 
     @Override
     public Cart findByUser(User currentUser) {
@@ -34,6 +35,7 @@ public class CartRepositoryImpl implements CartRepository{
 
     @Override
     public Cart save(Cart cart) {
+
         CARTS.computeIfPresent(cart.getUser(), (user, carts) -> {
             carts.add(cart);
             return carts;
@@ -43,6 +45,8 @@ public class CartRepositoryImpl implements CartRepository{
             carts.add(cart);
             return carts;
         });
+        cart.setId((long) i);
+        i++;
         return cart;
     }
 

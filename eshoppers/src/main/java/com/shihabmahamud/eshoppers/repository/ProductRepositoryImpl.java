@@ -1,69 +1,57 @@
 package com.shihabmahamud.eshoppers.repository;
 
 import com.shihabmahamud.eshoppers.domain.Product;
-import com.shihabmahamud.eshoppers.jdbc.ConnectionPool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
-public class ProductRepositoryImpl implements ProductRepository {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductRepositoryImpl.class);
-    private final DataSource dataSource = ConnectionPool.getInstance().getDataSource();
-    private static final String SELECT_ALL_PRODUCTS = "SELECT * FROM product";
-    private static final String SELECT_PRODUCT_BY_ID = "SELECT * FROM product WHERE id = ?";
+public class ProductRepositoryImpl implements ProductRepository{
+    private static final List<Product> ALL_PRODUCTS = List.of(
+            new Product(
+                    1L,
+                    "Apple iPad",
+                    "Apple iPad 10.2 32GB",
+                    BigDecimal.valueOf(369.99),
+                    4.9
+            ),
+            new Product(
+                    2L,
+                    "Headphones",
+                    "Jabra Elite Bluetooth Headphones",
+                    BigDecimal.valueOf(249.99),
+                    4.2
+            ),
+            new Product(
+                    3L,
+                    "Microsoft Surface Pro",
+                    "Microsoft Surface Pro 7 12.3\" 120GB Windows 10" +
+                            "Tablet with 10th Gen Intel Core i3/4GB RAM - " +
+                            "Platinum",
+                    BigDecimal.valueOf(799.99),
+                    4.5
+            ),
+            new Product(
+                    4L,
+                    "Amazon Echo Dot",
+                    "Amazon Echo Dot (3rd Gen) with Alexa - Charcoal",
+                    BigDecimal.valueOf(34.99),
+                    4.9
+            )
+    );
+
     @Override
     public List<Product> findAllProduct() {
-        try (var c = dataSource.getConnection();
-             var ps = c.prepareStatement(SELECT_ALL_PRODUCTS))
-        {
-            var resultSet = ps.executeQuery();
-            return extractProducts(resultSet);
-        } catch (SQLException e) {
-            LOGGER.info("Unable to fetch products from database", e);
-        }
-        return null;
+        return ALL_PRODUCTS;
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
-        try (var c = dataSource.getConnection();
-             var ps = c.prepareStatement(SELECT_PRODUCT_BY_ID))
-        {
-            ps.setLong(1, id);
-            var products = extractProducts(ps.executeQuery());
-            if (products.size() > 0) {
-                return Optional.of(products.get(0));
+    public Product findById(Long productId) {
+        var products = findAllProduct();
+        for (Product product : products) {
+            if (product.getId().equals(productId)) {
+                return product;
             }
-        } catch (SQLException e) {
-            LOGGER.info("Unable to fetch product by id: {} ", id, e);
         }
-        return Optional.empty();
-    }
-
-    private List<Product> extractProducts(ResultSet res) throws SQLException {
-        List<Product> products = new ArrayList<>();
-        while (res.next()) {
-            products.add(extractProduct(res));
-        }
-        return products;
-    }
-
-    private Product extractProduct(ResultSet res) throws SQLException {
-        return new Product(
-            res.getLong("id"),
-            res.getString("name"),
-            res.getString("description"),
-            res.getBigDecimal("price"),
-            Double.valueOf(String.valueOf(res.getBigDecimal("rating"))),
-            res.getLong("version"),
-            res.getTimestamp("date_created").toLocalDateTime(),
-            res.getTimestamp("date_last_updated").toLocalDateTime()
-        );
+        return null;
     }
 }

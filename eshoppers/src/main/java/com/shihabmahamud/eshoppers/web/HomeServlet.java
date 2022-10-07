@@ -1,9 +1,7 @@
 package com.shihabmahamud.eshoppers.web;
 
 import com.shihabmahamud.eshoppers.dto.ProductDTO;
-import com.shihabmahamud.eshoppers.repository.CartItemRepositoryImpl;
-import com.shihabmahamud.eshoppers.repository.CartRepositoryImpl;
-import com.shihabmahamud.eshoppers.repository.ProductRepositoryImpl;
+import com.shihabmahamud.eshoppers.repository.*;
 import com.shihabmahamud.eshoppers.service.CartService;
 import com.shihabmahamud.eshoppers.service.CartServiceImpl;
 import com.shihabmahamud.eshoppers.service.ProductService;

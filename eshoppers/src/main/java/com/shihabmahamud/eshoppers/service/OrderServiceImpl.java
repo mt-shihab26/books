@@ -12,9 +12,9 @@ public class OrderServiceImpl implements OrderService {
     private final ShippingAddressRepository shippingAddressRepository;
     private final CartRepository cartRepository;
 
-    public OrderServiceImpl(OrderRepositoryImpl orderRepository,
-                            ShippingAddressRepositoryImpl shippingAddressRepository,
-                            CartRepositoryImpl cartRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository,
+                            ShippingAddressRepository shippingAddressRepository,
+                            CartRepository cartRepository) {
         this.orderRepository = orderRepository;
         this.shippingAddressRepository = shippingAddressRepository;
         this.cartRepository = cartRepository;
@@ -27,12 +27,12 @@ public class OrderServiceImpl implements OrderService {
         var savedShippingAddress = shippingAddressRepository.save(shippingAddress);
 
         var cart = cartRepository.findByUser(currentUser);
-        if (cart.isEmpty()) {
+        if (cart == null) {
             throw new CartItemNotFoundException("Cart Not found by current users");
         }
 
         Order order = new Order();
-        order.setCart(cart.get());
+        order.setCart(cart);
         order.setShippingAddress(savedShippingAddress);
         order.setShipped(false);
         order.setUser(currentUser);

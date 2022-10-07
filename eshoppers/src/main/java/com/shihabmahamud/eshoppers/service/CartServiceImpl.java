@@ -8,6 +8,7 @@ import com.shihabmahamud.eshoppers.exceptions.CartItemNotFoundException;
 import com.shihabmahamud.eshoppers.repository.CartItemRepository;
 import com.shihabmahamud.eshoppers.repository.CartRepository;
 import com.shihabmahamud.eshoppers.repository.ProductRepository;
+import com.shihabmahamud.eshoppers.web.HomeServlet;
 import com.shihabmahamud.eshoppers.exceptions.ProductNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +17,15 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 public class CartServiceImpl implements CartService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CartServiceImpl.class);
-
+    private final static Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
 
-    public CartServiceImpl(CartRepository cartRepository, ProductRepository productRepository, CartItemRepository cartItemRepository) {
+    public CartServiceImpl(CartRepository cartRepository,
+                           ProductRepository productRepository,
+                           CartItemRepository cartItemRepository)
+    {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
@@ -30,65 +33,90 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getCartByUser(User currentUser) {
-        if (currentUser == null) {
-            throw new IllegalArgumentException("current user cannot be null");
-        }
-
-        Optional<Cart> optionalCart = cartRepository.findByUser(currentUser);
-
-        return optionalCart
-                .orElseGet(() -> createNewCart(currentUser));
+        var cart = cartRepository.findByUser(currentUser);
+        if (cart == null)
+            cart = cartRepository.save(new Cart(currentUser));
+        return cart;
     }
 
     @Override
-    public void addProductToCart(String productId, Cart cart) throws ProductNotFoundException {
-        Product product = findProduct(productId);
+    public void addProductToCart(String productId, Cart cart)
+            throws ProductNotFoundException {
+        Product product =  findProduct(productId);
 
-        addProductToCart(product, cart);
-        updateCart(cart);
-    }
+        var cartItemOptional = findSimilarProductInCart(cart, product);
+        var cartItem = cartItemOptional
+                .map(this::increaseQuantityByOne)
+                .orElseGet(() -> createNewShoppingCartItem(product, cart));
 
-    private Product findProduct(String productId) throws ProductNotFoundException {
-        if (productId == null || productId.length() == 0) {
-            throw new IllegalArgumentException("Product id cannot be null");
-        }
-        Long id = parseProductId(productId);
+        cart.getCartItems().add(cartItem);
 
-        return productRepository.findById(id)
-                .orElseThrow(()
-                        -> new ProductNotFoundException("Product not found by id: " + id));
-    }
-
-    @Override
-    public void removeProductToCart(String productId, Cart cart) throws ProductNotFoundException {
-        Product product = findProduct(productId);
-
-        removeProductToCart(product, cart);
         updateCart(cart);
     }
 
     @Override
-    public void removeProductTotallyToCart(String productId, Cart cart) throws ProductNotFoundException {
+    public void removeProductToCart(String productId, Cart cart)
+            throws ProductNotFoundException, CartItemNotFoundException
+    {
         Product product = findProduct(productId);
 
-        removeProductTotallyToCart(product, cart);
-        updateCart(cart);
-    }
-
-    private void removeProductTotallyToCart(Product productToRemove, Cart cart) {
         var itemOptional = cart.getCartItems()
                 .stream()
-                .filter(cartItem -> cartItem.getProduct().getId().equals(productToRemove.getId()))
+                .filter(cartItem -> cartItem.getProduct().equals(product))
                 .findAny();
 
         var cartItem = itemOptional
-                .orElseThrow(() -> new CartItemNotFoundException("Cart not found by product: "
-                        + productToRemove));
+                .orElseThrow(() -> new CartItemNotFoundException("Cart not found by product: " + product));
+
+        if (cartItem.getQuantity() > 1) {
+            cartItem.setQuantity(cartItem.getQuantity()-1);
+            cartItem.setPrice(cartItem.getPrice().subtract(product.getPrice()));
+            cartItemRepository.update(cartItem);
+        } else {
+            cart.getCartItems().remove(cartItem);
+            cartItemRepository.remove(cartItem);
+        }
+
+        updateCart(cart);
+    }
+
+    @Override
+    public void removeProductTotallyToCart(String productId, Cart cart)
+            throws ProductNotFoundException, CartItemNotFoundException
+    {
+        Product product = findProduct(productId);
+
+        var itemOptional = cart.getCartItems()
+                .stream()
+                .filter(cartItem -> cartItem.getProduct().equals(product))
+                .findAny();
+
+        var cartItem = itemOptional
+                .orElseThrow(() -> new CartItemNotFoundException("Cart not found by product: " + product));
 
         cart.getCartItems().remove(cartItem);
         cartItemRepository.remove(cartItem);
+
+        updateCart(cart);
     }
 
+    private Product findProduct(String productId)
+            throws ProductNotFoundException
+    {
+        if (productId == null || productId.length() == 0)
+            throw new IllegalArgumentException("Product id cannot be null");
+        long id;
+        try {
+            id = Long.parseLong(productId);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Product id must be a number", e);
+        }
+
+        Product product = productRepository.findById(id);
+        if (product == null)
+            throw new ProductNotFoundException("Product not found by id: " + id);
+        return product;
+    }
 
     private void updateCart(Cart cart) {
         Integer totalTotalItem = getTotalItem(cart);
@@ -100,69 +128,33 @@ public class CartServiceImpl implements CartService {
         cartRepository.update(cart);
     }
 
-    private void removeProductToCart(Product productToRemove, Cart cart) {
-        var itemOptional = cart.getCartItems()
-                .stream()
-                .filter(cartItem -> cartItem.getProduct().getId().equals(productToRemove.getId()))
-                .findAny();
-
-        var cartItem = itemOptional
-                .orElseThrow(() -> new CartItemNotFoundException("Cart not found by product: "
-                        + productToRemove));
-
-        if (cartItem.getQuantity() > 1) {
-            cartItem.setQuantity(cartItem.getQuantity() - 1);
-            cartItem.setPrice(cartItem.getPrice().subtract(productToRemove.getPrice()));
-            cart.getCartItems().add(cartItem);
-            cartItemRepository.update(cartItem);
-        } else {
-            cart.getCartItems().remove(cartItem);
-            cartItemRepository.remove(cartItem);
-        }
-    }
-
-    private void addProductToCart(Product product, Cart cart) {
-        var cartItemOptional = findSimilarProductInCart(cart, product);
-
-        var cartItem = cartItemOptional
-                .map(this::increaseQuantityByOne)
-                .orElseGet(() -> createNewCartItem(product, cart));
-
-        cart.getCartItems().add(cartItem);
-    }
-
-    private CartItem createNewCartItem(Product product, Cart cart) {
+    private CartItem createNewShoppingCartItem(Product product, Cart cart) {
         var cartItem = new CartItem();
         cartItem.setProduct(product);
         cartItem.setQuantity(1);
         cartItem.setPrice(product.getPrice());
-        cartItem.setCart(cart);
-
-        return cartItemRepository.save(cartItem);
+        return cartItemRepository.save(cartItem, cart);
     }
 
     private CartItem increaseQuantityByOne(CartItem cartItem) {
         cartItem.setQuantity(cartItem.getQuantity() + 1);
-
-        BigDecimal totalPrice = cartItem.getProduct()
+        BigDecimal totalPrice = cartItem
+                .getProduct()
                 .getPrice()
                 .multiply(BigDecimal.valueOf(cartItem.getQuantity()));
-
         cartItem.setPrice(totalPrice);
-
         return cartItemRepository.update(cartItem);
     }
 
     private Optional<CartItem> findSimilarProductInCart(Cart cart, Product product) {
-
-        return cart.getCartItems()
+        return cart
+                .getCartItems()
                 .stream()
-                .filter(cartItem -> cartItem.getProduct().getId().equals(product.getId()))
+                .filter(cartItem -> cartItem.getProduct().equals(product))
                 .findFirst();
     }
 
     private Integer getTotalItem(Cart cart) {
-
         return cart.getCartItems()
                 .stream()
                 .map(CartItem::getQuantity)
@@ -170,25 +162,10 @@ public class CartServiceImpl implements CartService {
     }
 
     private BigDecimal calculateTotalPrice(Cart cart) {
-
-        return cart.getCartItems()
+        return cart
+                .getCartItems()
                 .stream()
                 .map(CartItem::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private Long parseProductId(String productId) {
-        try {
-            return Long.parseLong(productId);
-        } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Product id must be a number", ex);
-        }
-    }
-
-    private Cart createNewCart(User currentUser) {
-        Cart cart = new Cart();
-        cart.setUser(currentUser);
-
-        return cartRepository.save(cart);
     }
 }

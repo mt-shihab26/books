@@ -12,8 +12,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepositoryImpl implements UserRepository {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductRepositoryImpl.class);
+public class JdbcUserRepositoryImpl implements UserRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcProductRepositoryImpl.class);
     private final DataSource ds = ConnectionPool.getInstance().getDataSource();
     private final static String SAVE_USER = "INSERT INTO user (" +
             "username, password, " +
