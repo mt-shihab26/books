@@ -1,12 +1,14 @@
 package com.shihabmahamud.eshoppers.service;
 
 import com.shihabmahamud.eshoppers.domain.Product;
-import com.shihabmahamud.eshoppers.util.SortingProducts;
 import com.shihabmahamud.eshoppers.dto.ProductDTO;
 import com.shihabmahamud.eshoppers.repository.ProductRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
@@ -17,9 +19,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductDTO> findAllProductSortedByName() {
-        var products = SortingProducts
-                .byName(productRepository.findAllProduct(), false);
-        return convertToProductDTO(products);
+        var products = convertToProductDTO(productRepository.findAllProduct());
+        return sortProductsByName(products, false);
     }
 
     private List<ProductDTO> convertToProductDTO(List<Product> products) {
@@ -35,5 +36,14 @@ public class ProductServiceImpl implements ProductService{
             );
         }
         return productsDTO;
+    }
+
+    private List<ProductDTO> sortProductsByName(List<ProductDTO> products, Boolean isAsc) {
+        var sortedProducts = products
+                .stream()
+                .sorted(Comparator.comparing(ProductDTO::getName))
+                .collect(Collectors.toList());
+        if (!isAsc) Collections.reverse(sortedProducts);
+        return sortedProducts;
     }
 }

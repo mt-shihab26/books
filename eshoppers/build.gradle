@@ -16,9 +16,11 @@ dependencies {
 
     implementation 'jstl:jstl:1.2'
     implementation 'org.webjars:bootstrap:4.6.2'
-    implementation 'ch.qos.logback:logback-classic:1.4.1'
+    implementation 'ch.qos.logback:logback-classic:1.4.3'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'org.hibernate.validator:hibernate-validator:6.1.0.Final'
+    implementation 'mysql:mysql-connector-java:8.0.30'
+    implementation 'com.zaxxer:HikariCP:3.4.1'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:4.8.0'

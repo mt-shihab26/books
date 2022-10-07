@@ -1,17 +1,29 @@
 package com.shihabmahamud.eshoppers.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class User {
-    private String  username, email, password, firstname, lastname;
+public class User extends Domain {
+    private String
+            username,
+            email,
+            password,
+            firstname,
+            lastname;
 
     public User(String username, String email,
-                String password, String firstname, String lastname) {
+                String password, String firstname, String lastname,
+                Long version) {
+        setVersion(version);
         this.username = username;
         this.email = email;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
+    }
+
+    public User() {
+
     }
 
     @Override

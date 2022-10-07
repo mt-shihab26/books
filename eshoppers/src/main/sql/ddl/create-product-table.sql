@@ -3,8 +3,8 @@ CREATE TABLE product (
     name VARCHAR(100) NOT NULL,
     description VARCHAR(500) NULL,
     price DECIMAL NOT NULL,
+    rating DECIMAL NULL,
     version BIGINT NOT NULL,
-    rating BIGINT NULL,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

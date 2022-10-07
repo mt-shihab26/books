@@ -8,16 +8,16 @@ public class CartItem {
     private Integer quantity;
     private BigDecimal price;
 
+    public CartItem() {
+
+    }
+
     public CartItem(Long id, Product product,
                     Integer quantity, BigDecimal price) {
         this.id = id;
         this.product = product;
         this.quantity = quantity;
         this.price = price;
-    }
-
-    public CartItem() {
-
     }
 
     public Long getId() {

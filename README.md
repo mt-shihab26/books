@@ -187,3 +187,5 @@
   - Apache Commons DBCP
   - HikariCP
   - C3PO
+
+## Chapter 08: JDBC Repository

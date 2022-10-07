@@ -3,8 +3,8 @@ package com.shihabmahamud.eshoppers.service
 import com.shihabmahamud.eshoppers.domain.User
 import com.shihabmahamud.eshoppers.dto.LoginDTO
 import com.shihabmahamud.eshoppers.dto.UserDTO
-import com.shihabmahamud.eshoppers.repository.UserRepository
 import com.shihabmahamud.eshoppers.exceptions.UserNotFoundException
+import com.shihabmahamud.eshoppers.repository.UserRepository
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -16,18 +16,14 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
             userDTO.email,
             encryptPassword(userDTO.password),
             userDTO.firstname,
-            userDTO.lastname
+            userDTO.lastname,
+            1L
         )
         userRepository.save(user)
     }
 
     override fun isNotUniqueUsername(userDTO: UserDTO): Boolean {
         val user = userRepository.findOneByUsername(userDTO.username)
-        return user != null
-    }
-
-    override fun isNotUniqueEmail(userDTO: UserDTO): Boolean {
-        val user = userRepository.findOneByEmail(userDTO.email)
         return user != null
     }
 
