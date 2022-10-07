@@ -189,3 +189,8 @@
   - C3PO
 
 ## Chapter 08: JDBC Repository
+
+- One-to-many Relationship
+- Foreign Key
+- varargs array
+- sql join

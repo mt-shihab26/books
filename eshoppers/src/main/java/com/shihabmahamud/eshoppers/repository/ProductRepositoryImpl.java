@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ProductRepositoryImpl implements ProductRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductRepositoryImpl.class);
@@ -30,19 +31,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findById(Long id) {
+    public Optional<Product> findById(Long id) {
         try (var c = dataSource.getConnection();
              var ps = c.prepareStatement(SELECT_PRODUCT_BY_ID))
         {
             ps.setLong(1, id);
             var products = extractProducts(ps.executeQuery());
             if (products.size() > 0) {
-                return products.get(0);
+                return Optional.of(products.get(0));
             }
         } catch (SQLException e) {
             LOGGER.info("Unable to fetch product by id: {} ", id, e);
         }
-        return null;
+        return Optional.empty();
     }
 
     private List<Product> extractProducts(ResultSet res) throws SQLException {

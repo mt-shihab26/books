@@ -2,6 +2,7 @@ package com.shihabmahamud.eshoppers.domain;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Cart extends Domain {
@@ -13,7 +14,6 @@ public class Cart extends Domain {
     public Cart() {
 
     }
-
     public Cart(User user) {
         this.user = user;
     }
@@ -55,5 +55,17 @@ public class Cart extends Domain {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CartItem cartItem)) return false;
+        return Objects.equals(getId(), cartItem.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

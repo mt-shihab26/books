@@ -1,15 +1,16 @@
 package com.shihabmahamud.eshoppers.domain;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class User extends Domain {
-    private String
-            username,
-            email,
-            password,
-            firstname,
-            lastname;
+    private String username;
+    private String email;
+    private String password;
+    private String firstname;
+    private String lastname;
+
+    public User() {
+    }
 
     public User(String username, String email,
                 String password, String firstname, String lastname,
@@ -20,34 +21,6 @@ public class User extends Domain {
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
-    }
-
-    public User() {
-
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return username.equals(user.username);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(username);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                '}';
     }
 
     public String getUsername() {
@@ -88,5 +61,29 @@ public class User extends Domain {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                '}';
     }
 }

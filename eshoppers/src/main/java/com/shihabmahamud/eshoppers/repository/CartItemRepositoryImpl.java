@@ -21,14 +21,7 @@ public class CartItemRepositoryImpl implements CartItemRepository {
     private final ProductRepository productRepository = new ProductRepositoryImpl();
     private final JDBCTemplate jt = new JDBCTemplate();
 
-    private static final String UPDATE_CART_ITEM = """
-            UPDATE cart_item
-            SET quantity = ?,
-                price = ?,
-                version = ?,
-                date_last_updated ?
-            WHERE id = ?
-            """;
+
     private static final String SELECT_CART_ITEM_BY_ID = "SELECT * FROM cart_item WHERE id = ?";
     private static final String DELETE_CART_ITEM = "DELETE FROM cart_item WHERE id = ?";
 
@@ -44,89 +37,80 @@ public class CartItemRepositoryImpl implements CartItemRepository {
             VALUES (?, ?, ?, ?, ?, ?, ?)
             """;
 
+
+
     @Override
     public CartItem save(CartItem cartItem) {
-//        var cartItemId = jt.executeInsertQuery(
-//                SAVE_CART_ITEM,
-//                cartItem.getQuantity(),
-//                cartItem.getPrice(),
-//                cartItem.getProduct().getId(),
-//                0L,
-//                cartItem.getDateCreated(),
-//                cartItem.getDateLastUpdated(),
-//                cartItem.getCart().getId()
-//        );
-//
-//        cartItem.setId(cartItemId);
-//        return cartItem;
+        var cartItemId = jt.executeInsertQuery(
+                SAVE_CART_ITEM,
+                cartItem.getQuantity(),
+                cartItem.getPrice(),
+                cartItem.getProduct().getId(),
+                0L,
+                cartItem.getDateCreated(),
+                cartItem.getDateLastUpdated(),
+                cartItem.getCart().getId()
+        );
 
-        try (var c = ds.getConnection();
-             var ps = c.prepareStatement(SAVE_CART_ITEM, Statement.RETURN_GENERATED_KEYS))
-        {
-            ps.setLong(1, cartItem.getProduct().getId());
-            ps.setInt(2, cartItem.getQuantity());
-            ps.setBigDecimal(3, cartItem.getPrice());
-            ps.setLong(4, cartItem.getVersion());
-            ps.setTimestamp(5, Timestamp.valueOf(cartItem.getDateCreated()));
-            ps.setTimestamp(6, Timestamp.valueOf(cartItem.getDateLastUpdated()));
-
-            int affectedRows = ps.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Creating user failed, not row affected.");
-            }
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    Long carItemId = generatedKeys.getLong(1);
-                    cartItem.setId(carItemId);
-                    return cartItem;
-                } else {
-                    throw new SQLException("Creating user failed, no id obtained.");
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.info("Unable to insert cart item in database: {}", cartItem, e);
-            throw new RuntimeException();
-        }
+        cartItem.setId(cartItemId);
+        return cartItem;
     }
 
-
+    private static final String UPDATE_CART_ITEM = """
+            UPDATE cart_item
+            SET quantity = ?,
+                price = ?,
+                version = ?,
+                date_last_updated ?
+            WHERE id = ?
+            """;
     @Override
     public CartItem update(CartItem cartItem) {
         cartItem.setVersion(cartItem.getVersion() + 1);
-        var cartItemToUpdate = findOne(cartItem.getId());
-        if (cartItemToUpdate == null) {
-            throw new CartItemNotFoundException("Cart item not found by id" + cartItem.getId());
+
+        var cartItemUpdate = findOne(cartItem.getId());
+        if (cartItemUpdate == null) {
+            throw new CartItemNotFoundException("Cart item not found by id, " + cartItem.getId());
         }
 
-        if (cartItem.getVersion() <= cartItemToUpdate.getVersion()) {
+        if (cartItem.getVersion() <= cartItemUpdate.getVersion()) {
             throw new OptimisticLockingFailureException("CartItem is already updated by another request");
         }
 
-        cartItemToUpdate.setDateLastUpdated(LocalDateTime.now());
-        cartItemToUpdate.setVersion(cartItem.getVersion());
-        cartItemToUpdate.setProduct(cartItem.getProduct());
-        cartItemToUpdate.setQuantity(cartItem.getQuantity());
-        cartItemToUpdate.setPrice(cartItem.getPrice());
+        cartItemUpdate.setDateLastUpdated(LocalDateTime.now());
+        cartItemUpdate.setVersion(cartItem.getVersion());
+        cartItemUpdate.setQuantity(cartItem.getQuantity());
+        cartItemUpdate.setPrice(cartItem.getPrice());
 
-        try (var c = ds.getConnection();
-             var ps = c.prepareStatement(UPDATE_CART_ITEM))
-        {
-            ps.setInt(1, cartItemToUpdate.getQuantity());
-            ps.setBigDecimal(2, cartItemToUpdate.getPrice());
-            ps.setLong(3, cartItemToUpdate.getVersion());
-            ps.setTimestamp(4, Timestamp.valueOf(cartItemToUpdate.getDateLastUpdated()));
-            ps.setLong(5, cartItemToUpdate.getId());
+        jt.updateQuery(UPDATE_CART_ITEM,
+                cartItemUpdate.getQuantity(),
+                cartItemUpdate.getPrice(),
+                cartItemUpdate.getVersion(),
+                cartItemUpdate.getDateLastUpdated(),
+                cartItemUpdate.getId());
 
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.info("Unable to update cart time: {}", cartItem, e);
-            throw new RuntimeException("Unable to update cartItem", e);
-        }
-        return cartItemToUpdate;
+        return cartItemUpdate;
     }
 
     @Override
     public CartItem findOne(Long id) {
+        var cartItems = jt.queryForObject(
+                SELECT_CART_ITEM_BY_ID,
+                id,
+                resultSet -> {
+                    var cartItem = new CartItem();
+                    cartItem.setId(resultSet.getLong("id"));
+                    cartItem.setQuantity(resultSet.getInt("quantity"));
+                    cartItem.setPrice(resultSet.getBigDecimal("price"));
+                    cartItem.setVersion(resultSet.getLong("version"));
+                    cartItem.setDateCreated(resultSet.getTimestamp("date_created").toLocalDateTime());
+                    cartItem.setDateLastUpdated(resultSet.getTimestamp("date_last_updated").toLocalDateTime());
+                    productRepository.findById(resultSet.getLong("product_id"))
+                            .ifPresent(cartItem::setProduct);
+                    return cartItem;
+                    }
+                );
+
         try (var c = ds.getConnection();
              var ps = c.prepareStatement(SELECT_CART_ITEM_BY_ID))
         {
@@ -149,11 +133,8 @@ public class CartItemRepositoryImpl implements CartItemRepository {
             cartItem.setDateLastUpdated(res.getTimestamp("date_last_updated").toLocalDateTime());
 
             var productId = res.getLong("product_id");
-            var product = productRepository.findById(productId);
-            if (product == null) {
-                throw new SQLException("Unable find product by the id: {}", String.valueOf(productId));
-            }
-            cartItem.setProduct(product);
+            productRepository.findById(productId).ifPresent(cartItem::setProduct);
+            return cartItem;
         } {
             throw new SQLException("Unable to find cart item for jdbc resultSet");
         }

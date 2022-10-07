@@ -1,5 +1,6 @@
 package com.shihabmahamud.eshoppers.web;
 
+import com.shihabmahamud.eshoppers.dto.ProductDTO;
 import com.shihabmahamud.eshoppers.repository.CartItemRepositoryImpl;
 import com.shihabmahamud.eshoppers.repository.CartRepositoryImpl;
 import com.shihabmahamud.eshoppers.repository.ProductRepositoryImpl;
@@ -17,24 +18,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
-    private final ProductService productService =
-            new ProductServiceImpl(new ProductRepositoryImpl());
-    private final CartService cartService = new CartServiceImpl(
-            new CartRepositoryImpl(),
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
+
+    private final ProductService productService
+            = new ProductServiceImpl(new ProductRepositoryImpl());
+
+    private final CartService cartService
+            = new CartServiceImpl(new CartRepositoryImpl(),
             new ProductRepositoryImpl(),
-            new CartItemRepositoryImpl()
-    );
-    private final static Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
+            new CartItemRepositoryImpl());
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException
-    {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         LOGGER.info("Serving home page");
-        var allProducts = productService.findAllProductSortedByName();
+
+        final String attribute = req.getParameter("orderSuccess");
+
+        if (Boolean.parseBoolean(attribute)) {
+            req.setAttribute("message", "<strong>Congratulation!</strong> You're order has been placed successfully. ");
+        }
+
+        List<ProductDTO> allProducts = productService.findAllProductSortedByName();
         LOGGER.info("Total product found {}", allProducts.size());
 
         if (SecurityContext.isAuthenticated(req)) {
@@ -43,15 +52,9 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("cart", cart);
         }
 
-        final String orderSuccess = req.getParameter("orderSuccess");
-        if (Boolean.parseBoolean(orderSuccess)) {
-            req.setAttribute("message", "<strong>Congratulation!</strong>" +
-                    " You're order has been placed successfully");
-        }
-
         req.setAttribute("products", allProducts);
 
         req.getRequestDispatcher("/WEB-INF/home-jstl.jsp")
-                .forward(req, res);
+                .forward(req, resp);
     }
 }

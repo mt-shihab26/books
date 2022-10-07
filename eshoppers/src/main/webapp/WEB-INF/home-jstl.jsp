@@ -4,54 +4,49 @@
 <jsp:include page="includes/navigation.jsp" />
 
 <div class="container">
-    <div class="row">
-        <c:if test="${message != null}">
-            <div class="alert alert-success">
-                ${message}
-            </div>
-        </c:if>
-    </div>
-
     <div class="jumbotron">
         <div class="row">
             <div class="col-6">
                 <c:if test="${sec:isAuthenticated(pageContext.request)}">
-                    <h1> Hello <c:out value="${sec:getCurrentUser(pageContext.request).firstname}"/>,
+                    <h1> Hello <c:out value="${sec:getCurrentUser(pageContext.request).firstName}"/>,
                         Welcome to e-shoppers!
                     </h1>
                 </c:if>
 
                 <img src="<c:url value="/img/cart.jpg"/>" style="height: 200px"
-                    alt=""/>
+                     alt=""/>
+
             </div>
             <div class="col-6 mb-4">
-                <c:if test="${cart != null && cart.cartItems.size() > 0}" >
+                <c:if test="${cart != null && cart.cartItems.size() > 0}">
                     <div class="card shadow-sm p-3 mb-5 bg-white">
                         <div class="card-header">
-                            <h4>Your Cart</h4>
+                            <h4> Your Cart</h4>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            Total Item: 
-                            <span class="badge badge-pill badge-success">
-                                <c:out value="${cart.totalItem}" />
-                            </span>
-                        </p>
-                        <p>
-                            Total Price: $
-                            <c:out value="${cart.totalPrice}" />
-                        </p>
-                        <p>
-                            <a href="/checkout" class="btn btn-outline-info">
-                                Checkout
-                            </a>
-                        </p>
+                        <div class="card-body">
+                            <p>
+                                Total Item: <span class='badge badge-pill badge-success'>
+                                        <c:out value="${cart.totalItem}"/> </span>
+                            </p>
+                            <p>
+                                Total Price: $ <c:out value="${cart.totalPrice}"/>
+                            </p>
+                            <p><a class="btn btn-outline-info"
+                                  href="<c:url value="/checkout"/>">Checkout </a>
+                            </p>
+                        </div>
                     </div>
                 </c:if>
             </div>
         </div>
+    </div>
 
+    <div class="row">
+        <c:if test="${message != null}">
+            <div class="alert alert-success">
+                    ${message}
+            </div>
+        </c:if>
     </div>
 
     <div class="row">
@@ -69,18 +64,14 @@
                             Price: $ <c:out value="${product.price}"/>
                         </p>
 
-                        <p onclick="addToCart(${product.id})" class="card-link btn btn-outline-info">
-                            Add toCart
-                        </p>
-                        
-                        <form 
-                            style="visibility: hidden;" 
-                            id="addToCart_${product.id}" 
-                            method="post"
-                            action="<c:url value="/add-to-cart?productId=${product.id}"/>"
-                        >
-                        </form>
+                        <a href="#" class="card-link btn btn-outline-info"
+                           onclick="addToCart(${product.id})">
+                            Add to Cart
+                        </a>
 
+                        <form style="visibility: hidden" id="addToCart_${product.id}" method="post"
+                              action="<c:url value="/add-to-cart?productId=${product.id}"/>">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -90,7 +81,7 @@
 
 <script>
     function addToCart(productId) {
-        const form = document.getElementById("addToCart_" + productId);
+        let form = document.getElementById("addToCart_" + productId);
         form.submit();
     }
 </script>

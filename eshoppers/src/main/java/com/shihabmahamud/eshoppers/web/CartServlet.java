@@ -2,6 +2,7 @@ package com.shihabmahamud.eshoppers.web;
 
 import com.shihabmahamud.eshoppers.domain.Cart;
 import com.shihabmahamud.eshoppers.exceptions.CartItemNotFoundException;
+import com.shihabmahamud.eshoppers.exceptions.CartNotFoundException;
 import com.shihabmahamud.eshoppers.exceptions.ProductNotFoundException;
 import com.shihabmahamud.eshoppers.repository.*;
 import com.shihabmahamud.eshoppers.service.Action;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet("/add-to-cart")
 public class CartServlet extends HttpServlet {
@@ -35,9 +37,13 @@ public class CartServlet extends HttpServlet {
         var action = req.getParameter("action");
         var cart = getCart(req);
 
+        if (cart.isEmpty()){
+            throw new CartNotFoundException("Cart not found");
+        }
+
         if (StringUtil.isNotEmpty(action)) {
             try {
-                processCart(productId, action, cart);
+                processCart(productId, action, cart.get());
             } catch (ProductNotFoundException | CartItemNotFoundException e) {
                 LOGGER.error(String.valueOf(e));
             }
@@ -48,7 +54,7 @@ public class CartServlet extends HttpServlet {
 
         LOGGER.info("Received request to add product with id: {} to cart", productId);
         try {
-            cartService.addProductToCart(productId, cart);
+            cartService.addProductToCart(productId, cart.get());
         } catch (ProductNotFoundException e) {
             LOGGER.error(String.valueOf(e));
         }
@@ -74,8 +80,8 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    private Cart getCart(HttpServletRequest req) {
+    private Optional<Cart> getCart(HttpServletRequest req) {
         final var currentUser = SecurityContext.getCurrentUser(req);
-        return cartService.getCartByUser(currentUser);
+        return Optional.ofNullable(cartService.getCartByUser(currentUser));
     }
 }

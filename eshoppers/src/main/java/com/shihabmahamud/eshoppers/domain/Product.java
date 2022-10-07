@@ -1,16 +1,14 @@
 package com.shihabmahamud.eshoppers.domain;
 
-import javax.sound.sampled.Port;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Product extends Domain {
     private String name;
     private String description;
     private BigDecimal price;
     private Double rating;
-
-
     public Product (
             Long id ,
             String name,
@@ -45,6 +43,18 @@ public class Product extends Domain {
         this.description = description;
         this.price = price;
         this.rating = rating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product product)) return false;
+        return Objects.equals(getId(), product.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 
     public Double getRating() {
