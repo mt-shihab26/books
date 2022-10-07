@@ -2,30 +2,23 @@ package com.shihabmahamud.eshoppers.domain;
 
 import java.math.BigDecimal;
 
-public class CartItem {
-    private Long id;
+public class CartItem extends Domain {
     private Product product;
     private Integer quantity;
     private BigDecimal price;
+
+    private Cart cart;
 
     public CartItem() {
 
     }
 
-    public CartItem(Long id, Product product,
-                    Integer quantity, BigDecimal price) {
-        this.id = id;
-        this.product = product;
-        this.quantity = quantity;
-        this.price = price;
+    public Cart getCart() {
+        return cart;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public Product getProduct() {
