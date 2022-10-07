@@ -19,7 +19,7 @@ public class CheckoutServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutServlet.class);
     private final CartService cartService = new CartServiceImpl(
             new CartRepositoryImpl(),
-            new ProductRepositoryImpl(),
+            new JdbcProductRepositoryImpl(),
             new CartItemRepositoryImpl()
     );
 

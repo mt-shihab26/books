@@ -19,8 +19,12 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductDTO> findAllProductSortedByName() {
-        var products = convertToProductDTO(productRepository.findAllProduct());
-        return sortProductsByName(products, false);
+        var products = productRepository.findAllProduct();
+        if (products == null) {
+            throw new RuntimeException("There is no product in db");
+        }
+        var productDTOS = convertToProductDTO(products);
+        return sortProductsByName(productDTOS, false);
     }
 
     private List<ProductDTO> convertToProductDTO(List<Product> products) {

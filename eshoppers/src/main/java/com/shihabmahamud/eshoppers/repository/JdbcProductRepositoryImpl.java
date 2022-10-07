@@ -18,6 +18,7 @@ public class JdbcProductRepositoryImpl implements ProductRepository {
     private static final String SELECT_PRODUCT_BY_ID = "SELECT * FROM product WHERE id = ?";
     @Override
     public List<Product> findAllProduct() {
+        LOGGER.info("Finding all Product from database");
         try (var c = dataSource.getConnection();
              var ps = c.prepareStatement(SELECT_ALL_PRODUCTS))
         {
@@ -31,6 +32,7 @@ public class JdbcProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product findById(Long id) {
+        LOGGER.info("Finding one product by given id from database");
         try (var c = dataSource.getConnection();
              var ps = c.prepareStatement(SELECT_PRODUCT_BY_ID))
         {

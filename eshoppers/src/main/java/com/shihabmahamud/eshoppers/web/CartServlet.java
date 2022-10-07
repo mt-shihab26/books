@@ -25,7 +25,7 @@ import java.util.Optional;
 public class CartServlet extends HttpServlet {
     private final CartService cartService = new CartServiceImpl(
             new CartRepositoryImpl(),
-            new ProductRepositoryImpl(),
+            new JdbcProductRepositoryImpl(),
             new CartItemRepositoryImpl()
     );
     private final static Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
