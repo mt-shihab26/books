@@ -8,4 +8,5 @@ interface UserService {
     fun saveUser(userDTO: UserDTO)
     fun isNotUniqueUsername(userDTO: UserDTO): Boolean
     fun verifyUser(loginDTO: LoginDTO): User
+    fun findUserByUsername(username: String): User
 }

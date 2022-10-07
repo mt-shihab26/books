@@ -21,14 +21,14 @@ import java.util.List;
 public class OrderServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderServlet.class);
     private final CartService cartService = new CartServiceImpl(
-            new CartRepositoryImpl(),
+            new JdbcCartRepositoryImpl(),
             new JdbcProductRepositoryImpl(),
-            new CartItemRepositoryImpl()
+            new JdbcCartItemRepositoryImpl()
     );
     private final OrderService orderService = new OrderServiceImpl(
             new OrderRepositoryImpl(),
             new ShippingAddressRepositoryImpl(),
-            new CartRepositoryImpl()
+            new JdbcCartRepositoryImpl()
     );
 
     @Override

@@ -2,10 +2,7 @@ package com.shihabmahamud.eshoppers.web;
 
 import com.shihabmahamud.eshoppers.dto.ProductDTO;
 import com.shihabmahamud.eshoppers.repository.*;
-import com.shihabmahamud.eshoppers.service.CartService;
-import com.shihabmahamud.eshoppers.service.CartServiceImpl;
-import com.shihabmahamud.eshoppers.service.ProductService;
-import com.shihabmahamud.eshoppers.service.ProductServiceImpl;
+import com.shihabmahamud.eshoppers.service.*;
 import com.shihabmahamud.eshoppers.util.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +21,11 @@ public class HomeServlet extends HttpServlet {
 
     private final ProductService productService
             = new ProductServiceImpl(new JdbcProductRepositoryImpl());
-
     private final CartService cartService
-            = new CartServiceImpl(new CartRepositoryImpl(),
+            = new CartServiceImpl(new JdbcCartRepositoryImpl(),
             new JdbcProductRepositoryImpl(),
-            new CartItemRepositoryImpl());
+            new JdbcCartItemRepositoryImpl());
+    private final UserService userRepository = new UserServiceImpl(new JdbcUserRepositoryImpl());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -51,6 +48,8 @@ public class HomeServlet extends HttpServlet {
         }
 
         req.setAttribute("products", allProducts);
+
+        System.out.println(allProducts);
 
         req.getRequestDispatcher("/WEB-INF/home-jstl.jsp")
                 .forward(req, resp);

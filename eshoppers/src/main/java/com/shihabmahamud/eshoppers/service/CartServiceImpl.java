@@ -5,9 +5,7 @@ import com.shihabmahamud.eshoppers.domain.CartItem;
 import com.shihabmahamud.eshoppers.domain.Product;
 import com.shihabmahamud.eshoppers.domain.User;
 import com.shihabmahamud.eshoppers.exceptions.CartItemNotFoundException;
-import com.shihabmahamud.eshoppers.repository.CartItemRepository;
-import com.shihabmahamud.eshoppers.repository.CartRepository;
-import com.shihabmahamud.eshoppers.repository.ProductRepository;
+import com.shihabmahamud.eshoppers.repository.*;
 import com.shihabmahamud.eshoppers.web.HomeServlet;
 import com.shihabmahamud.eshoppers.exceptions.ProductNotFoundException;
 import org.slf4j.Logger;
@@ -21,6 +19,7 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
+    private final UserRepository userRepository = new JdbcUserRepositoryImpl();
 
     public CartServiceImpl(CartRepository cartRepository,
                            ProductRepository productRepository,
@@ -33,6 +32,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getCartByUser(User currentUser) {
+        if (currentUser.getId() == null) {
+            currentUser = userRepository.findOneByUsername(currentUser.getUsername());
+        }
+
+        System.out.println(currentUser.getId());
+
         var cart = cartRepository.findByUser(currentUser);
         if (cart == null)
             cart = cartRepository.save(new Cart(currentUser));
@@ -125,7 +130,7 @@ public class CartServiceImpl implements CartService {
         cart.setTotalItem(totalTotalItem);
         cart.setTotalPrice(totalPrice);
 
-        cartRepository.update(cart);
+        var cart2 =  cartRepository.update(cart);
     }
 
     private CartItem createNewShoppingCartItem(Product product, Cart cart) {

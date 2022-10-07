@@ -8,10 +8,6 @@ public abstract class Domain {
     private LocalDateTime dateCreated = LocalDateTime.now();
     private LocalDateTime dateLastUpdated = LocalDateTime.now();
 
-    public Domain() {
-
-    }
-
     public Long getVersion() {
         return version;
     }

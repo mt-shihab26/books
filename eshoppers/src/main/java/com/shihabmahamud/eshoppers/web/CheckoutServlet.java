@@ -18,9 +18,9 @@ import java.io.IOException;
 public class CheckoutServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutServlet.class);
     private final CartService cartService = new CartServiceImpl(
-            new CartRepositoryImpl(),
+            new JdbcCartRepositoryImpl(),
             new JdbcProductRepositoryImpl(),
-            new CartItemRepositoryImpl()
+            new JdbcCartItemRepositoryImpl()
     );
 
     @Override

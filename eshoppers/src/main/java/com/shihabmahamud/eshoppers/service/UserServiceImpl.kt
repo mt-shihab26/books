@@ -39,6 +39,11 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
         return user
     }
 
+    override fun findUserByUsername(username: String): User {
+        return userRepository.findOneByUsername(username)
+            ?: throw UserNotFoundException("User not found by $username")
+    }
+
     private fun encryptPassword(password: String): String? {
         return try {
             val digest = MessageDigest.getInstance("SHA-256")

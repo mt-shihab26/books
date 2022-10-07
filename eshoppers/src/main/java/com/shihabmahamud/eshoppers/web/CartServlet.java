@@ -24,9 +24,9 @@ import java.util.Optional;
 @WebServlet("/add-to-cart")
 public class CartServlet extends HttpServlet {
     private final CartService cartService = new CartServiceImpl(
-            new CartRepositoryImpl(),
+            new JdbcCartRepositoryImpl(),
             new JdbcProductRepositoryImpl(),
-            new CartItemRepositoryImpl()
+            new JdbcCartItemRepositoryImpl()
     );
     private final static Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
     @Override
