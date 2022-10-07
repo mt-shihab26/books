@@ -65,6 +65,7 @@ public class CartRepositoryImpl implements CartRepository {
         return carts.size() > 0
                 ? Optional.of(carts.get(0))
                 : Optional.empty();
+
     }
 
     private List<CartItem> findAllCartItems(Long id) {
