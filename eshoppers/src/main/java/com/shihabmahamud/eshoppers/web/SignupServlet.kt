@@ -1,7 +1,7 @@
 package com.shihabmahamud.eshoppers.web
 
 import com.shihabmahamud.eshoppers.dto.UserDTO
-import com.shihabmahamud.eshoppers.repository.UserRepositoryImpl
+import com.shihabmahamud.eshoppers.repository.JdbcUserRepositoryImpl
 import com.shihabmahamud.eshoppers.service.UserService
 import com.shihabmahamud.eshoppers.service.UserServiceImpl
 import com.shihabmahamud.eshoppers.util.ValidationUtil
@@ -15,7 +15,7 @@ import javax.validation.Validation
 
 @WebServlet("/signup")
 class SignupServlet : HttpServlet() {
-    private val userService: UserService = UserServiceImpl(UserRepositoryImpl())
+    private val userService: UserService = UserServiceImpl(JdbcUserRepositoryImpl())
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         LOGGER.info("serving signup page")

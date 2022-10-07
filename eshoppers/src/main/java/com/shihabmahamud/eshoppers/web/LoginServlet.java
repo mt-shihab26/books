@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
     private final static Logger LOGGER =
             LoggerFactory.getLogger(HomeServlet.class);
     private final UserService userService =
-            new UserServiceImpl(new UserRepositoryImpl());
+            new UserServiceImpl(new JdbcUserRepositoryImpl());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
