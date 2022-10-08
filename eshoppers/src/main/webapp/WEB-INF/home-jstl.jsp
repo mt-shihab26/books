@@ -64,7 +64,7 @@
                             Price: $ <c:out value="${product.price}"/>
                         </p>
 
-                        <a href="#" class="card-link btn btn-outline-info"
+                        <a class="card-link btn btn-outline-info"
                            onclick="addToCart(${product.id})">
                             Add to Cart
                         </a>
