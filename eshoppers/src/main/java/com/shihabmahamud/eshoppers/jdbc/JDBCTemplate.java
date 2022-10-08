@@ -14,7 +14,7 @@ public class JDBCTemplate {
     private static final Logger LOGGER
             = LoggerFactory.getLogger(JDBCTemplate.class);
 
-    private final DataSource dataSource
+    private DataSource dataSource
             = ConnectionPool.getInstance().getDataSource();
 
     public void updateQuery(String query, Object... parameters) {

@@ -8,5 +8,5 @@ public interface UserRepository {
     void remove(User user);
 
     User findOneByUsername(String username);
-    User findOneById(Long id);
+    User findOne(Long id);
 }

@@ -7,4 +7,5 @@ public interface CartRepository {
     Cart findByUser(User currentUser);
     Cart save(Cart cart);
     Cart update(Cart cart);
+    Cart findOne(long id);
 }

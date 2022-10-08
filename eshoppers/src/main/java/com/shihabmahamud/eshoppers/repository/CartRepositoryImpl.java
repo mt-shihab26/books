@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CartRepositoryImpl implements CartRepository{
     private static final Map<User, Set<Cart>> CARTS = new ConcurrentHashMap<>();
-    private static final OrderRepository orderRepository = new OrderRepositoryImpl();
+    private static final OrderRepository orderRepository = new JdbcOrderRepositoryImpl();
 
     @Override
     public Cart findByUser(User currentUser) {
@@ -55,5 +55,10 @@ public class CartRepositoryImpl implements CartRepository{
             return new LinkedHashSet<>(Arrays.asList(objects));
         });
         return cart;
+    }
+
+    @Override
+    public Cart findOne(long cart_id) {
+        return null;
     }
 }

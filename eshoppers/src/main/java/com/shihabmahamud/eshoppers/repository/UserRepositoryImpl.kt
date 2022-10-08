@@ -12,7 +12,7 @@ class UserRepositoryImpl : UserRepository {
         return user
     }
 
-    override fun update(user: User): User? {
+    override fun update(user: User): User {
         return user
     }
 
@@ -32,7 +32,7 @@ class UserRepositoryImpl : UserRepository {
         return user.get()
     }
 
-    override fun findOneById(id: Long): User? {
+    override fun findOne(id: Long): User? {
         return null
     }
 

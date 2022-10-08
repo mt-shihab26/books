@@ -3,6 +3,7 @@ CREATE TABLE `order`
     id                      BIGINT      AUTO_INCREMENT PRIMARY KEY,
     version                 BIGINT      NOT NULL,
     shipping_date           TIMESTAMP   NULL,
+    shipped                 TINYINT(1)  NULL,
     date_created            TIMESTAMP   NOT NULL,
     date_last_updated       TIMESTAMP   NOT NULL,
     user_id                 BIGINT      NOT NULL,

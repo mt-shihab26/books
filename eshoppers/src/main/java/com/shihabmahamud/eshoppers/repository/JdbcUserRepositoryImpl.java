@@ -75,7 +75,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findOneById(Long id) {
+    public User findOne(Long id) {
         return null;
     }
 
