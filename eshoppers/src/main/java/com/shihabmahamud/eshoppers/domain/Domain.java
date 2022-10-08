@@ -39,4 +39,14 @@ public abstract class Domain {
     public void setDateLastUpdated(LocalDateTime dateLastUpdated) {
         this.dateLastUpdated = dateLastUpdated;
     }
+
+    @Override
+    public String toString() {
+        return "Domain{" +
+                "version=" + version +
+                ", id=" + id +
+                ", dateCreated=" + dateCreated +
+                ", dateLastUpdated=" + dateLastUpdated +
+                '}';
+    }
 }

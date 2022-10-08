@@ -60,12 +60,22 @@ public class Cart extends Domain {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CartItem cartItem)) return false;
-        return Objects.equals(getId(), cartItem.getId());
+        if (!(o instanceof Cart cart)) return false;
+        return Objects.equals(getId(), cart.getId());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "cartItems=" + cartItems +
+                ", totalPrice=" + totalPrice +
+                ", totalItem=" + totalItem +
+                ", user=" + user +
+                '}';
     }
 }

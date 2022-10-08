@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,10 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
+        user.setDateCreated(LocalDateTime.now());
+        user.setDateLastUpdated(LocalDateTime.now());
+        user.setVersion(0L);
+
         try (var c = ds.getConnection();
              var ps = c.prepareStatement(SAVE_USER))
         {
@@ -37,6 +42,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
             ps.setTimestamp(7, Timestamp.valueOf(user.getDateCreated()));
             ps.setTimestamp(8, Timestamp.valueOf(user.getDateLastUpdated()));
             ps.execute();
+
         } catch (SQLException e) {
             LOGGER.info("Unable to save user", e);
             throw new RuntimeException("Unable to save user", e);
@@ -52,10 +58,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
             var users = extractUsers(ps.executeQuery());
 
-            if (users.size() > 0) {
-                return users.get(0);
-            }
-            return null;
+            if (users.size() == 0) return null;
+            return users.get(0);
         } catch (SQLException e) {
             LOGGER.info("Unable to find user by username: {}", username, e);
             throw new RuntimeException("Unable to find user by username: " + username, e);
@@ -72,6 +76,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     private User extractUser(ResultSet res) throws SQLException {
         var user = new User();
+        user.setId(res.getLong("id"));
         user.setUsername(res.getString("username"));
         user.setPassword(res.getString("password"));
         user.setEmail(res.getString("email"));

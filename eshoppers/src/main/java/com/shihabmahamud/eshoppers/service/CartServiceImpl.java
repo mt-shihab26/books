@@ -36,8 +36,6 @@ public class CartServiceImpl implements CartService {
             currentUser = userRepository.findOneByUsername(currentUser.getUsername());
         }
 
-        System.out.println(currentUser.getId());
-
         var cart = cartRepository.findByUser(currentUser);
         if (cart == null)
             cart = cartRepository.save(new Cart(currentUser));
@@ -130,7 +128,7 @@ public class CartServiceImpl implements CartService {
         cart.setTotalItem(totalTotalItem);
         cart.setTotalPrice(totalPrice);
 
-        var cart2 =  cartRepository.update(cart);
+        cartRepository.update(cart);
     }
 
     private CartItem createNewShoppingCartItem(Product product, Cart cart) {
@@ -160,10 +158,15 @@ public class CartServiceImpl implements CartService {
     }
 
     private Integer getTotalItem(Cart cart) {
-        return cart.getCartItems()
-                .stream()
-                .map(CartItem::getQuantity)
-                .reduce(0, Integer::sum);
+        LOGGER.info("Here cart");
+        LOGGER.info(cart.toString());
+
+        var sum = 0;
+        for (CartItem cartItem : cart.getCartItems()) {
+            System.out.println(sum);
+            sum += cartItem.getQuantity();
+        }
+        return sum;
     }
 
     private BigDecimal calculateTotalPrice(Cart cart) {

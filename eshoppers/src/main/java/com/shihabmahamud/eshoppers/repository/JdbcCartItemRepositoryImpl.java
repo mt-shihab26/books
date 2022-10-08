@@ -20,15 +20,7 @@ public class JdbcCartItemRepositoryImpl implements CartItemRepository {
     private final DataSource ds = ConnectionPool.getInstance().getDataSource();
     private final ProductRepository productRepository = new JdbcProductRepositoryImpl();
 
-    private static final String UPDATE_CART_ITEM = """
-            UPDATE cart_item
-            SET quantity = ?,
-                price = ?,
-                version = ?,
-                date_last_updated ?
-            WHERE id = ?
-            """;
-    private static final String SELECT_CART_ITEM_BY_ID = "SELECT * FROM cart_item WHERE id = ?";
+
     private static final String DELETE_CART_ITEM = "DELETE FROM cart_item WHERE id = ?";
 
     private static final String SAVE_CART_ITEM = """
@@ -45,13 +37,17 @@ public class JdbcCartItemRepositoryImpl implements CartItemRepository {
 
     @Override
     public CartItem save(CartItem cartItem, Cart cart) {
+        cartItem.setVersion(0L);
+        cartItem.setDateCreated(LocalDateTime.now());
+        cartItem.setDateLastUpdated(LocalDateTime.now());
+
         try (var c = ds.getConnection();
              var ps = c.prepareStatement(SAVE_CART_ITEM, Statement.RETURN_GENERATED_KEYS))
         {
-            ps.setLong(1, cartItem.getProduct().getId());
-            ps.setInt(2, cartItem.getQuantity());
-            ps.setBigDecimal(3, cartItem.getPrice());
-            ps.setLong(4, 1L);
+            ps.setInt(1, cartItem.getQuantity());
+            ps.setBigDecimal(2, cartItem.getPrice());
+            ps.setLong(3, cartItem.getProduct().getId());
+            ps.setLong(4, cartItem.getVersion());
             ps.setTimestamp(5, Timestamp.valueOf(cartItem.getDateCreated()));
             ps.setTimestamp(6, Timestamp.valueOf(cartItem.getDateLastUpdated()));
             ps.setLong(7, cart.getId());
@@ -76,9 +72,16 @@ public class JdbcCartItemRepositoryImpl implements CartItemRepository {
     }
 
 
+    private static final String UPDATE_CART_ITEM = "UPDATE cart_item " +
+            "SET quantity = ?, " +
+            "price = ?, " +
+            "version = ?, " +
+            "date_last_updated = ? WHERE id = ? ";
+
     @Override
     public CartItem update(CartItem cartItem) {
         cartItem.setVersion(cartItem.getVersion() + 1);
+
         var cartItemToUpdate = findOne(cartItem.getId());
         if (cartItemToUpdate == null) {
             throw new CartItemNotFoundException("Cart item not found by id" + cartItem.getId());
@@ -90,7 +93,6 @@ public class JdbcCartItemRepositoryImpl implements CartItemRepository {
 
         cartItemToUpdate.setDateLastUpdated(LocalDateTime.now());
         cartItemToUpdate.setVersion(cartItem.getVersion());
-        cartItemToUpdate.setProduct(cartItem.getProduct());
         cartItemToUpdate.setQuantity(cartItem.getQuantity());
         cartItemToUpdate.setPrice(cartItem.getPrice());
 
@@ -111,12 +113,16 @@ public class JdbcCartItemRepositoryImpl implements CartItemRepository {
         return cartItemToUpdate;
     }
 
+
+    private static final String SELECT_CART_ITEM_BY_ID = """
+            SELECT * FROM cart_item WHERE id = ?
+            """;
     @Override
-    public CartItem findOne(Long id) {
+    public CartItem findOne(Long cartItemId) {
         try (var c = ds.getConnection();
              var ps = c.prepareStatement(SELECT_CART_ITEM_BY_ID))
         {
-            ps.setLong(1, id);
+            ps.setLong(1, cartItemId);
             var res = ps.executeQuery();
             return extractCartItem(res);
         } catch (SQLException e) {
@@ -136,10 +142,12 @@ public class JdbcCartItemRepositoryImpl implements CartItemRepository {
 
             var productId = res.getLong("product_id");
             var product = productRepository.findById(productId);
+
             if (product == null) {
                 throw new SQLException("Unable find product by the id: {}", String.valueOf(productId));
             }
             cartItem.setProduct(product);
+            return cartItem;
         } {
             throw new SQLException("Unable to find cart item for jdbc resultSet");
         }

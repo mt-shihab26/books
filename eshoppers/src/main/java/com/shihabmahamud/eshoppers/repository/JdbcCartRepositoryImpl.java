@@ -17,8 +17,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class JdbcCartRepositoryImpl implements CartRepository{
     private final static Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
@@ -30,7 +30,6 @@ public class JdbcCartRepositoryImpl implements CartRepository{
             SELECT * FROM cart WHERE user_id = ?
             """;
 
-
     @Override
     public Cart findByUser(User currentUser) {
         try (var c = ds.getConnection();
@@ -40,19 +39,32 @@ public class JdbcCartRepositoryImpl implements CartRepository{
             ps.setLong(1, currentUser.getId());
 
             var res = ps.executeQuery();
-            Cart cart = extractCart(res);
+            var carts = extractCarts(res).stream()
+                    .sorted(Comparator.comparing(Cart::getDateLastUpdated))
+                    .collect(Collectors.toList());
+
+            Collections.reverse(carts);
+
+            if (carts.isEmpty()) {
+                return null;
+            }
+            var cart = carts.get(0);
+
             cart.setUser(currentUser);
 
             Set<CartItem> allCartItems = findAllCartItemsForCart(cart.getId());
+
             if (allCartItems != null) {
                 cart.setCartItems(allCartItems);
+                LOGGER.error("I am here" + allCartItems.toString());
             }
 
             var orders = orderRepository.findOrderByUser(currentUser);
+
             if (orders == null) return cart;
 
             for (Order order : orders) {
-                if (order.getCart().equals(cart)) {
+                if (order.getCart().getId().equals(cart.getId())) {
                     return null;
                 }
              }
@@ -63,8 +75,9 @@ public class JdbcCartRepositoryImpl implements CartRepository{
         }
     }
 
-    private Cart extractCart(ResultSet res) throws SQLException {
-        if (res.next()) {
+    private List<Cart> extractCarts(ResultSet res) throws SQLException {
+        List<Cart> carts = new ArrayList<>();
+        while (res.next()) {
             var cart = new Cart();
             cart.setId(res.getLong("id"));
             cart.setTotalPrice(res.getBigDecimal("total_price"));
@@ -72,10 +85,9 @@ public class JdbcCartRepositoryImpl implements CartRepository{
             cart.setVersion(res.getLong("version"));
             cart.setDateLastUpdated(res.getTimestamp("date_last_updated").toLocalDateTime());
             cart.setDateCreated(res.getTimestamp("date_created").toLocalDateTime());
-            return cart;
-        } {
-            throw new SQLException("Unable to find cart item for jdbc resultSet");
+            carts.add(cart);
         }
+        return carts;
     }
 
     public static final String FIND_ALL_CART_ITEMS = "select *" +
@@ -221,7 +233,7 @@ public class JdbcCartRepositoryImpl implements CartRepository{
             ps.setLong(1, cartId);
 
             var res = ps.executeQuery();
-            return extractCart(res);
+            return extractCarts(res).get(0);
         } catch (SQLException e) {
             LOGGER.debug("Unable to find all cartItem for given cart id");
             return null;

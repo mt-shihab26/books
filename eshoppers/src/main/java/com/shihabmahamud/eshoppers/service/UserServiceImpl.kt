@@ -11,14 +11,14 @@ import java.security.NoSuchAlgorithmException
 
 class UserServiceImpl(private val userRepository: UserRepository) : UserService {
     override fun saveUser(userDTO: UserDTO) {
-        val user = User(
-            userDTO.username,
-            userDTO.email,
-            encryptPassword(userDTO.password),
-            userDTO.firstname,
-            userDTO.lastname,
-            1L
-        )
+        val user = User()
+
+        user.username =  userDTO.username
+        user.email = userDTO.email
+        user.password = encryptPassword(userDTO.password)
+        user.firstname = userDTO.firstname
+        user.lastname = userDTO.lastname
+
         userRepository.save(user)
     }
 

@@ -80,4 +80,17 @@ public class Order {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", cart=" + cart +
+                ", shippingAddress=" + shippingAddress +
+                ", shippingDate=" + shippingDate +
+                ", payment=" + payment +
+                ", shipped=" + shipped +
+                ", user=" + user +
+                '}';
+    }
 }
