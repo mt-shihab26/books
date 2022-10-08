@@ -1,37 +1,15 @@
 package com.shihabmahamud.eshoppers.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-public class Order {
-    private Long id;
+public class Order extends Domain{
     private Cart cart;
     private ShippingAddress shippingAddress;
     private LocalDateTime shippingDate;
     private Payment payment;
     private Boolean shipped;
     private User user;
-
-    public Order() {
-    }
-
-    public Order(Long id, Cart cart, ShippingAddress shippingAddress,
-                 LocalDateTime shippingDate, Payment payment, Boolean shipped, User user) {
-        this.id = id;
-        this.cart = cart;
-        this.shippingAddress = shippingAddress;
-        this.shippingDate = shippingDate;
-        this.payment = payment;
-        this.shipped = shipped;
-        this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Cart getCart() {
         return cart;
@@ -82,10 +60,21 @@ public class Order {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order order)) return false;
+        return Objects.equals(getId(), order.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
     public String toString() {
         return "Order{" +
-                "id=" + id +
-                ", cart=" + cart +
+                "cart=" + cart +
                 ", shippingAddress=" + shippingAddress +
                 ", shippingDate=" + shippingDate +
                 ", payment=" + payment +

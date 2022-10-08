@@ -6,9 +6,18 @@ import org.slf4j.LoggerFactory
 import java.util.concurrent.CopyOnWriteArraySet
 
 class UserRepositoryImpl : UserRepository {
-    override fun save(user: User) {
+    override fun save(user: User): User {
         USERS.add(user)
         LOGGER.debug(USERS.toString())
+        return user
+    }
+
+    override fun update(user: User): User? {
+        return user
+    }
+
+    override fun remove(user: User?) {
+        TODO("Not yet implemented")
     }
 
     override fun findOneByUsername(username: String): User? {
@@ -21,6 +30,10 @@ class UserRepositoryImpl : UserRepository {
             return null
 
         return user.get()
+    }
+
+    override fun findOneById(id: Long): User? {
+        return null
     }
 
     companion object {

@@ -1,7 +1,8 @@
 package com.shihabmahamud.eshoppers.domain;
 
-public class ShippingAddress {
-    private Long id;
+import java.util.Objects;
+
+public class ShippingAddress extends Domain {
     private String address;
     private String address2;
     private String state;
@@ -21,14 +22,6 @@ public class ShippingAddress {
         this.zip = zip;
         this.country = country;
         this.mobileNumber = mobileNumber;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getAddress() {
@@ -77,5 +70,29 @@ public class ShippingAddress {
 
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ShippingAddress shippingAddress)) return false;
+        return Objects.equals(getId(), shippingAddress.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "ShippingAddress{" +
+                "address='" + address + '\'' +
+                ", address2='" + address2 + '\'' +
+                ", state='" + state + '\'' +
+                ", zip='" + zip + '\'' +
+                ", country='" + country + '\'' +
+                ", mobileNumber='" + mobileNumber + '\'' +
+                '}';
     }
 }

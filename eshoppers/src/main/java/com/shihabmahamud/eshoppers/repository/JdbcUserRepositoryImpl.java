@@ -16,22 +16,19 @@ import java.util.List;
 public class JdbcUserRepositoryImpl implements UserRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcProductRepositoryImpl.class);
     private final DataSource ds = ConnectionPool.getInstance().getDataSource();
-    private final static String SAVE_USER = "INSERT INTO user (" +
-            "username, password, " +
-            "email, first_name, " +
-            "last_name, version, " +
-            "date_created, date_last_updated) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private final static String SELECT_BY_USERNAME = "SELECT * FROM user WHERE username = ? ";
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         user.setDateCreated(LocalDateTime.now());
         user.setDateLastUpdated(LocalDateTime.now());
         user.setVersion(0L);
 
         try (var c = ds.getConnection();
-             var ps = c.prepareStatement(SAVE_USER))
+             var ps = c.prepareStatement("""
+                     INSERT INTO user (username, password, email, first_name,last_name,
+                                       version, date_created, date_last_updated)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                     """))
         {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
@@ -42,7 +39,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
             ps.setTimestamp(7, Timestamp.valueOf(user.getDateCreated()));
             ps.setTimestamp(8, Timestamp.valueOf(user.getDateLastUpdated()));
             ps.execute();
-
+            return findOneByUsername(user.getUsername());
         } catch (SQLException e) {
             LOGGER.info("Unable to save user", e);
             throw new RuntimeException("Unable to save user", e);
@@ -50,9 +47,20 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User update(User user) {
+        return null;
+    }
+
+    @Override
+    public void remove(User user) {
+    }
+
+    @Override
     public User findOneByUsername(String username) {
         try (var c = ds.getConnection();
-             var ps = c.prepareStatement(SELECT_BY_USERNAME))
+             var ps = c.prepareStatement("""
+                     SELECT * FROM user WHERE username = ?
+                     """))
         {
             ps.setString(1, username);
 
@@ -64,6 +72,11 @@ public class JdbcUserRepositoryImpl implements UserRepository {
             LOGGER.info("Unable to find user by username: {}", username, e);
             throw new RuntimeException("Unable to find user by username: " + username, e);
         }
+    }
+
+    @Override
+    public User findOneById(Long id) {
+        return null;
     }
 
     private List<User> extractUsers(ResultSet res) throws SQLException {

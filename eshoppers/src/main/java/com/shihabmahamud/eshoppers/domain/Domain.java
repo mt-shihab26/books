@@ -3,18 +3,10 @@ package com.shihabmahamud.eshoppers.domain;
 import java.time.LocalDateTime;
 
 public abstract class Domain {
-    private Long version;
     private Long id;
+    private Long version;
     private LocalDateTime dateCreated = LocalDateTime.now();
     private LocalDateTime dateLastUpdated = LocalDateTime.now();
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
 
     public Long getId() {
         return id;
@@ -22,6 +14,14 @@ public abstract class Domain {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public LocalDateTime getDateCreated() {
@@ -43,8 +43,8 @@ public abstract class Domain {
     @Override
     public String toString() {
         return "Domain{" +
-                "version=" + version +
-                ", id=" + id +
+                "id=" + id +
+                ", version=" + version +
                 ", dateCreated=" + dateCreated +
                 ", dateLastUpdated=" + dateLastUpdated +
                 '}';

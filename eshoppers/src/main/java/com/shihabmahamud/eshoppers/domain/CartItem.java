@@ -8,9 +8,6 @@ public class CartItem extends Domain {
     private Integer quantity;
     private BigDecimal price;
 
-    public CartItem() {
-    }
-
     public Product getProduct() {
         return product;
     }

@@ -11,20 +11,6 @@ public class Cart extends Domain {
     private Integer totalItem = 0;
     private User user;
 
-    public Cart() {
-
-    }
-    public Cart(User user) {
-        this.user = user;
-    }
-
-    public Cart(Long id, BigDecimal totalPrice, Integer totalItem, User user) {
-        setId(id);
-        this.totalPrice = totalPrice;
-        this.totalItem = totalItem;
-        this.user = user;
-    }
-
     public Set<CartItem> getCartItems() {
         return cartItems;
     }
