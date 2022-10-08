@@ -37,8 +37,11 @@ public class CartServiceImpl implements CartService {
         }
 
         var cart = cartRepository.findByUser(currentUser);
-        if (cart == null)
-            cart = cartRepository.save(new Cart(currentUser));
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUser(currentUser);
+            cart = cartRepository.save(cart);
+        }
         return cart;
     }
 

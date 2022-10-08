@@ -56,7 +56,6 @@ public class JdbcCartRepositoryImpl implements CartRepository{
 
             if (allCartItems != null) {
                 cart.setCartItems(allCartItems);
-                LOGGER.error("I am here" + allCartItems.toString());
             }
 
             var orders = orderRepository.findOrderByUser(currentUser);

@@ -27,7 +27,7 @@ public class OrderServlet extends HttpServlet {
     );
     private final OrderService orderService = new OrderServiceImpl(
             new OrderRepositoryImpl(),
-            new ShippingAddressRepositoryImpl(),
+            new JdbcShippingAddressRepositoryImpl(),
             new JdbcCartRepositoryImpl()
     );
 

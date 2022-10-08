@@ -4,4 +4,5 @@ import com.shihabmahamud.eshoppers.domain.ShippingAddress;
 
 public interface ShippingAddressRepository {
     ShippingAddress save(ShippingAddress shippingAddress);
+    ShippingAddress findOne(Long shippingAddressId);
 }

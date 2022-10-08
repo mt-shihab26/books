@@ -7,7 +7,6 @@ public class Order extends Domain{
     private Cart cart;
     private ShippingAddress shippingAddress;
     private LocalDateTime shippingDate;
-    private Payment payment;
     private Boolean shipped;
     private User user;
 
@@ -33,14 +32,6 @@ public class Order extends Domain{
 
     public void setShippingDate(LocalDateTime shippingDate) {
         this.shippingDate = shippingDate;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
     }
 
     public Boolean getShipped() {
@@ -77,7 +68,6 @@ public class Order extends Domain{
                 "cart=" + cart +
                 ", shippingAddress=" + shippingAddress +
                 ", shippingDate=" + shippingDate +
-                ", payment=" + payment +
                 ", shipped=" + shipped +
                 ", user=" + user +
                 '}';

@@ -12,4 +12,14 @@ public class ShippingAddressRepositoryImpl implements ShippingAddressRepository 
         SHIPPING_ADDRESSES.add(shippingAddress);
         return shippingAddress;
     }
+
+    @Override
+    public ShippingAddress findOne(Long shippingAddressId) {
+        var sap = SHIPPING_ADDRESSES
+                .stream()
+                .filter(shippingAddress -> shippingAddress.getId().equals(shippingAddressId))
+                .findFirst();
+        if (sap.isEmpty()) return null;
+        return sap.get();
+    }
 }
