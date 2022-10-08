@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService{
             throw new RuntimeException("There is no product in db");
         }
         var productDTOS = convertToProductDTO(products);
-        return sortProductsByName(productDTOS, false);
+        return sortProductsByName(productDTOS, true);
     }
 
     private List<ProductDTO> convertToProductDTO(List<Product> products) {

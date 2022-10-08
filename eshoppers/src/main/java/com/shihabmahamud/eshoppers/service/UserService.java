@@ -8,5 +8,4 @@ public interface UserService {
     void saveUser(UserDTO userDTO);
     Boolean isNotUniqueUsername(UserDTO userDTO);
     User verifyUser(LoginDTO loginDTO);
-    User findUserByUsername(String username);
 }

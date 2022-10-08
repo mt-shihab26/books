@@ -10,7 +10,7 @@
 
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/not-found.jsp</location>
+        <location>/WEB-INF/notFound.jsp</location>
     </error-page>
 
     <error-page>

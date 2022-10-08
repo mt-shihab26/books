@@ -1,11 +1,12 @@
 plugins {
     id 'java'
     id 'war'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
 }
 
 group 'com.shihabmahamud'
 version '1.0-SNAPSHOT'
+
+sourceCompatibility = 17
 
 repositories {
     mavenCentral()
@@ -17,27 +18,10 @@ dependencies {
     implementation 'jstl:jstl:1.2'
     implementation 'org.webjars:bootstrap:4.6.2'
     implementation 'ch.qos.logback:logback-classic:1.4.3'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'org.hibernate.validator:hibernate-validator:6.1.0.Final'
     implementation 'mysql:mysql-connector-java:8.0.30'
     implementation 'com.zaxxer:HikariCP:3.4.1'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:4.8.0'
-}
-
-test {
-    useJUnitPlatform()
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
