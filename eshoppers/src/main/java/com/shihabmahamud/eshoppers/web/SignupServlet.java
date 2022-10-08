@@ -23,7 +23,8 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         LOGGER.info("serving signup page");
         req.getRequestDispatcher("/WEB-INF/signup.jsp")
                 .forward(req, resp);
@@ -31,7 +32,8 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         var userDTO = copyParametersTo(req);
 
         var errors = ValidationUtil.getInstance().validate(userDTO);

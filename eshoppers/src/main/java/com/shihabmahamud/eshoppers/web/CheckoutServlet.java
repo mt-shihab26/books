@@ -1,6 +1,9 @@
 package com.shihabmahamud.eshoppers.web;
 
-import com.shihabmahamud.eshoppers.repository.*;
+import com.shihabmahamud.eshoppers.repository.JdbcCartItemRepositoryImpl;
+import com.shihabmahamud.eshoppers.repository.JdbcCartRepositoryImpl;
+import com.shihabmahamud.eshoppers.repository.JdbcProductRepositoryImpl;
+import com.shihabmahamud.eshoppers.repository.JdbcUserRepositoryImpl;
 import com.shihabmahamud.eshoppers.service.CartService;
 import com.shihabmahamud.eshoppers.service.CartServiceImpl;
 import com.shihabmahamud.eshoppers.util.SecurityContext;
@@ -20,7 +23,8 @@ public class CheckoutServlet extends HttpServlet {
     private final CartService cartService = new CartServiceImpl(
             new JdbcCartRepositoryImpl(),
             new JdbcProductRepositoryImpl(),
-            new JdbcCartItemRepositoryImpl()
+            new JdbcCartItemRepositoryImpl(),
+            new JdbcUserRepositoryImpl()
     );
 
     @Override

@@ -13,8 +13,7 @@ import java.util.List;
 public class JDBCTemplate {
     private static final Logger LOGGER
             = LoggerFactory.getLogger(JDBCTemplate.class);
-
-    private DataSource dataSource
+    private final DataSource dataSource
             = ConnectionPool.getInstance().getDataSource();
 
     public void updateQuery(String query, Object... parameters) {
@@ -69,8 +68,7 @@ public class JDBCTemplate {
         }
     }
 
-    public <E> List<E> queryForObject(String query, Object param,
-                                      ObjectRowMapper<E> objectRowMapper) {
+    public <E> List<E> queryForObject(String query, Object param, ObjectRowMapper<E> objectRowMapper) {
         try (var connection = dataSource.getConnection();
              var statement = connection.prepareStatement(query)) {
 
@@ -89,8 +87,7 @@ public class JDBCTemplate {
         }
     }
 
-    public <E> List<E> queryForObject(String query,
-                                      ObjectRowMapper<E> objectRowMapper) {
+    public <E> List<E> queryForObject(String query, ObjectRowMapper<E> objectRowMapper) {
 
         try (var connection = dataSource.getConnection();
              var statement = connection.prepareStatement(query)) {
@@ -109,8 +106,9 @@ public class JDBCTemplate {
         }
     }
 
-    private void addParameters(PreparedStatement preparedStatement,
-                               Object[] parameters) throws SQLException {
+    private void addParameters(PreparedStatement preparedStatement, Object[] parameters)
+            throws SQLException
+    {
         int idx = 1;
 
         for (Object parameter : parameters) {

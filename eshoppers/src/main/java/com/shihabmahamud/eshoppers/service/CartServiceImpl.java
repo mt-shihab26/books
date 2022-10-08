@@ -6,6 +6,8 @@ import com.shihabmahamud.eshoppers.domain.Product;
 import com.shihabmahamud.eshoppers.domain.User;
 import com.shihabmahamud.eshoppers.exceptions.CartItemNotFoundException;
 import com.shihabmahamud.eshoppers.repository.*;
+import com.shihabmahamud.eshoppers.repository.CartItemRepository;
+import com.shihabmahamud.eshoppers.repository.CartRepository;
 import com.shihabmahamud.eshoppers.web.HomeServlet;
 import com.shihabmahamud.eshoppers.exceptions.ProductNotFoundException;
 import org.slf4j.Logger;
@@ -19,22 +21,23 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
-    private final UserRepository userRepository = new JdbcUserRepositoryImpl();
+    private final UserRepository userRepository;
 
     public CartServiceImpl(CartRepository cartRepository,
                            ProductRepository productRepository,
-                           CartItemRepository cartItemRepository)
+                           CartItemRepository cartItemRepository,
+                           UserRepository userRepository)
     {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public Cart getCartByUser(User currentUser) {
-        if (currentUser.getId() == null) {
+        if (currentUser.getId() == null)
             currentUser = userRepository.findOneByUsername(currentUser.getUsername());
-        }
 
         var cart = cartRepository.findByUser(currentUser);
         if (cart == null) {
@@ -47,7 +50,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addProductToCart(String productId, Cart cart)
-            throws ProductNotFoundException {
+            throws ProductNotFoundException
+    {
         Product product =  findProduct(productId);
 
         var cartItemOptional = findSimilarProductInCart(cart, product);

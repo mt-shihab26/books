@@ -6,6 +6,7 @@ import com.shihabmahamud.eshoppers.domain.User;
 import com.shihabmahamud.eshoppers.dto.ShippingAddressDTO;
 import com.shihabmahamud.eshoppers.exceptions.CartItemNotFoundException;
 import com.shihabmahamud.eshoppers.repository.*;
+import com.shihabmahamud.eshoppers.repository.CartRepository;
 
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
@@ -14,7 +15,8 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderServiceImpl(OrderRepository orderRepository,
                             ShippingAddressRepository shippingAddressRepository,
-                            CartRepository cartRepository) {
+                            CartRepository cartRepository)
+    {
         this.orderRepository = orderRepository;
         this.shippingAddressRepository = shippingAddressRepository;
         this.cartRepository = cartRepository;
@@ -22,7 +24,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void processOrder(ShippingAddressDTO shippingAddressDTO, User currentUser)
-            throws CartItemNotFoundException {
+            throws CartItemNotFoundException
+    {
         var shippingAddress = convertTo(shippingAddressDTO);
         var savedShippingAddress = shippingAddressRepository.save(shippingAddress);
 

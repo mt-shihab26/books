@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class JdbcCartRepositoryImpl implements CartRepository{
+public class JdbcCartRepositoryImpl implements CartRepository {
     private final static Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
     private final ProductRepository productRepository = new JdbcProductRepositoryImpl();
     private final DataSource ds = ConnectionPool.getInstance().getDataSource();
@@ -96,7 +96,7 @@ public class JdbcCartRepositoryImpl implements CartRepository{
             ", version = ? " +
             ", date_last_updated = ? WHERE id = ?";
     @Override
-    public Cart update(Cart cart) {
+    public void update(Cart cart) {
         cart.setVersion(cart.getVersion() + 1);
 
         Cart cartToUpdate = findOne(cart.getId());
@@ -125,10 +125,8 @@ public class JdbcCartRepositoryImpl implements CartRepository{
 
             ps.executeUpdate();
 
-            return cartToUpdate;
         } catch (SQLException e) {
             LOGGER.debug("Unable to find all cartItem for given cart id");
-            return null;
         }
     }
 

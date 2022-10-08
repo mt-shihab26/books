@@ -33,7 +33,7 @@ public class ProductServiceImplTest {
     private ProductService productService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         productRepository = mock(ProductRepository.class);
         productService = new ProductServiceImpl(productRepository);
     }

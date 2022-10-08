@@ -4,13 +4,11 @@ import com.shihabmahamud.eshoppers.domain.User;
 import com.shihabmahamud.eshoppers.dto.LoginDTO;
 import com.shihabmahamud.eshoppers.dto.UserDTO;
 import com.shihabmahamud.eshoppers.exceptions.UserNotFoundException;
-import com.shihabmahamud.eshoppers.repository.JdbcUserRepositoryImpl;
 import com.shihabmahamud.eshoppers.repository.UserRepository;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
 
 public class UserServiceImpl implements  UserService {
     private final UserRepository userRepository;
@@ -25,7 +23,7 @@ public class UserServiceImpl implements  UserService {
 
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(encryptPassword(userDTO.getPassword()));
         user.setFirstname(userDTO.getFirstname());
         user.setLastname(userDTO.getLastname());
 

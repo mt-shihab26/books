@@ -19,6 +19,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public User save(User user) {
+        LOGGER.info("Creating new user");
+
         user.setDateCreated(LocalDateTime.now());
         user.setDateLastUpdated(LocalDateTime.now());
         user.setVersion(0L);
@@ -47,16 +49,9 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User update(User user) {
-        return null;
-    }
-
-    @Override
-    public void remove(User user) {
-    }
-
-    @Override
     public User findOneByUsername(String username) {
+        LOGGER.info("Finding one user by username: {}", username);
+
         try (var c = ds.getConnection();
              var ps = c.prepareStatement("""
                      SELECT * FROM user WHERE username = ?
@@ -72,11 +67,6 @@ public class JdbcUserRepositoryImpl implements UserRepository {
             LOGGER.info("Unable to find user by username: {}", username, e);
             throw new RuntimeException("Unable to find user by username: " + username, e);
         }
-    }
-
-    @Override
-    public User findOne(Long id) {
-        return null;
     }
 
     private List<User> extractUsers(ResultSet res) throws SQLException {

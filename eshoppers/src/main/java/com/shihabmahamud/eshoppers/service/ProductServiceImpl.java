@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService{
             throw new RuntimeException("There is no product in db");
         }
         var productDTOS = convertToProductDTO(products);
-        return sortProductsByName(productDTOS, true);
+        return sortProductsByName(productDTOS);
     }
 
     private List<ProductDTO> convertToProductDTO(List<Product> products) {
@@ -42,11 +42,12 @@ public class ProductServiceImpl implements ProductService{
         return productsDTO;
     }
 
-    private List<ProductDTO> sortProductsByName(List<ProductDTO> products, Boolean isAsc) {
+    private List<ProductDTO> sortProductsByName(List<ProductDTO> products) {
         var sortedProducts = products
                 .stream()
                 .sorted(Comparator.comparing(ProductDTO::getName))
                 .collect(Collectors.toList());
+        var isAsc = true;
         if (!isAsc) Collections.reverse(sortedProducts);
         return sortedProducts;
     }

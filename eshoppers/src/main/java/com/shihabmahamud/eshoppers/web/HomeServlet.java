@@ -2,6 +2,9 @@ package com.shihabmahamud.eshoppers.web;
 
 import com.shihabmahamud.eshoppers.dto.ProductDTO;
 import com.shihabmahamud.eshoppers.repository.*;
+import com.shihabmahamud.eshoppers.repository.JdbcCartItemRepositoryImpl;
+import com.shihabmahamud.eshoppers.repository.JdbcCartRepositoryImpl;
+import com.shihabmahamud.eshoppers.repository.JdbcProductRepositoryImpl;
 import com.shihabmahamud.eshoppers.service.*;
 import com.shihabmahamud.eshoppers.util.SecurityContext;
 import org.slf4j.Logger;
@@ -24,8 +27,9 @@ public class HomeServlet extends HttpServlet {
     private final CartService cartService
             = new CartServiceImpl(new JdbcCartRepositoryImpl(),
             new JdbcProductRepositoryImpl(),
-            new JdbcCartItemRepositoryImpl());
-    private final UserService userRepository = new UserServiceImpl(new JdbcUserRepositoryImpl());
+            new JdbcCartItemRepositoryImpl(),
+            new JdbcUserRepositoryImpl()
+    );
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

@@ -5,7 +5,7 @@ import com.shihabmahamud.eshoppers.domain.ShippingAddress;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-public class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
+public class MemShippingAddressRepositoryImpl implements ShippingAddressRepository {
     private static final Set<ShippingAddress> SHIPPING_ADDRESSES = new CopyOnWriteArraySet<>();
     @Override
     public ShippingAddress save(ShippingAddress shippingAddress) {

@@ -11,7 +11,7 @@ public class ValidationUtil {
     private static final ValidationUtil INSTANCE = new ValidationUtil();
     private final Validator validator;
 
-    public ValidationUtil() {
+    private ValidationUtil() {
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 

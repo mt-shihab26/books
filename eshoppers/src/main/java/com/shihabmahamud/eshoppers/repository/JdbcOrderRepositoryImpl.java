@@ -2,7 +2,6 @@ package com.shihabmahamud.eshoppers.repository;
 
 import com.shihabmahamud.eshoppers.domain.Cart;
 import com.shihabmahamud.eshoppers.domain.Order;
-import com.shihabmahamud.eshoppers.domain.ShippingAddress;
 import com.shihabmahamud.eshoppers.domain.User;
 import com.shihabmahamud.eshoppers.jdbc.JDBCTemplate;
 import org.slf4j.Logger;

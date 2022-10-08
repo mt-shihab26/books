@@ -23,7 +23,8 @@ public class OrderServlet extends HttpServlet {
     private final CartService cartService = new CartServiceImpl(
             new JdbcCartRepositoryImpl(),
             new JdbcProductRepositoryImpl(),
-            new JdbcCartItemRepositoryImpl()
+            new JdbcCartItemRepositoryImpl(),
+            new JdbcUserRepositoryImpl()
     );
     private final OrderService orderService = new OrderServiceImpl(
             new JdbcOrderRepositoryImpl(),

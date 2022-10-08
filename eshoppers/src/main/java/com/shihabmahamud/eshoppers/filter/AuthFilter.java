@@ -20,7 +20,10 @@ public class AuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request,
                          ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+            throws IOException, ServletException
+    {
+        LOGGER.info("Authorized filter the user");
+
         var httpServletRequest = (HttpServletRequest) request;
         var requestedUri = httpServletRequest.getRequestURI();
 

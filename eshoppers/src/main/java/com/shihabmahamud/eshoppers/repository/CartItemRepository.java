@@ -7,7 +7,6 @@ import com.shihabmahamud.eshoppers.exceptions.OptimisticLockingFailureException;
 
 public interface CartItemRepository {
     CartItem save(CartItem cartItem, Cart cart);
-
     CartItem update(CartItem cartItem) throws CartItemNotFoundException, OptimisticLockingFailureException;
     void remove(CartItem cartItem);
     CartItem findOne(Long id);

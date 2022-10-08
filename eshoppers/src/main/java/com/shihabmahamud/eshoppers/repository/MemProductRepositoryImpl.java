@@ -5,7 +5,7 @@ import com.shihabmahamud.eshoppers.domain.Product;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProductRepositoryImpl implements ProductRepository{
+public class MemProductRepositoryImpl implements ProductRepository{
     private static final List<Product> ALL_PRODUCTS = List.of(
             new Product(
                     1L,
