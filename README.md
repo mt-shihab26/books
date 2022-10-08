@@ -179,18 +179,27 @@
 -   Database URL in jdbc connection
     -   `jdbc:mysql:localhost:3306/`
     -   `jdbc:postgresql:localhost:5432/`
-- Data definition language (DDL): We define table schema with that
-- Data Manipulation language (DML): We do CRUD operation with that
-- Database Connection Pool
-- Delegator Design Pattern
-- Database Connection Pool Library
-  - Apache Commons DBCP
-  - HikariCP
-  - C3PO
+-   Data definition language (DDL): We define table schema with that
+-   Data Manipulation language (DML): We do CRUD operation with that
+-   Database Connection Pool
+-   Delegator Design Pattern
+-   Database Connection Pool Library
+    -   Apache Commons DBCP
+    -   HikariCP
+    -   C3PO
 
 ## Chapter 08: JDBC Repository
 
-- One-to-many Relationship
-- Foreign Key
-- varargs array
-- sql join
+-   One-to-many Relationship
+-   Foreign Key
+-   varargs array
+-   sql join
+
+## Chapter 09: Inversion of Control and Dependency Injection
+
+-   dependant
+-   dependency
+-   class A -> class B : class A is dependant on class B, here class A is Dependant and class B is Dependency
+-   There are two type of dependency
+    -   Strongly coupled dependency
+    -   Loosely coupled dependency
