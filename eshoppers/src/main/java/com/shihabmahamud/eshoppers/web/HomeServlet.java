@@ -22,10 +22,9 @@ import java.util.List;
 public class HomeServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
 
-    private final ProductService productService
-            = new ProductServiceImpl(new JdbcProductRepositoryImpl());
-    private final CartService cartService
-            = new CartServiceImpl(new JdbcCartRepositoryImpl(),
+    private final ProductService productService = new ProductServiceImpl(new JdbcProductRepositoryImpl());
+    private final CartService cartService = new CartServiceImpl(
+            new JdbcCartRepositoryImpl(),
             new JdbcProductRepositoryImpl(),
             new JdbcCartItemRepositoryImpl(),
             new JdbcUserRepositoryImpl()

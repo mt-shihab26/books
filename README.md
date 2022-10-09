@@ -199,7 +199,30 @@
 
 -   dependant
 -   dependency
--   class A -> class B : class A is dependant on class B, here class A is Dependant and class B is Dependency
+-   class A -> class B : class A is dependent on class B, here class A is Dependant and class B is Dependency
 -   There are two type of dependency
     -   Strongly coupled dependency
     -   Loosely coupled dependency
+-   Inversion of control
+-   Stop-the-World
+-   Providing Dependency from outside of need class called dependency injection
+-   Dependency injector also known as Container or Provider
+-   Container give some service on runtime
+-   Object life cycle management
+-   Provide dependency
+-   Tomcat is a servlet container. It gives servlet on runtime and manage it,
+    That way Dependency injector in a container that gives dependency and mange it.
+-   IoC Container: Giving responsibility of creating dependency object called IoC Container
+-   Java Ecosystem has some IoC Container:
+    -   Spring Framework Core
+    -   JBoss Seam
+    -   Google Guice
+    -   Dagger
+-   'CDI' is the standardized version of IoC Container that is standardized on 2009 at Java EE 6
+-   Context and Dependency Injection (CDI)
+-   The classes that CDI manage are called 'CDI Bean'
+-   CDI Bean also called Managed Object
+-   CDI is specification. It has more than one implementation:
+    - JBoss Weld (this book use)
+    - Apache OpenWebBeans
+    - CanDI
