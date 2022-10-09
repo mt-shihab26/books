@@ -8,6 +8,7 @@ import com.shihabmahamud.eshoppers.exceptions.CartItemNotFoundException;
 import com.shihabmahamud.eshoppers.repository.*;
 import com.shihabmahamud.eshoppers.repository.CartItemRepository;
 import com.shihabmahamud.eshoppers.repository.CartRepository;
+import com.shihabmahamud.eshoppers.tx.TransactionTemplate;
 import com.shihabmahamud.eshoppers.web.HomeServlet;
 import com.shihabmahamud.eshoppers.exceptions.ProductNotFoundException;
 import org.slf4j.Logger;
@@ -23,17 +24,19 @@ public class CartServiceImpl implements CartService {
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
+    private final TransactionTemplate transactionTemplate;
 
     @Inject
     public CartServiceImpl(CartRepository cartRepository,
                            ProductRepository productRepository,
                            CartItemRepository cartItemRepository,
-                           UserRepository userRepository)
+                           UserRepository userRepository, TransactionTemplate transactionTemplate)
     {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
+        this.transactionTemplate = transactionTemplate;
     }
 
     @Override
@@ -52,26 +55,37 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addProductToCart(String productId, Cart cart)
-            throws ProductNotFoundException
     {
-        Product product =  findProduct(productId);
+        transactionTemplate.execute(() -> {
+            Product product =  findProduct(productId);
+            addProductToCart(cart, product);
+            updateCart(cart);
+            return null;
+        });
 
+    }
+
+    private void addProductToCart(Cart cart, Product product) {
         var cartItemOptional = findSimilarProductInCart(cart, product);
         var cartItem = cartItemOptional
                 .map(this::increaseQuantityByOne)
                 .orElseGet(() -> createNewShoppingCartItem(product, cart));
 
         cart.getCartItems().add(cartItem);
-
-        updateCart(cart);
     }
 
     @Override
     public void removeProductToCart(String productId, Cart cart)
-            throws ProductNotFoundException, CartItemNotFoundException
     {
-        Product product = findProduct(productId);
+        transactionTemplate.execute(() -> {
+            Product product = findProduct(productId);
+            removeProductToCart(cart, product);
+            updateCart(cart);
+            return null;
+        });
+    }
 
+    private void removeProductToCart(Cart cart, Product product) {
         var itemOptional = cart.getCartItems()
                 .stream()
                 .filter(cartItem -> cartItem.getProduct().equals(product))
@@ -88,8 +102,6 @@ public class CartServiceImpl implements CartService {
             cart.getCartItems().remove(cartItem);
             cartItemRepository.remove(cartItem);
         }
-
-        updateCart(cart);
     }
 
     @Override
@@ -113,7 +125,6 @@ public class CartServiceImpl implements CartService {
     }
 
     private Product findProduct(String productId)
-            throws ProductNotFoundException
     {
         if (productId == null || productId.length() == 0)
             throw new IllegalArgumentException("Product id cannot be null");

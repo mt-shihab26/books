@@ -5,6 +5,7 @@ import com.shihabmahamud.eshoppers.dto.LoginDTO;
 import com.shihabmahamud.eshoppers.dto.UserDTO;
 import com.shihabmahamud.eshoppers.exceptions.UserNotFoundException;
 import com.shihabmahamud.eshoppers.repository.UserRepository;
+import com.shihabmahamud.eshoppers.tx.TransactionTemplate;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
@@ -13,10 +14,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class UserServiceImpl implements  UserService {
     private final UserRepository userRepository;
+    private final TransactionTemplate transactionTemplate;
 
     @Inject
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, TransactionTemplate transactionTemplate) {
         this.userRepository = userRepository;
+        this.transactionTemplate = transactionTemplate;
     }
 
     @Override
@@ -41,18 +44,20 @@ public class UserServiceImpl implements  UserService {
 
     @Override
     public User verifyUser(LoginDTO loginDTO) {
-        var user = userRepository.findOneByUsername(loginDTO.getUsername());
+        return transactionTemplate.execute(() -> {
+            var user = userRepository.findOneByUsername(loginDTO.getUsername());
 
-        if (user == null)
-            throw new UserNotFoundException("User not found by " + loginDTO.getUsername());
+            if (user == null)
+                throw new UserNotFoundException("User not found by " + loginDTO.getUsername());
 
-        var encrypted = encryptPassword(loginDTO.getPassword());
-        if (user.getPassword().equals(encrypted)) {
+            var encrypted = encryptPassword(loginDTO.getPassword());
+            if (user.getPassword().equals(encrypted)) {
 
-            return user;
-        } else {
-            throw new UserNotFoundException("Incorrect username password");
-        }
+                return user;
+            } else {
+                throw new UserNotFoundException("Incorrect username password");
+            }
+        });
     }
 
     private String encryptPassword(String password) {

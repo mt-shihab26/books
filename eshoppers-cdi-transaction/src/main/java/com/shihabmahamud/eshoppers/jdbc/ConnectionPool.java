@@ -3,7 +3,6 @@ package com.shihabmahamud.eshoppers.jdbc;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import javax.enterprise.inject.Produces;
 import javax.sql.DataSource;
 import java.util.ResourceBundle;
 public final class ConnectionPool {

@@ -226,3 +226,15 @@
     -   JBoss Weld (this book use)
     -   Apache OpenWebBeans
     -   CanDI
+
+## Chapter 09: Transaction Management
+
+-   Transaction Management
+-   Request Scoped Bean: @RequestScoped -> The bean which life end with request
+-   Session Scoped Bean: @SessionScoped -> The bean which life end with one user session
+-   Application scoped Bean: @ApplicationScoped
+-   Singleton Bean: @Singleton
+-   @Dependent is default
+-   We can use @RequestScoped Bean for transaction
+-   Execute Around Pattern
+-   In eshoppers-cdi-transaction product we have cdi container code and transaction code together.

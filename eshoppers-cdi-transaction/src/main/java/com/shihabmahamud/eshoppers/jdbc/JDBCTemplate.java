@@ -1,5 +1,6 @@
 package com.shihabmahamud.eshoppers.jdbc;
 
+import com.shihabmahamud.eshoppers.tx.ConnectionHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,11 +16,12 @@ public class JDBCTemplate {
     private static final Logger LOGGER
             = LoggerFactory.getLogger(JDBCTemplate.class);
 
-    private final DataSource dataSource = ConnectionPool.getInstance().getDataSource();
+    @Inject
+    private ConnectionHolder connectionHolder;
 
     public void updateQuery(String query, Object... parameters) {
-        try (var connection = dataSource.getConnection();
-             var statement = connection.prepareStatement(query)) {
+        var connection = connectionHolder.getConnection();
+        try (var statement = connection.prepareStatement(query)) {
 
             addParameters(statement, parameters);
 
@@ -31,8 +33,8 @@ public class JDBCTemplate {
     }
 
     public void query(String query, ThrowableConsumer<ResultSet> consumer) {
-        try (var connection = dataSource.getConnection();
-             var statement = connection.prepareStatement(query)) {
+        var connection = connectionHolder.getConnection();
+        try (var statement = connection.prepareStatement(query)) {
 
             consumer.accept(statement.executeQuery());
 
@@ -43,10 +45,10 @@ public class JDBCTemplate {
     }
 
     public long executeInsertQuery(String query, Object... parameters) {
-        try (var connection = dataSource.getConnection();
-             var preparedStatement
-                     = connection.prepareStatement(query,
-                     Statement.RETURN_GENERATED_KEYS)) {
+        var connection = connectionHolder.getConnection();
+        try (var preparedStatement = connection.prepareStatement(
+                query, Statement.RETURN_GENERATED_KEYS))
+        {
             addParameters(preparedStatement, parameters);
 
             final int affectedRows = preparedStatement.executeUpdate();
@@ -70,8 +72,9 @@ public class JDBCTemplate {
     }
 
     public <E> List<E> queryForObject(String query, Object param, ObjectRowMapper<E> objectRowMapper) {
-        try (var connection = dataSource.getConnection();
-             var statement = connection.prepareStatement(query)) {
+        var connection = connectionHolder.getConnection();
+
+        try (var statement = connection.prepareStatement(query)) {
 
             addParameters(statement, new Object[]{param});
             var resultSet = statement.executeQuery();
@@ -89,9 +92,9 @@ public class JDBCTemplate {
     }
 
     public <E> List<E> queryForObject(String query, ObjectRowMapper<E> objectRowMapper) {
+        var connection = connectionHolder.getConnection();
 
-        try (var connection = dataSource.getConnection();
-             var statement = connection.prepareStatement(query)) {
+        try (var statement = connection.prepareStatement(query)) {
 
             var resultSet = statement.executeQuery(query);
             List<E> listOfE = new ArrayList<>();
@@ -137,8 +140,8 @@ public class JDBCTemplate {
     }
 
     public void deleteById(String query, Long id) {
-        try (var connection = dataSource.getConnection();
-             var statement = connection.prepareStatement(query)) {
+        var connection = connectionHolder.getConnection();
+        try (var statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
 
             statement.execute();
