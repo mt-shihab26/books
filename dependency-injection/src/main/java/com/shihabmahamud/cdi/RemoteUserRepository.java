@@ -1,7 +1,4 @@
-package com.shihabmahamud.cdi.repository;
-
-import com.shihabmahamud.cdi.annotations.Remote;
-import com.shihabmahamud.cdi.domain.User;
+package com.shihabmahamud.cdi;
 
 @Remote
 public class RemoteUserRepository implements UserRepository{

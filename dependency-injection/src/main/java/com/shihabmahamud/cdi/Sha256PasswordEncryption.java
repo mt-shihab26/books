@@ -1,6 +1,4 @@
-package com.shihabmahamud.cdi.util;
-
-import com.shihabmahamud.cdi.annotations.Sha256;
+package com.shihabmahamud.cdi;
 
 @Sha256
 public class Sha256PasswordEncryption implements PasswordEncryption{

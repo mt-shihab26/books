@@ -1,4 +1,4 @@
-package com.shihabmahamud.cdi.util;
+package com.shihabmahamud.cdi;
 
 import javax.enterprise.inject.Default;
 

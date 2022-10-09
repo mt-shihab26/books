@@ -1,28 +1,20 @@
-package com.shihabmahamud.cdi.service;
+package com.shihabmahamud.cdi;
 
-import com.shihabmahamud.cdi.annotations.Sha256;
-import com.shihabmahamud.cdi.domain.User;
-import com.shihabmahamud.cdi.repository.UserRepository;
-import com.shihabmahamud.cdi.util.PasswordEncryption;
-
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 public class UserService {
-    // now this UserService class is CDI Bean
+
     @Inject
-    @Default
+    @Remote
     private UserRepository userRepository;
 
     @Inject
     @Sha256
-    private PasswordEncryption passwordEncryption;
-
+    private PasswordEncryption encryption;
 
     public void saveUser(User user) {
-        System.out.println("Inside UserService::saveUser()");
+        user.setPassword(encryption.encrypt(user.getPassword()));
 
-        user.setPassword(passwordEncryption.encrypt(user.getPassword()));
         userRepository.save(user);
     }
 }

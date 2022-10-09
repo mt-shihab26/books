@@ -5,7 +5,7 @@ plugins {
 group 'com.shihabmahamud'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 17
+sourceCompatibility = 11
 
 repositories {
     mavenCentral()
@@ -13,9 +13,8 @@ repositories {
 
 dependencies {
     implementation 'org.jboss.weld.se:weld-se:2.4.8.Final'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    implementation 'ch.qos.logback:logback-classic:1.4.3'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 task copyResources(type: Copy) {

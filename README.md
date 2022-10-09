@@ -223,6 +223,6 @@
 -   The classes that CDI manage are called 'CDI Bean'
 -   CDI Bean also called Managed Object
 -   CDI is specification. It has more than one implementation:
-    - JBoss Weld (this book use)
-    - Apache OpenWebBeans
-    - CanDI
+    -   JBoss Weld (this book use)
+    -   Apache OpenWebBeans
+    -   CanDI

@@ -1,4 +1,4 @@
-package com.shihabmahamud.cdi.domain;
+package com.shihabmahamud.cdi;
 
 public class User {
 
