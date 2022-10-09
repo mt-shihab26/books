@@ -2,7 +2,7 @@
 
 জাভা ওয়েব প্রোগ্রামিং (ANM Bazlur Rahman) Book's Code Collection
 
-<!-- Sep 30, 2022 to Oct 9, 2022 -> total 10 days take -->
+<!-- Sep 30, 2022 to Oct 9, 2022 -> total 10 days take, total page number is 344 -->
 
 ## Stuff
 
