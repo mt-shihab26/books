@@ -1,4 +1,4 @@
-package com.shihabmahamud.ioc;
+package com.shihabmahamud.ioc.domain;
 
 public class User {
     private String password;
