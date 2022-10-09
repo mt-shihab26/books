@@ -4,9 +4,10 @@
 
 <!-- Sep 30, 2022 to Oct 9, 2022 -> total 10 days take, total page number is 344 -->
 
-## Stuff
+## Stuff Used
 
--   Tomcat
+-   Servlet Container
+    -   'Tomcat' as servlet container that handle req/res
 -   Request Response:
     -   Handling request response with 'Servlet'
 -   Templating:
@@ -24,6 +25,11 @@
 -   Database
     -   Use 'MySQL' with JDBC
     -   As Connection Pool use 'HikariCP'
+-   Dependency Injection
+    -   Use 'Jboss weld servlet' for dependency injection
+-   Transaction Management
+-   Dependency Management and Build Tools
+    -   'Gradle' as dependency management tools
 
 ## Links
 
