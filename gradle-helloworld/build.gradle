@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'com.shihabmahamud'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.guava:guava:28.0-jre'
+    //             group name: artifact/project name: version
+
+    // implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+
+    testImplementation 'junit:junit:4.12'
+}

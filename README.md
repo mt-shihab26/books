@@ -2,6 +2,8 @@
 
 জাভা ওয়েব প্রোগ্রামিং (ANM Bazlur Rahman) Book's Code Collection
 
+<!-- Sep 30, 2022 to Oct 9, 2022 -> total 10 days take -->
+
 ## Stuff
 
 -   Tomcat
@@ -238,3 +240,35 @@
 -   We can use @RequestScoped Bean for transaction
 -   Execute Around Pattern
 -   In eshoppers-cdi-transaction product we have cdi container code and transaction code together.
+
+## Exercise
+
+-   এই অ্যাপ্লিকেশনে সাধারণ ইউজার হিসেবে লগইন করা গেলেও এডমিন ইউজার হিসেবে লগইন করার উপায় নেই। হিন্ট: ইউজার ক্লাসে একটি নতুন ফিল্ট তৈরি করুন। এর নাম দিন role এটি এনাম হতে পারে। সাধারণ ব্যবহারকারীদের জন্য এর ভ্যালু হতে পারে ROLE_USER । এডমিন ইউজারের জন্য এর ভ্যালু হতে পারে ROLE_ADMIN । লগইন করার পর AuthFilter এর doFilter() মেথডে কারেন্ট নিউজ অবজেক্ট থেকে রোল পরীক্ষা করে দেখতে পারি। এডমিন হলে তাকে এডমিন পেজে আর সাধারন ইউজার হলে তাকে হোমপেজে পাঠিয়ে দিতে পারি।
+-   এই অ্যাপ্লিকেশনের হোমপেজে নানা রকম প্রোডাক্ট এর তথ্য থাকলেও এতে নতুন করে প্রোডাক্ট যুক্ত করার সহজ কোন উপায় নেই। একজন এডমিন ইউজার যাতে করে সহজে নতুন প্রোডাক্ট তৈরি করতে পারে সেরকম একটি পেজ তৈরি করুন। হিন্ট: এটি এমন ভাবে তৈরি করতে হবে, যাতে এডমিন ইউজার ছাড়া অন্য কেউ এই পেজে প্রবেশ করতে না পারে।
+-   হোমপেজে প্রোডাক্ট সার্চ করার জন্য একটি সার্চ বার যুক্ত করুন
+-   হোমপেজে একসাথে সবগুলো প্রোডাক্ট না দেখিয়ে Pagination যুক্ত করুন। হিন্ট: প্রতি পেজে 20 টি করে প্রডাক্ট দেখানো যেতে পারে। মাইএসকিউএল কুয়েরিতে limit কিওয়ার্ড ব্যবহার করা যেতে পারে।
+-   অ্যাপ্লিকেশনে অর্ডার তৈরি করার আগে পেমেন্ট নেওয়ার পেজ যুক্ত করুন। পেমেন্ট দুই ভাবে নেওয়া যেতে পারে ক্যাশ অন ডেলিভারি কিংবা অনলাইন পেমেন্ট। যেমন: বিকাশ ইত্যাদি।
+-   অর্ডার তৈরি হয়ে গেলে অর্ডারের বিবরণটি ইউজারকে ইমেইলে জানিয়ে দিন। হিন্ট: জাভা অ্যাপ্লিকেশন থেকে ইমেইল করার জন্য Java Mail নামের একটি এপিআই রয়েছে
+
+## Appendix
+
+-   https://mvnrepository.com/
+-   Apache Commons Lang
+-   Java Archive (.jar)
+-   Dependency Management and Build Tool for Java: Ant, Maven, Gradle
+-   We use gradle here
+-   Gradle commands
+    -   `gradle -v`
+    -   `gradle init`
+    -   `gradle build` or `./gradlew build`
+    -   `gradle tasks`
+    -   `gradle clean` for cleaning build directory
+    -   `gradle test`
+    -   `gradle build -x test` for building project without test
+    -   `gradle dependencies`
+    -   ``
+-   Gralde Repositores
+    -   mavenCentral()
+    -   google()
+    -   jcenter()
+-   Getting To Know Your IDE: https://youtube.com/playlist?list=PLPZy-hmwOdEXdOtXdFzyx_XCnrF_oD2Ft
