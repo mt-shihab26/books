@@ -10,7 +10,10 @@
 -   https://github.com/MasterDevSkills/java-web-programming-book
 
 ## Stuff Used
-
+-   Java Fundamental Component used here
+    -   Servlet
+    -   JSP
+    -   JDBC
 -   Servlet Container
     -   'Tomcat' as servlet container that handle req/res
 -   Request Response:
