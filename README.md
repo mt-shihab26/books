@@ -4,6 +4,11 @@
 
 <!-- Sep 30, 2022 to Oct 9, 2022 -> total 10 days take, total page number is 344 -->
 
+## Links
+
+- https://bazlur.com/posts/2020-03-06-%E0%A6%9C%E0%A6%BE%E0%A6%AD%E0%A6%BE-%E0%A6%93%E0%A6%AF%E0%A6%BC%E0%A7%87%E0%A6%AC-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A7%8B%E0%A6%97%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%BF/
+-   https://github.com/MasterDevSkills/java-web-programming-book
+
 ## Stuff Used
 
 -   Servlet Container
@@ -30,10 +35,6 @@
 -   Transaction Management
 -   Dependency Management and Build Tools
     -   'Gradle' as dependency management tools
-
-## Links
-
--   https://github.com/MasterDevSkills/java-web-programming-book
 
 ## Chapter 01: Web and Web Application
 
