@@ -4,7 +4,7 @@ package main
 import (
 	"os"
 
-	"github.com/shihab4t/the-go-programming-language/ch01/014_lissajous/lissajous"
+	"github.com/shh26b/the-go-programming-language/ch01/014_lissajous/lissajous"
 )
 
 func main() {

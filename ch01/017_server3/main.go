@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/shihab4t/the-go-programming-language/ch01/014_lissajous/lissajous"
+	"github.com/shh26b/the-go-programming-language/ch01/014_lissajous/lissajous"
 )
 
 var mu sync.Mutex
