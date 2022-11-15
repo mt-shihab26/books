@@ -40,4 +40,13 @@ The Go Programming Language (Alan A. A. Donovan and Brian Kernighan) Book's Code
     -   `close`, `delete`, `complex`
     -   `real`, `imag`, `panic`,
     -   `recover`
--   There are four major kinds of declarations: `var`, `const`, `type`, `func`
+
+## ch02 - Program Structure
+
+-   There are four major kinds of declarations:
+    -   `var`, `const`, `type`, `func`
+-   Zero values of Types:
+    -   numbers: `0`
+    -   booleans: `false`
+    -   strings: `""`
+    -   interface and reference types (slice, pointer, map, channel, function): `nil`
