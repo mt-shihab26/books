@@ -1,6 +1,6 @@
-# গণিত-করব-জয় (তামিম শাহ‍্‍রিয়ার সুবিন ও তাহমিদ রাফি)
+# গণিত করব জয় (তামিম শাহ‍্‍রিয়ার সুবিন ও তাহমিদ রাফি)
 
-[গণিত-করব-জয়](<](http://dimik.pub/book/229/gonit-kobo-joy-by-tamim-shahriar-subeen-tahmid-rafi)>) (Tamim Shahriar Subeen and Tahmid Rafi) Book's Code Collection
+[গণিত করব জয়](<](http://dimik.pub/book/229/gonit-kobo-joy-by-tamim-shahriar-subeen-tahmid-rafi)>) (Tamim Shahriar Subeen and Tahmid Rafi) Book's Code Collection
 
 ## Chapter 01 - সংখ্যা ও গণনা (Numbers and calculations)
 Words:
