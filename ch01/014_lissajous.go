@@ -1,4 +1,5 @@
-package lissajous
+// Lissajous generates GIF animations of random Lissajous figures.
+package main
 
 import (
 	"image"
@@ -7,6 +8,7 @@ import (
 	"io"
 	"math"
 	"math/rand"
+	"os"
 )
 
 var palette = []color.Color{color.White, color.Black}
@@ -40,4 +42,8 @@ func Lissajous(out io.Writer) {
 		anim.Image = append(anim.Image, img)
 	}
 	gif.EncodeAll(out, &anim) // NOTE: ignoring encoding errors
+}
+
+func main() {
+	Lissajous(os.Stdout)
 }
