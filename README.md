@@ -2,6 +2,11 @@
 
 The Go Programming Language (Alan A. A. Donovan and Brian Kernighan) Book's Code Collection
 
+## Links
+
+-   https://github.com/adonovan/gopl.io
+-   https://drive.google.com/file/d/1ICn7mN8mKaouTJISo6VC--yh0l9JC084/view?usp=share_link
+
 ## Commands
 
 -   `go run <file-name.go>` compile, links and run
