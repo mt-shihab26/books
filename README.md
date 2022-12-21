@@ -15,39 +15,35 @@ The Go Programming Language (Alan A. A. Donovan and Brian Kernighan) Book's Code
 -   `go install` installing binary in $GOPATH/bin/ directory
 -   `go fmt` formatting go code
 
-## Go has 25 keywords
-
--   `break`, `case`, `chan`
--   `const`, `continue`, `default`
--   `defer`, `else`, `fallthrough`
--   `for`, `func`, `go`
--   `goto`, `if`, `import`
--   `interface`, `map`, `package`
--   `range`, `return`, `select`
--   `struct` `switch`, `type`,
--   `var`
-
-## Built-in constants, types and functions
-
--   Constants:
-    -   `true`, `false`, `iota`,`nil`
--   Types:
-    -   Integers: `int`, `int8`, `int16`, `int32`, `int64`, `uint`, `uint8`, `uint16`, `uint32`, `uint64`,`uintptr`
-    -   Floats: `float32`, `float64`
-    -   Complexes: `complex128` `complex64`
-    -   Booleans: `bool`
-    -   Characters: `byte` `rune`
-    -   Strings: `string`
-    -   Errors: `error`
--   Functions:
-    -   `make`, `len`, `cap`,
-    -   `new`, `append`, `copy`
-    -   `close`, `delete`, `complex`
-    -   `real`, `imag`, `panic`,
-    -   `recover`
-
 ## ch02 - Program Structure
 
+-   Go has 25 keywords
+    -   `break`, `case`, `chan`
+    -   `const`, `continue`, `default`
+    -   `defer`, `else`, `fallthrough`
+    -   `for`, `func`, `go`
+    -   `goto`, `if`, `import`
+    -   `interface`, `map`, `package`
+    -   `range`, `return`, `select`
+    -   `struct` `switch`, `type`,
+    -   `var`
+-   Built-in constants, types and functions
+    -   Constants:
+        -   `true`, `false`, `iota`,`nil`
+    -   Types:
+        -   Integers: `int`, `int8`, `int16`, `int32`, `int64`, `uint`, `uint8`, `uint16`, `uint32`, `uint64`,`uintptr`
+        -   Floats: `float32`, `float64`
+        -   Complexes: `complex128` `complex64`
+        -   Booleans: `bool`
+        -   Characters: `byte` `rune`
+        -   Strings: `string`
+        -   Errors: `error`
+    -   Functions:
+        -   `make`, `len`, `cap`,
+        -   `new`, `append`, `copy`
+        -   `close`, `delete`, `complex`
+        -   `real`, `imag`, `panic`,
+        -   `recover`
 -   There are four major kinds of declarations:
     -   `var`, `const`, `type`, `func`
 -   Zero values of Types:
@@ -73,3 +69,10 @@ The Go Programming Language (Alan A. A. Donovan and Brian Kernighan) Book's Code
     -   Assignment statements are an explicit form of assignment, but there are many places in a program where an assignment occurs implicitly: a function call, a return statement implicitly assigns the return operands;
     -   An assignment, `explicit` or `implicit`, is always legal if the left-hand side (the variable) and the right-hand side (the value) have the same typ e
     -   `==` and `!=` is related to assignability, here also same rule applied.
+-   Type Declaration
+    -   `Celsius(t)` and `Fahrenheit(t)` are conversions, not function calls
+    -   For every type `T`, there is a corresponding conversion operation `T(x)` that converts the value `x` to type `T`
+    -   A conversion from one type to another is allowed if both have the same underlying type, or if both are unnamed pointer types that point to variables of the same underlying type; these conversions change the type but not the representation of the value.
+    -   If x is assignable to `T`, a conversion is permitted but is usually redundant
+    -   In any case, a conversion never fails at run time.
+    -   The underlying type of a named type determines its structure and representation, and als o the set of intrinsic operations it supports, which are the same as if the underlying type had been used directly. That means that arithmetic operators work the same for Celsius and Fahrenheit as they do for float64, as you might expect
