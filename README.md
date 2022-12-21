@@ -76,3 +76,5 @@ The Go Programming Language (Alan A. A. Donovan and Brian Kernighan) Book's Code
     -   If x is assignable to `T`, a conversion is permitted but is usually redundant
     -   In any case, a conversion never fails at run time.
     -   The underlying type of a named type determines its structure and representation, and als o the set of intrinsic operations it supports, which are the same as if the underlying type had been used directly. That means that arithmetic operators work the same for Celsius and Fahrenheit as they do for float64, as you might expect
+-   Packages and Files
+    -   In Go, a simple rule governs which identifiers are exported and which are not: exported identifiers start with an upper-case letter.
