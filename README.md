@@ -69,3 +69,7 @@ The Go Programming Language (Alan A. A. Donovan and Brian Kernighan) Book's Code
     -   Garbage collection is a tremendous help in writing cor rect programs, but it does not relieve you of the burden of thinking about memory. You don’t need to explicitly allocate and free memory, but to write efficient programs you still need to be aware of the lifetime of variables. For example, keeping unnecessary pointers to short-lived objects wit hin long-lived objects, especially global variables, will prevent the garbage collector from reclaiming the short-lived objects.
 -   Assignments
 -   Tuple Assignments
+-   Assignability: implicit assignments
+    -   Assignment statements are an explicit form of assignment, but there are many places in a program where an assignment occurs implicitly: a function call, a return statement implicitly assigns the return operands;
+    -   An assignment, `explicit` or `implicit`, is always legal if the left-hand side (the variable) and the right-hand side (the value) have the same typ e
+    -   `==` and `!=` is related to assignability, here also same rule applied.
