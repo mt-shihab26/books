@@ -7,9 +7,9 @@ bool is_prime(int n)
         return false;
     if (n == 2)
         return true;
-    int root = sqrt(n + 1);
     if (n % 2 == 0)
         return false;
+    int root = sqrt(n + 1);
     for (int i = 3; i <= root; i += 2)
     {
         if (n % i == 0)
