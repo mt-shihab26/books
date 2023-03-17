@@ -1,0 +1,10 @@
+CREATE TABLE product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(500) NULL,
+    price DECIMAL NOT NULL,
+    version BIGINT NOT NULL,
+    rating BIGINT NULL,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
