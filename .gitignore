@@ -1,3 +1,12 @@
+a.out
+a.exe
+*.out
+*.exe
+.vscode
+
+tmp.*
+.cph
+
 .gradle
 build
 !gradle-wrapper.jar
@@ -12,3 +21,14 @@ bin
 .settings
 .classpath
 .project
+
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+Footer
+
+.attach_pid78811
