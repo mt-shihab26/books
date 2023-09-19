@@ -1,6 +1,6 @@
 # programming-contest-data-structure-and-algorithm
 
-[প্রোগ্রামিং কনটেস্ট ডেটা স্ট্রাকচার ও অ্যালগরিদম](http://dimik.pub/book/77) (.Md-Mahbubul-Hasan) Book's Code Collection
+[প্রোগ্রামিং কনটেস্ট ডেটা স্ট্রাকচার ও অ্যালগরিদম](http://dimik.pub/book/77) (Md Mahbubul Hasan) Book's Code Collection
 
 <!-- - pp means proper -->
 
@@ -17,6 +17,6 @@
     -   [x] variation of linked list
         -   doubly linked lint
         -   circular linked list
-    -   [x] we can use stl vector and list as linked list
-    -   [x] we can't random access in linked list
+    -   [x] we can use stl vector and list as a linked list
+    -   [x] we can't random access in the linked list
     -   [ ] solve leetcode linked list problems
