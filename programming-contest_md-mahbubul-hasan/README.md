@@ -4,3 +4,19 @@
 
 <!-- - pp means proper -->
 
+# অধ্যায় ৫
+
+## Notes
+
+-   adjacency matrix
+-   adjacency list
+-   linked list
+    -   [x] linked list implementation
+        -   array way
+        -   dynamic memory allocation way
+    -   [x] variation of linked list
+        -   doubly linked lint
+        -   circular linked list
+    -   [x] we can use stl vector and list as linked list
+    -   [x] we can't random access in linked list
+    -   [] solve leetcode linked list problems
