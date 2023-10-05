@@ -19,4 +19,4 @@
         -   circular linked list
     -   [x] we can use stl vector and list as a linked list
     -   [x] we can't random access in the linked list
-    -   [ ] solve leetcode linked list problems
+    -   [ ] solve leetcode linked list problems (|)
