@@ -5,6 +5,5 @@ let launchMissiles = function () {
 let safeMode = true;
 
 if (safeMode) {
-    launchMissiles = function () { };
+    launchMissiles = function () {};
 }
-

@@ -4,7 +4,7 @@ const square = function (x: number): number {
 
 const makeNoise = function (): void {
     console.log("Pling!");
-}
+};
 
 const power = function (base: number, exponent: number): number {
     let result = 1;
@@ -12,7 +12,7 @@ const power = function (base: number, exponent: number): number {
         result *= base;
     }
     return result;
-}
+};
 
 console.log(square(12));
 makeNoise();

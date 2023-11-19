@@ -8,7 +8,6 @@ if (!Number.isNaN(theNumber)) {
 
 if (1 + 1 == 2) console.log("It's true");
 
-
 let num = 90;
 
 if (num < 10) {

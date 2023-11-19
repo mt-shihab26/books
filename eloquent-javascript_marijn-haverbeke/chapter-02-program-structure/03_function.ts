@@ -13,9 +13,7 @@
 //     output: process.stdout,
 // });
 
-
 console.log(Math.max(12, 2, 4, 100, -2));
 // -> 100
 console.log(Math.min(12, 2, 4, 100, -2));
 // -> -2
-
