@@ -1,7 +1,13 @@
+use rand;
 use std::io;
 
 fn main() {
     println!("Guess the number!");
+
+    let secret_number = rand::random_range(1..=100);
+
+    println!("The secret number is: {secret_number}");
+
     println!("Please input the guess.");
 
     let mut guess = String::new();
