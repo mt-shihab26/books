@@ -1,3 +1,5 @@
+use std::io;
+
 fn main() {
     // scalar types
 
@@ -71,4 +73,21 @@ fn main() {
     let second = a[1];
     println!("first={first}");
     println!("second={second}");
+
+    println!("please enter an array index.");
+
+    let mut index = String::new();
+
+    io::stdin()
+        .read_line(&mut index)
+        .expect("failed to read line");
+
+    let index: usize = index
+        .trim()
+        .parse()
+        .expect("index entered was not a number");
+
+    let element = a[index];
+
+    println!("the value of the element at index {index} is: {element}");
 }
