@@ -43,6 +43,15 @@ fn main() {
     let tup: (i32, f64, u8) = (500, 6.4, 1);
     println!("tup={:?}", tup);
     println!("tup={:#?}", tup);
+
     let (x, y, z) = tup;
     println!("tup, x={x}, y={y}, z={z}");
+
+    let x = tup.0;
+    let y = tup.1;
+    let z = tup.2;
+    println!("tup, x={x}, y={y}, z={z}");
+
+    let unit = ();
+    println!("unit={:?}", unit); // Expressions implicitly return the unit value if they don’t return any other value.
 }
