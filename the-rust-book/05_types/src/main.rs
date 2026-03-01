@@ -15,4 +15,29 @@ fn main() {
     println!("byte = {byte}");
 
     // floating-point types
+
+    let x = 2.0; // f64;
+    let y: f32 = 3.0; // f32
+
+    println!("f64 = {x}");
+    println!("f32 = {y}");
+
+    // boolean types
+    let t = true;
+    let f: bool = false;
+
+    println!("boolean={t}");
+    println!("boolean={f}");
+
+    // character types
+    let c = 'z';
+    let z: char = 'ℤ'; // with explicit type annotation
+    let heart_eyed_cat = '😻';
+    println!("char={c}");
+    println!("char={z}");
+    println!("char={heart_eyed_cat}");
+
+    // compound types
+
+    // tuple type
 }
