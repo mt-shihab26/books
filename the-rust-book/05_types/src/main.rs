@@ -40,4 +40,9 @@ fn main() {
     // compound types
 
     // tuple type
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
+    println!("tup={:?}", tup);
+    println!("tup={:#?}", tup);
+    let (x, y, z) = tup;
+    println!("tup, x={x}, y={y}, z={z}");
 }
