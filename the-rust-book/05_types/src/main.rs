@@ -54,4 +54,21 @@ fn main() {
 
     let unit = ();
     println!("unit={:?}", unit); // Expressions implicitly return the unit value if they don’t return any other value.
+
+    // array types
+    let a = [1, 2, 3, 4, 5];
+    println!("array = {:?}", a);
+    println!("array = {:#?}", a);
+
+    let a: [i32; 5] = [1, 2, 3, 4, 5];
+    println!("array = {:?}", a);
+
+    let a = [0; 5];
+    println!("array = {:?}", a);
+
+    let a = [1, 2, 3, 4, 5];
+    let first = a[0];
+    let second = a[1];
+    println!("first={first}");
+    println!("second={second}");
 }
