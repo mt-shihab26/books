@@ -1,3 +1,5 @@
+// single line comment
+
 fn main() {
     println!("add = {}", add(5, 10));
 
