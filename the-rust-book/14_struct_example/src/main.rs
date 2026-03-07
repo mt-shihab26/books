@@ -4,8 +4,14 @@ struct Rect {
     height: u32,
 }
 
-fn area(rect: &Rect) -> u32 {
-    rect.width * rect.height
+impl Rect {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn width(&self) -> bool {
+        self.width > 0
+    }
 }
 
 fn main() {
@@ -14,8 +20,12 @@ fn main() {
         height: 50,
     };
 
-    println!("The are of {rect:?} is {}", area(&rect));
-    println!("The are of {rect:#?} is {}", area(&rect));
+    println!(
+        "The area of {rect:?} is {}, width valid: {}",
+        rect.area(),
+        rect.width()
+    );
+    println!("The area of {rect:#?} is {}", rect.area());
 
     let scale = 2;
 
