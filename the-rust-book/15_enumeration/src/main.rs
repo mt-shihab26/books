@@ -48,4 +48,10 @@ fn main() {
     if let IpAddr2::V6(addr) = loopback {
         println!("IPv6: {}", addr);
     }
+
+    let some_number = Some(5);
+    let some_char = Some('e');
+    let absent_number: Option<i32> = None;
+
+    println!("{some_number:?}, {some_char:?}, {absent_number:?}");
 }
