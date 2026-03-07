@@ -8,6 +8,8 @@ struct User {
 struct Color(i32, i32, i32);
 struct Point(i32, i32, i32);
 
+// struct AlwaysEqual;
+
 fn main() {
     let user = User {
         username: String::from("shihab"),
@@ -46,4 +48,6 @@ fn main() {
     let Point(x, y, z) = origin;
 
     println!("{x}, {y}, {z}, {}", origin.0);
+
+    // let subject = AlwaysEqual;
 }
