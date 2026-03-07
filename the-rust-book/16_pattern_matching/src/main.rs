@@ -27,10 +27,21 @@ fn cents(coin: &Coin) -> u8 {
     }
 }
 
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
+    }
+}
+
 fn main() {
     println!("{}", cents(&Coin::Penny));
     println!("{}", cents(&Coin::Nickel));
     println!("{}", cents(&Coin::Dime));
     println!("{}", cents(&Coin::Quarter(State::Alabama)));
     println!("{}", cents(&Coin::Quarter(State::Alaska)));
+
+    println!("5 + 1 = {:?}", plus_one(Some(5)));
+    println!("6 + 1 = {:?}", plus_one(Some(6)));
+    println!("None + 1 = {:?}", plus_one(None));
 }
