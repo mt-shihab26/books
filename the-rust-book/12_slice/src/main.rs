@@ -7,18 +7,24 @@ fn main() {
     let s = String::from("Hello");
     let w = first_word(&s);
 
-    println!("the first word of '{s}' is '{w}'")
+    println!("the first word of '{s}' is '{w}'");
+
+    let s = "This is Rust";
+    let w = first_word(&s);
+
+    println!("the first word of '{s}' is '{w}'");
+
+    // s.clear();
+
+    // println!("the first word of '{s}' is '{w}'")
 }
 
-fn first_word(s: &String) -> String {
-    let mut word = String::new();
-
-    for c in s.chars() {
+fn first_word(s: &str) -> &str {
+    for (i, c) in s.chars().enumerate() {
         if c == ' ' {
-            break;
+            return &s[..i];
         }
-        word.push(c);
     }
 
-    word
+    &s[..]
 }
