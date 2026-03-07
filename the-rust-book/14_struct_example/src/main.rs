@@ -12,6 +12,13 @@ impl Rect {
     fn width(&self) -> bool {
         self.width > 0
     }
+
+    fn square(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size,
+        }
+    }
 }
 
 fn main() {
@@ -26,6 +33,8 @@ fn main() {
         rect.width()
     );
     println!("The area of {rect:#?} is {}", rect.area());
+
+    println!("{:?}", Rect::square(12));
 
     let scale = 2;
 
