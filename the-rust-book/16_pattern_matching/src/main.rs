@@ -4,6 +4,15 @@ enum State {
     Alaska,
 }
 
+impl State {
+    fn existed_in(&self, year: u16) -> bool {
+        match self {
+            State::Alabama => year >= 1819,
+            State::Alaska => year >= 1819,
+        }
+    }
+}
+
 enum Coin {
     Penny,
     Nickel,
@@ -30,6 +39,30 @@ fn plus_one(x: Option<i32>) -> Option<i32> {
     match x {
         None => None,
         Some(i) => Some(i + 1),
+    }
+}
+
+fn describe_state_quarter(coin: Coin) -> Option<String> {
+    // if let Coin::Quarter(state) = coin {
+    //     if state.existed_in(1900) {
+    //         Some(format!("{state:?} is pretty old, for America!"))
+    //     } else {
+    //         Some(format!("{state:?} is relatively new."))
+    //     }
+    // } else {
+    //     None
+    // }
+
+    let state = if let Coin::Quarter(state) = coin {
+        state
+    } else {
+        return None;
+    };
+
+    if state.existed_in(1900) {
+        Some(format!("{state:?} is pretty old, for America!"))
+    } else {
+        Some(format!("{state:?} is relatively new."))
     }
 }
 
@@ -63,4 +96,16 @@ fn main() {
         7 => println!("seven"),
         _ => (),
     }
+
+    let config_max = Some(3u8);
+    if let Some(max) = config_max {
+        println!("The maximum is configured to be {max}");
+    } else {
+        println!("The maximum not is configured");
+    };
+
+    println!(
+        "{:?}",
+        describe_state_quarter(Coin::Quarter(State::Alabama))
+    )
 }
