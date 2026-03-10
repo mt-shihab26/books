@@ -1,4 +1,4 @@
-use crate::bank::accounts::Account;
+use super::accounts::Account;
 
 pub fn deposit(account: &mut Account, amount: i32) {
     account.balance += amount;

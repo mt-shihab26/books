@@ -1,9 +1,9 @@
-use bank::accounts::Account;
-use bank::announce;
-use bank::hello::world::foo;
-use bank::transactions::{deposit, withdraw};
-
-mod bank;
+use module_system::bank::{
+    accounts::Account,
+    announce,
+    hello::world::foo,
+    transactions::{deposit, withdraw},
+};
 
 fn main() {
     let mut account = Account::new("Bob");
