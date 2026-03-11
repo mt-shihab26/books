@@ -33,4 +33,20 @@ fn main() {
         *i += 50;
         println!("{i}");
     }
+
+    let row = vec![
+        SpreadSheetCell::Int(3),
+        SpreadSheetCell::Text(String::from("blue")),
+        SpreadSheetCell::Float(10.12),
+    ];
+
+    println!("{row:?}");
+}
+
+#[derive(Debug)]
+#[allow(unused)]
+enum SpreadSheetCell {
+    Int(i32),
+    Float(f64),
+    Text(String),
 }
