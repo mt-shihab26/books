@@ -1,11 +1,14 @@
-use std::{fs::{self, File}, io::{Error, Read}};
+use std::error;
+use std::fs::{self, File};
+use std::io::{Error, Read};
 // use std::io::ErrorKind;
 
-fn main() {
+fn main() -> Result<(), Box<dyn error::Error>> {
     let path = "hello.txt";
 
-    let hello = File::open(&path).expect(&format!("{path} should be included in this project"));
-
+    //
+    // let hello = File::open(&path).expect(&format!("{path} should be included in this project"));
+    //
     // let hello = match hello {
     //     Ok(file) => file,
     //     Err(error) => match error.kind() {
@@ -17,7 +20,11 @@ fn main() {
     //     },
     // };
 
+    let hello = File::open(&path)?;
+
     println!("{hello:?}");
+
+    Ok(())
 }
 
 fn read_username_from_file() -> Result<String, Error> {
@@ -31,8 +38,8 @@ fn read_username_from_file() -> Result<String, Error> {
     let mut username = "".to_string();
 
     match hello.read_to_string(&mut username) {
-        Ok(_) => Ok(username)
-        Err(e) => Err(e)
+        Ok(_) => Ok(username),
+        Err(e) => Err(e),
     }
 }
 
@@ -43,13 +50,11 @@ fn read_username_from_file_2() -> Result<String, Error> {
     Ok(username)
 }
 
-
 fn read_username_from_file_3() -> Result<String, Error> {
     let mut username = "".to_string();
     File::open("hello.txt")?.read_to_string(&mut username)?;
     Ok(username)
 }
-
 
 fn read_username_from_file_4() -> Result<String, Error> {
     fs::read_to_string("hello.txt")
