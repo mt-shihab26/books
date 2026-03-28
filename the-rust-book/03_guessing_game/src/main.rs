@@ -1,6 +1,8 @@
 use rand;
 use std::{cmp::Ordering, io};
 
+mod guess;
+
 fn main() {
     println!("Guess the number!");
 
