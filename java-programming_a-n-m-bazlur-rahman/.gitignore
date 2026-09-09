@@ -1,0 +1,12 @@
+.gradle
+build
+!gradle-wrapper.jar
+.idea
+*.iml
+out
+*.class
+hs_err_pid*
+.settings
+.classpath
+.project
+.attach_pid78811
