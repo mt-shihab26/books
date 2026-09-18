@@ -1,0 +1,379 @@
+package parser
+
+import (
+	"testing"
+
+	"monkey/ast"
+	"monkey/lexer"
+)
+
+// TestIdentifierExpression checks that a bare identifier parses as an *ast.IdentifierExpression.
+func TestIdentifierExpression(t *testing.T) {
+	input := "foobar;"
+	program := testParseProgram(t, input, 1)
+	expressionStatement := testExpressionStatement(t, program.Statements[0])
+	testIdentifierExpression(t, expressionStatement.Expression, "foobar")
+}
+
+// TestIntegerExpression checks that an integer literal parses as an *ast.IntegerExpression.
+func TestIntegerExpression(t *testing.T) {
+	input := "5;"
+	program := testParseProgram(t, input, 1)
+	expressionStatement := testExpressionStatement(t, program.Statements[0])
+	testIntegerExpression(t, expressionStatement.Expression, 5)
+}
+
+// TestStringExpression checks that an integer literal parses as an *ast.StringExpression.
+func TestStringExpression(t *testing.T) {
+	input := "\"Hello World\""
+	program := testParseProgram(t, input, 1)
+	expressionStatement := testExpressionStatement(t, program.Statements[0])
+	testStringExpression(t, expressionStatement.Expression, "Hello World")
+}
+
+// TestBooleanExpression checks that "true"/"false" literals parse as *ast.BooleanExpression.
+func TestBooleanExpression(t *testing.T) {
+	tests := []struct {
+		input string
+		value bool
+	}{
+		{"true;", true},
+		{"false;", false},
+	}
+	for _, test := range tests {
+		program := testParseProgram(t, test.input, 1)
+		expressionStatement := testExpressionStatement(t, program.Statements[0])
+		testBooleanExpression(t, expressionStatement.Expression, test.value)
+	}
+
+}
+
+// TestParsingUnaryExpressions checks unary "!"/"-" expressions parse with the right operator and operand.
+func TestParsingUnaryExpressions(t *testing.T) {
+	tests := []struct {
+		input    string
+		operator string
+		right    any
+	}{
+		{"!5;", "!", 5},
+		{"-15;", "-", 15},
+		{"!true;", "!", true},
+		{"!false;", "!", false},
+	}
+	for _, test := range tests {
+		program := testParseProgram(t, test.input, 1)
+		expressionStatement := testExpressionStatement(t, program.Statements[0])
+		testUnaryExpression(t, expressionStatement.Expression, test.operator, test.right)
+	}
+}
+
+// TestIfExpression checks an "if" expression with no else branch.
+func TestIfExpression(t *testing.T) {
+	input := `if (x < y) { x }`
+	program := testParseProgram(t, input, 1)
+	expressionStatement := testExpressionStatement(t, program.Statements[0])
+	ifExpression, ok := expressionStatement.Expression.(*ast.IfExpression)
+	if !ok {
+		t.Fatalf("expressionStatement.Expression is not *ast.IfExpression. got=%T\n", expressionStatement.Expression)
+	}
+	if !testBinaryExpression(t, ifExpression.ConditionExpression, "x", "<", "y") {
+		return
+	}
+	if len(ifExpression.ConsequenceStatement.Statements) != 1 {
+		t.Errorf("ifExpression.Consequence.Statements does not contain %v statements. got=%v\n", 1, len(ifExpression.ConsequenceStatement.Statements))
+	}
+	consequence, ok := ifExpression.ConsequenceStatement.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("ifExpression.Consequence.Statements[0] is not *ast.ExpressionStatement. got=%T\n", ifExpression.ConsequenceStatement.Statements[0])
+	}
+	if !testIdentifierExpression(t, consequence.Expression, "x") {
+		return
+	}
+	if ifExpression.AlternativeStatement != nil {
+		t.Errorf("ifExpression.Alternative was not nil. got=%v\n", ifExpression.AlternativeStatement)
+	}
+}
+
+// TestIfElseExpression checks an "if/else" expression's consequence and alternative branches.
+func TestIfElseExpression(t *testing.T) {
+	input := `if (x < y) { x } else { y }`
+	program := testParseProgram(t, input, 1)
+	expressionStatement := testExpressionStatement(t, program.Statements[0])
+	ifExpression, ok := expressionStatement.Expression.(*ast.IfExpression)
+	if !ok {
+		t.Fatalf("expressionStatement.Expression is not *ast.IfExpression. got=%T\n", expressionStatement.Expression)
+	}
+	if !testBinaryExpression(t, ifExpression.ConditionExpression, "x", "<", "y") {
+		return
+	}
+	if len(ifExpression.ConsequenceStatement.Statements) != 1 {
+		t.Errorf("ifExpression.Consequence.Statements does not contain %v statements. got=%v\n", 1, len(ifExpression.ConsequenceStatement.Statements))
+	}
+	consequence, ok := ifExpression.ConsequenceStatement.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("ifExpression.Consequence.Statements[0] is not *ast.ExpressionStatement. got=%T\n", ifExpression.ConsequenceStatement.Statements[0])
+	}
+	if !testIdentifierExpression(t, consequence.Expression, "x") {
+		return
+	}
+	alternative, ok := ifExpression.AlternativeStatement.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("ifExpression.Alternative.Statements[0] is not *ast.ExpressionStatement. got=%T\n", ifExpression.AlternativeStatement.Statements[0])
+	}
+	if !testIdentifierExpression(t, alternative.Expression, "y") {
+		return
+	}
+}
+
+// TestFunctionLiteralExpression checks a function literal's parameters and body.
+func TestFunctionLiteralExpression(t *testing.T) {
+	input := `fn(x, y) { x + y; }`
+	program := testParseProgram(t, input, 1)
+	expressionStatement := testExpressionStatement(t, program.Statements[0])
+	functionLiteralExpression, ok := expressionStatement.Expression.(*ast.FunctionExpression)
+	if !ok {
+		t.Fatalf("expressionStatement.Expression is not *ast.FunctionExpression. got=%T\n", expressionStatement.Expression)
+	}
+	if len(functionLiteralExpression.ParameterExpressions) != 2 {
+		t.Fatalf("functionLiteralExpression.Parameters does not contain %v parameters. got=%v\n", 2, len(functionLiteralExpression.ParameterExpressions))
+	}
+	testLiteralExpression(t, functionLiteralExpression.ParameterExpressions[0], "x")
+	testLiteralExpression(t, functionLiteralExpression.ParameterExpressions[1], "y")
+	if len(functionLiteralExpression.BodyStatement.Statements) != 1 {
+		t.Fatalf("functionLiteralExpression.Body.Statements does not contain %v statements. got=%v\n", 1, len(functionLiteralExpression.BodyStatement.Statements))
+	}
+	bodyStatement := testExpressionStatement(t, functionLiteralExpression.BodyStatement.Statements[0])
+	testBinaryExpression(t, bodyStatement.Expression, "x", "+", "y")
+}
+
+// TestFunctionLiteralParsing checks function literals with varying parameter counts.
+func TestFunctionLiteralParsing(t *testing.T) {
+	tests := []struct {
+		input          string
+		expectedParams []string
+	}{
+		{input: "fn() {};", expectedParams: []string{}},
+		{input: "fn(x) {};", expectedParams: []string{"x"}},
+		{input: "fn(x, y, z) {};", expectedParams: []string{"x", "y", "z"}},
+	}
+	for _, test := range tests {
+		program := testParseProgram(t, test.input, 1)
+		expressionStatement := testExpressionStatement(t, program.Statements[0])
+		functionLiteralExpression, ok := expressionStatement.Expression.(*ast.FunctionExpression)
+		if !ok {
+			t.Fatalf("expressionStatement.Expression is not *ast.FunctionExpression. got=%T\n", expressionStatement.Expression)
+		}
+		if len(functionLiteralExpression.ParameterExpressions) != len(test.expectedParams) {
+			t.Fatalf("functionLiteralExpression.Parameters does not contain %v parameters. got=%v\n", len(test.expectedParams), len(functionLiteralExpression.ParameterExpressions))
+		}
+		for i, identifier := range test.expectedParams {
+			testLiteralExpression(t, functionLiteralExpression.ParameterExpressions[i], identifier)
+
+		}
+	}
+}
+
+// TestParseEmptyFunctionLiteral checks a function literal with no parameters and an empty body.
+func TestParseEmptyFunctionLiteral(t *testing.T) {
+	program := testParseProgram(t, "fn() {};", 1)
+	functionExpression, ok := testExpressionStatement(t, program.Statements[0]).Expression.(*ast.FunctionExpression)
+	if !ok {
+		t.Fatalf("expression is not *ast.FunctionExpression. got=%T\n", testExpressionStatement(t, program.Statements[0]).Expression)
+	}
+	if len(functionExpression.ParameterExpressions) != 0 {
+		t.Fatalf("functionExpression.Parameters is not empty. got=%v\n", len(functionExpression.ParameterExpressions))
+	}
+	if len(functionExpression.BodyStatement.Statements) != 0 {
+		t.Fatalf("functionExpression.Body.Statements is not empty. got=%v\n", len(functionExpression.BodyStatement.Statements))
+	}
+}
+
+// TestParseEmptyIfBlock checks an if expression with an empty consequence and no else branch.
+func TestParseEmptyIfBlock(t *testing.T) {
+	program := testParseProgram(t, "if (x) {};", 1)
+	ifExpression, ok := testExpressionStatement(t, program.Statements[0]).Expression.(*ast.IfExpression)
+	if !ok {
+		t.Fatalf("expression is not *ast.IfExpression. got=%T\n", testExpressionStatement(t, program.Statements[0]).Expression)
+	}
+	if !testIdentifierExpression(t, ifExpression.ConditionExpression, "x") {
+		return
+	}
+	if len(ifExpression.ConsequenceStatement.Statements) != 0 {
+		t.Fatalf("ifExpression.Consequence.Statements is not empty. got=%v\n", len(ifExpression.ConsequenceStatement.Statements))
+	}
+	if ifExpression.AlternativeStatement != nil {
+		t.Fatalf("ifExpression.Alternative was not nil. got=%v\n", ifExpression.AlternativeStatement)
+	}
+}
+
+// TestParseDeeplyNestedGroupedExpression checks that repeated parentheses around a literal still resolve to it.
+func TestParseDeeplyNestedGroupedExpression(t *testing.T) {
+	program := testParseProgram(t, "(((5)));", 1)
+	testIntegerExpression(t, testExpressionStatement(t, program.Statements[0]).Expression, 5)
+}
+
+// TestParseDoubleUnaryMinus checks that "--5" parses as two nested unary minuses, not one binary operator.
+func TestParseDoubleUnaryMinus(t *testing.T) {
+	program := testParseProgram(t, "--5;", 1)
+	outer, ok := testExpressionStatement(t, program.Statements[0]).Expression.(*ast.UnaryExpression)
+	if !ok {
+		t.Fatalf("expression is not *ast.UnaryExpression. got=%T\n", testExpressionStatement(t, program.Statements[0]).Expression)
+	}
+	if outer.Operator != "-" {
+		t.Fatalf("outer.Operator is not '-'. got=%v\n", outer.Operator)
+	}
+	testUnaryExpression(t, outer.RightExpression, "-", 5)
+}
+
+// TestParseTrailingCommaInFunctionParametersIsTolerated checks that a trailing comma before the closing ")" is silently accepted.
+func TestParseTrailingCommaInFunctionParametersIsTolerated(t *testing.T) {
+	program := testParseProgram(t, "fn(x, y,) {};", 1)
+	functionExpression, ok := testExpressionStatement(t, program.Statements[0]).Expression.(*ast.FunctionExpression)
+	if !ok {
+		t.Fatalf("expression is not *ast.FunctionExpression. got=%T\n", testExpressionStatement(t, program.Statements[0]).Expression)
+	}
+	if len(functionExpression.ParameterExpressions) != 2 {
+		t.Fatalf("functionExpression.Parameters does not contain 2 parameters. got=%v\n", len(functionExpression.ParameterExpressions))
+	}
+	testLiteralExpression(t, functionExpression.ParameterExpressions[0], "x")
+	testLiteralExpression(t, functionExpression.ParameterExpressions[1], "y")
+}
+
+// TestParseUnterminatedGroupedExpressionRecordsError checks that a missing closing ")" is reported as a parser error.
+func TestParseUnterminatedGroupedExpressionRecordsError(t *testing.T) {
+	parser := New(lexer.New("(1 + 2"))
+	parser.ParseProgram()
+	if len(parser.Errors()) == 0 {
+		t.Fatalf("expected at least 1 error for an unterminated grouped expression, got 0\n")
+	}
+}
+
+// TestParseUnterminatedIfConditionRecordsError checks that a missing closing ")" on an if condition is a parser error.
+func TestParseUnterminatedIfConditionRecordsError(t *testing.T) {
+	parser := New(lexer.New("if (x < y"))
+	parser.ParseProgram()
+	if len(parser.Errors()) == 0 {
+		t.Fatalf("expected at least 1 error for an unterminated if condition, got 0\n")
+	}
+}
+
+// TestParseUnterminatedFunctionParametersIsSilentlyDropped checks that a parameter list running into EOF drops the function expression without recording an error.
+func TestParseUnterminatedFunctionParametersIsSilentlyDropped(t *testing.T) {
+	input := "fn(x, y"
+	parser := New(lexer.New(input))
+	program := parser.ParseProgram()
+	if len(program.Statements) != 1 {
+		t.Fatalf("input=%q: program.Statements does not contain 1 statement. got=%v\n", input, len(program.Statements))
+	}
+	expressionStatement := testExpressionStatement(t, program.Statements[0])
+	if expressionStatement.Expression != nil {
+		t.Fatalf("input=%q: expected a nil expression for unterminated input, got=%T\n", input, expressionStatement.Expression)
+	}
+	if len(parser.Errors()) != 0 {
+		t.Fatalf("input=%q: expected no recorded errors (documenting current behavior), got=%v\n", input, parser.Errors())
+	}
+}
+
+func TestParsingArrayExpression(t *testing.T) {
+	input := "[1, 2 * 2, 3 + 3]"
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	array, ok := stmt.Expression.(*ast.ArrayExpression)
+	if !ok {
+		t.Fatalf("exp not ast.ArrayExpression. got=%T", stmt.Expression)
+	}
+	if len(array.Elements) != 3 {
+		t.Fatalf("len(array.Elements) not 3. got=%d", len(array.Elements))
+	}
+	testIntegerExpression(t, array.Elements[0], 1)
+	testBinaryExpression(t, array.Elements[1], 2, "*", 2)
+	testBinaryExpression(t, array.Elements[2], 3, "+", 3)
+}
+
+func TestParsingHashLiteralsStringKeys(t *testing.T) {
+	input := `{"one": 1, "two": 2, "three": 3}`
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	hash, ok := stmt.Expression.(*ast.HashExpression)
+	if !ok {
+		t.Fatalf("exp is not ast.HashExpression. got=%T", stmt.Expression)
+	}
+	if len(hash.Pairs) != 3 {
+		t.Errorf("hash.Pairs has wrong length. got=%d", len(hash.Pairs))
+	}
+	expected := map[string]int64{
+		"one":   1,
+		"two":   2,
+		"three": 3,
+	}
+	for key, value := range hash.Pairs {
+		literal, ok := key.(*ast.StringExpression)
+		if !ok {
+			t.Errorf("key is not ast.StringExpression. got=%T", key)
+		}
+		expectedValue := expected[literal.TokenLiteral()]
+		testIntegerExpression(t, value, expectedValue)
+	}
+}
+
+func TestParsingEmptyHashLiteral(t *testing.T) {
+	input := "{}"
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	hash, ok := stmt.Expression.(*ast.HashExpression)
+	if !ok {
+		t.Fatalf("exp is not ast.HashExpression. got=%T", stmt.Expression)
+	}
+	if len(hash.Pairs) != 0 {
+		t.Errorf("hash.Pairs has wrong length. got=%d", len(hash.Pairs))
+	}
+}
+
+func TestParsingHashLiteralsWithExpressions(t *testing.T) {
+	input := `{"one": 0 + 1, "two": 10 - 8, "three": 15 / 5}`
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	hash, ok := stmt.Expression.(*ast.HashExpression)
+	if !ok {
+		t.Fatalf("exp is not ast.HashExpression. got=%T", stmt.Expression)
+	}
+	if len(hash.Pairs) != 3 {
+		t.Errorf("hash.Pairs has wrong length. got=%d", len(hash.Pairs))
+	}
+	tests := map[string]func(ast.Expression){
+		"one": func(e ast.Expression) {
+			testBinaryExpression(t, e, 0, "+", 1)
+		},
+		"two": func(e ast.Expression) {
+			testBinaryExpression(t, e, 10, "-", 8)
+		},
+		"three": func(e ast.Expression) {
+			testBinaryExpression(t, e, 15, "/", 5)
+		},
+	}
+	for key, value := range hash.Pairs {
+		literal, ok := key.(*ast.StringExpression)
+		if !ok {
+			t.Errorf("key is not ast.StringExpression. got=%T", key)
+			continue
+		}
+		testFunc, ok := tests[literal.TokenLiteral()]
+		if !ok {
+			t.Errorf("No test function for key %q found", literal.TokenLiteral())
+			continue
+		}
+		testFunc(value)
+	}
+}

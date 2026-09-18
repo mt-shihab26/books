@@ -1,0 +1,65 @@
+package repl
+
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"os/user"
+
+	"monkey/eval"
+	"monkey/lexer"
+	"monkey/object"
+	"monkey/output"
+	"monkey/parser"
+)
+
+const PROMPT = ">> "
+
+// Run greets the current OS user and hands off to the REPL on stdin/stdout.
+func Run() error {
+	user, err := user.Current()
+	if err != nil {
+		return err
+	}
+	fmt.Print(MONKEY_FACE_HAPPY)
+	fmt.Printf("Hello %v! This is the Monkey Programming Language!\n", user.Username)
+	start(os.Stdin, os.Stdout)
+	return nil
+}
+
+// start runs a read-eval-print loop over in, writing each line's result to out until in is exhausted.
+func start(in io.Reader, out io.Writer) {
+	scanner := bufio.NewScanner(in)
+	env := object.NewEnvironment()
+	for {
+		fmt.Printf(PROMPT)
+		scanned := scanner.Scan()
+		if !scanned {
+			if err := scanner.Err(); err != nil {
+				fmt.Fprintf(out, "error reading input: %v\n", err)
+			}
+			return
+		}
+		line := scanner.Text()
+		l := lexer.New(line)
+		p := parser.New(l)
+		program := p.ParseProgram()
+		if len(p.Errors()) != 0 {
+			printParseErrors(out, p.Errors())
+			return
+		}
+		evaluated := eval.Eval(program, env)
+		output.PrintProgram(out, program, evaluated)
+	}
+}
+
+// printParseErrors writes the sad monkey face followed by each parser error message to out.
+func printParseErrors(out io.Writer, errors []string) {
+	io.WriteString(out, MONKEY_FACE_SAD)
+	io.WriteString(out, "Woops! We ran into some monkey business here!\n")
+	io.WriteString(out, " parser errors:\n")
+	for _, message := range errors {
+		io.WriteString(out, "\t"+message+"\n")
+	}
+}

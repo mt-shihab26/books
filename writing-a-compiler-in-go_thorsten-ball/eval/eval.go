@@ -1,0 +1,297 @@
+package eval
+
+import (
+	"fmt"
+	"monkey/ast"
+	"monkey/object"
+)
+
+var (
+	NULL_OBJECT  = &object.Null{}
+	TRUE_OBJECT  = &object.Boolean{Value: true}
+	FALSE_OBJECT = &object.Boolean{Value: false}
+)
+
+func Eval(node ast.Node, env *object.Environment) object.Object {
+	switch node := node.(type) {
+	case *ast.Program:
+		var result object.Object
+		for _, statement := range node.Statements {
+			result = Eval(statement, env)
+			switch result := result.(type) {
+			case *object.Return:
+				return result.Value
+			case *object.Error:
+				return result
+			}
+		}
+		return result
+	case *ast.BlockStatement:
+		var result object.Object
+		for _, statement := range node.Statements {
+			result = Eval(statement, env)
+			switch result := result.(type) {
+			case *object.Return:
+				return result
+			case *object.Error:
+				return result
+			}
+		}
+		return result
+	case *ast.ReturnStatement:
+		val := &object.Return{Value: Eval(node.ValueExpression, env)}
+		if isError(val) {
+			return val
+		}
+		return val
+	case *ast.LetStatement:
+		val := Eval(node.ValueExpression, env)
+		if isError(val) {
+			return val
+		}
+		env.Set(node.IdentifierExpression.Value, val)
+		return NULL_OBJECT
+	case *ast.ExpressionStatement:
+		return Eval(node.Expression, env)
+	case *ast.IdentifierExpression:
+		if val, ok := env.Get(node.Value); ok {
+			return val
+		}
+		if builtin, ok := builtins[node.Value]; ok {
+			return builtin
+		}
+		return newErrorObject("identifier not found: %s", node.Value)
+	case *ast.FunctionExpression:
+		val := &object.Function{
+			Parameters: node.ParameterExpressions,
+			Body:       node.BodyStatement,
+			Env:        env,
+		}
+		return val
+	case *ast.CallExpression:
+		obj := Eval(node.FunctionExpression, env)
+		if isError(obj) {
+			return obj
+		}
+		var args []object.Object
+		for _, argumentExpression := range node.ArgumentExpressions {
+			val := Eval(argumentExpression, env)
+			if isError(val) {
+				return val
+			}
+			args = append(args, val)
+		}
+		switch function := obj.(type) {
+		case *object.Function:
+			env := object.NewEnclosedEnvironment(function.Env)
+			for i, arg := range args {
+				name := function.Parameters[i]
+				env.Set(name.Value, arg)
+			}
+			val := Eval(function.Body, env)
+			if isError(val) {
+				return val
+			}
+			if returnValue, ok := val.(*object.Return); ok {
+				return returnValue.Value
+			}
+			return val
+		case *object.Builtin:
+			return function.Fn(args...)
+		default:
+			if ide, ok := node.FunctionExpression.(*ast.IdentifierExpression); ok {
+				return newErrorObject("not a function: %s", ide.Value)
+			}
+			return newErrorObject("unknown operation")
+		}
+	case *ast.ArrayExpression:
+		obj := &object.Array{}
+		for _, element := range node.Elements {
+			rs := Eval(element, env)
+			if isError(rs) {
+				return rs
+			}
+			obj.Elements = append(obj.Elements, rs)
+		}
+		return obj
+	case *ast.IndexExpression:
+		left := Eval(node.LeftExpression, env)
+		if isError(left) {
+			return left
+		}
+		index := Eval(node.NumberExpression, env)
+		if isError(index) {
+			return index
+		}
+		switch {
+		case left.Type() == object.ARRAY && index.Type() == object.INTEGER:
+			arrayObject := left.(*object.Array)
+			idx := index.(*object.Integer).Value
+			max := int64(len(arrayObject.Elements) - 1)
+			if idx < 0 || idx > max {
+				return NULL_OBJECT
+			}
+			return arrayObject.Elements[idx]
+		case left.Type() == object.HASH:
+			obj := left.(*object.Hash)
+			idx, ok := index.(object.Hashable)
+			if !ok {
+				return newErrorObject("unusable as hash key: %s", index.Type())
+			}
+			val, ok := obj.Pairs[idx.HashKey()]
+			if !ok {
+				return NULL_OBJECT
+			}
+			return val.Value
+		default:
+			return newErrorObject("index operator not supported: %s", left.Type())
+		}
+	case *ast.IntegerExpression:
+		return newIntegerObject(node.Value)
+	case *ast.BooleanExpression:
+		return newBooleanObject(node.Value)
+	case *ast.StringExpression:
+		return newStringObject(node.Value)
+	case *ast.UnaryExpression:
+		right := Eval(node.RightExpression, env)
+		if isError(right) {
+			return right
+		}
+		switch node.Operator {
+		case "!":
+			return newBooleanObject(!isTruthy(right))
+		case "-":
+			switch right.Type() {
+			case object.INTEGER:
+				return newIntegerObject(-(right.(*object.Integer).Value))
+			default:
+				return newErrorObject("unknown operator: %s%s", node.Operator, right.Type())
+			}
+		}
+		return newErrorObject("unknown operator: %s%s", node.Operator, right.Type())
+	case *ast.BinaryExpression:
+		left := Eval(node.LeftExpression, env)
+		if isError(left) {
+			return left
+		}
+		right := Eval(node.RightExpression, env)
+		if isError(right) {
+			return right
+		}
+		switch {
+		case left.Type() == object.STRING && right.Type() == object.STRING:
+			leftValue := left.(*object.String).Value
+			rightValue := right.(*object.String).Value
+			switch node.Operator {
+			case "+":
+				return newStringObject(leftValue + rightValue)
+			}
+		case left.Type() == object.INTEGER && right.Type() == object.INTEGER:
+			leftValue := left.(*object.Integer).Value
+			rightValue := right.(*object.Integer).Value
+			switch node.Operator {
+			case "+":
+				return newIntegerObject(leftValue + rightValue)
+			case "-":
+				return newIntegerObject(leftValue - rightValue)
+			case "*":
+				return newIntegerObject(leftValue * rightValue)
+			case "/":
+				return newIntegerObject(leftValue / rightValue)
+			case "<":
+				return newBooleanObject(leftValue < rightValue)
+			case ">":
+				return newBooleanObject(leftValue > rightValue)
+			case "==":
+				return newBooleanObject(leftValue == rightValue)
+			case "!=":
+				return newBooleanObject(leftValue != rightValue)
+			}
+		case left.Type() == object.BOOLEAN && right.Type() == object.BOOLEAN:
+			leftValue := left.(*object.Boolean).Value
+			rightValue := right.(*object.Boolean).Value
+			switch node.Operator {
+			case "==":
+				return newBooleanObject(leftValue == rightValue)
+			case "!=":
+				return newBooleanObject(leftValue != rightValue)
+			}
+		case left.Type() != right.Type():
+			return newErrorObject("type mismatch: %s %s %s", left.Type(), node.Operator, right.Type())
+		}
+		return newErrorObject("unknown operator: %s %s %s", left.Type(), node.Operator, right.Type())
+	case *ast.IfExpression:
+		condition := Eval(node.ConditionExpression, env)
+		if isError(condition) {
+			return condition
+		}
+		if isTruthy(condition) {
+			return Eval(node.ConsequenceStatement, env)
+		}
+		if node.AlternativeStatement != nil {
+			return Eval(node.AlternativeStatement, env)
+		}
+		return NULL_OBJECT
+	case *ast.HashExpression:
+		pairs := make(map[object.HashKey]object.HashPair)
+		for keyNode, valueNode := range node.Pairs {
+			key := Eval(keyNode, env)
+			if isError(key) {
+				return key
+			}
+			hashKey, ok := key.(object.Hashable)
+			if !ok {
+				return newErrorObject("unusable as hash key: %s", key.Type())
+			}
+			value := Eval(valueNode, env)
+			if isError(value) {
+				return value
+			}
+			hashed := hashKey.HashKey()
+			pairs[hashed] = object.HashPair{Key: key, Value: value}
+		}
+		return &object.Hash{Pairs: pairs}
+	}
+	return newErrorObject("unknown operation")
+}
+
+func newIntegerObject(value int64) *object.Integer {
+	return &object.Integer{Value: value}
+}
+
+func newStringObject(value string) *object.String {
+	return &object.String{Value: value}
+}
+
+func newBooleanObject(value bool) *object.Boolean {
+	if value {
+		return TRUE_OBJECT
+	}
+	return FALSE_OBJECT
+}
+
+func newErrorObject(format string, values ...any) *object.Error {
+	return &object.Error{Message: fmt.Sprintf(format, values...)}
+}
+
+func isTruthy(obj object.Object) bool {
+	if obj.Type() == object.INTEGER {
+		if obj.(*object.Integer).Value == 0 {
+			return false
+		} else {
+			return true
+		}
+	}
+	switch obj {
+	case NULL_OBJECT:
+		return false
+	case FALSE_OBJECT:
+		return false
+	default:
+		return true
+	}
+}
+
+func isError(obj object.Object) bool {
+	return obj.Type() == object.ERROR
+}
